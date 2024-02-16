@@ -1,9 +1,9 @@
 ---@author Gage Henderson 2024-02-16 06:19
 --
----@class BasicTroop : Character
+---@class BasicTroop : Pawn
 --
 
-local CharacterAssemblage = require('ECS.Assemblages.Characters.Character')
+local CharacterAssemblage = require('ECS.Assemblages.Pawns.Pawn')
 
 return function (e, x, y)
     e

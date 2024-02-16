@@ -1,6 +1,6 @@
 ---@author Gage Henderson 2024-02-16 06:13
 --
----@class Character : Entity
+---@class Pawn : Entity
 -- Uppermost entity for all characters.
 ---@field position Position
 ---@field movement Movement

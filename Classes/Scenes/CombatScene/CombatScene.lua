@@ -46,7 +46,7 @@ function CombatScene:keypressed(key)
             self.world,
             'basicTroop',
             100, 100
-        ):give('selectable', 100, 100)
+        ):give("friendly")
     end
 end
 function CombatScene:mousepressed(x, y, button)

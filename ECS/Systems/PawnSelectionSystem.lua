@@ -20,7 +20,7 @@ return function (concord, camera)
     -- sure, maybe you will be able to select other things?
     ---@field selectedEntities table[]
     local EntitySelectionSystem = concord.system({
-        selectableEntities = { 'selectable', 'position' },
+        selectableEntities = { 'friendly', 'position' },
         selectedEntities   = { 'selected', 'position' }
     })
 

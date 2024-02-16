@@ -7,4 +7,6 @@
 return function(e, x, y)
     e
         :give("position", x, y)
+        :give("health")
+        :give("hostile")
 end

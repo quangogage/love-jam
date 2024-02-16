@@ -5,8 +5,9 @@
 ---@field y number
 
 return function(concord)
-    concord.component("position", function(c, x, y)
+    concord.component("position", function(c, x, y, z)
         c.x = x or 0
         c.y = y or 0
+        c.z = z or 0
     end)
 end

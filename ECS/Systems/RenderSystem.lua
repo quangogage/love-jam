@@ -4,11 +4,12 @@
 -- Render behavior / what is rendered will depend on what other components the
 -- entity may have.
 
-return function(concord)
+
+return function (concord)
     ---@class RenderSystem : System
     ---@field entities table[]
     local RenderSystem = concord.system({
-        entities = {"position"}
+        entities = { 'position' }
     })
 
 
@@ -16,6 +17,7 @@ return function(concord)
     -- [[ Core Functions ]] --
     --------------------------
     function RenderSystem:draw()
+        table.sort(self.entities, self._zIndexSort)
         for _, entity in ipairs(self.entities) do
             self:_renderEntity(entity)
         end
@@ -28,7 +30,7 @@ return function(concord)
     -- Render the entity.
     ---@param entity table
     function RenderSystem:_renderEntity(entity)
-        if entity:get("renderRectangle") then
+        if entity:get('renderRectangle') then
             self:_renderRectangle(entity)
         end
     end
@@ -36,15 +38,23 @@ return function(concord)
     -- Render a rectangle at the entity position.
     ---@param entity table
     function RenderSystem:_renderRectangle(entity)
-        local color     = entity:get("color") or {r     = 255, g = 255, b = 255}
-        local alpha     = entity:get("alpha") or 255
-        local rectangle = entity:get("renderRectangle")
+        local color     = entity:get('color') or { r = 255, g = 255, b = 255 }
+        local alpha     = entity:get('alpha') or 255
+        local rectangle = entity:get('renderRectangle')
         love.graphics.setColor(color.r, color.g, color.b, alpha)
-        love.graphics.rectangle("fill",
+        love.graphics.rectangle('fill',
             entity.position.x - rectangle.width / 2,
-            entity.position.y - rectangle.height / 2,
+            entity.position.y - entity.position.z - rectangle.height / 2,
             rectangle.width, rectangle.height
         )
+    end
+
+    -- z-index emulation.
+    ---@param a table
+    ---@param b table
+    ---@return boolean
+    function RenderSystem._zIndexSort(a, b)
+        return a.position.y + a.dimensions.height / 2 < b.position.y + b.dimensions.height / 2
     end
 
 

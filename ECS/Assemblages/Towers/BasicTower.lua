@@ -12,5 +12,5 @@ return function (e, x, y)
         :give('health', 100)
         :give('color', 1, 0, 0)
         :give('renderRectangle', 50, 100)
-        :give('clickDimensions', 50, 100)
+        :give('dimensions', 50, 100)
 end

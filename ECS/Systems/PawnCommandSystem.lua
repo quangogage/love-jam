@@ -11,7 +11,7 @@ return function (concord, camera)
     ---@field hostileEntities table[]
     local PawnCommandSystem = concord.system({
         selectedEntities = { 'selected' },
-        hostileEntities  = { 'hostile' , 'clickDimensions'},
+        hostileEntities  = { 'hostile' , 'dimensions'},
     })
 
 
@@ -25,10 +25,10 @@ return function (concord, camera)
 
             -- Click on enemies.
             for _,e in ipairs(self.hostileEntities) do
-                if x > e.position.x - e.clickDimensions.width / 2 and
-                x < e.position.x + e.clickDimensions.width / 2 and
-                y > e.position.y - e.clickDimensions.height / 2 and
-                y < e.position.y + e.clickDimensions.height / 2 then
+                if x > e.position.x - e.dimensions.width / 2 and
+                x < e.position.x + e.dimensions.width / 2 and
+                y > e.position.y - e.dimensions.height / 2 and
+                y < e.position.y + e.dimensions.height / 2 then
                     self:_setTarget({entity = e})
                     return
                 end

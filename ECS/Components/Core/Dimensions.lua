@@ -6,7 +6,7 @@
 ---@field height number
 
 return function(concord)
-    concord.component("clickDimensions", function(c, width, height)
+    concord.component("dimensions", function(c, width, height)
         c.width = width or 10
         c.height = height or 10
     end)

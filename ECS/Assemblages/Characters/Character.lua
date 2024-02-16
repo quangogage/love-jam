@@ -3,14 +3,16 @@
 ---@class Character : Entity
 -- Uppermost entity for all characters.
 ---@field position Position
----@field characterController CharacterController
+---@field movement Movement
 ---@field health Health
 ---@field physics Physics
 
 return function (e, x, y)
     e
         :give('position', x, y)
-        :give('characterController')
         :give('health', 10)
+        :give('movement', {
+            walkSpeed = 100
+        })
         :give('physics')
 end

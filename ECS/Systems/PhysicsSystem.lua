@@ -9,6 +9,26 @@ return function(concord)
     })
 
 
+    ----------------------------
+    -- [[ Public Functions ]] --
+    ----------------------------
+    ---@param e table
+    ---@param forceX number
+    ---@param forceY number
+    function PhysicsSystem:physics_applyForce(e, forceX, forceY)
+        e.physics.velocity.x = e.physics.velocity.x + forceX * love.timer.getDelta()
+        e.physics.velocity.y = e.physics.velocity.y + forceY * love.timer.getDelta()
+    end
+
+    ---@param e table
+    ---@param velocityX number
+    ---@param velocityY number
+    function PhysicsSystem:physics_setVelocity(e, velocityX, velocityY)
+        e.physics.velocity.x = velocityX
+        e.physics.velocity.y = velocityY
+    end
+
+
     --------------------------
     -- [[ Core Functions ]] --
     --------------------------

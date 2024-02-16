@@ -1,7 +1,5 @@
-selectable.width/height -> clickDimensions
 
 position x,y,z
 rendering y - z
 zindexing y only
 
-selectable -> friendly, hostile

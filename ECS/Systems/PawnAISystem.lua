@@ -1,7 +1,8 @@
----@author Gage Henderson 2024-02-16 11:06
+---@author Gage Henderson 2024-02-16 11:57
 --
----@class PawnMovementSystem : System
--- A simple class that moves pawns towards their target position's.
+---@class PawnAISystem : System
+-- Control Pawns.
+-- Behavior is determined by the `Target` component.
 --
 
 -- ──────────────────────────────────────────────────────────────────────
@@ -11,17 +12,21 @@
 local ARRIVAL_THRESHOLD = 15
 -- ──────────────────────────────────────────────────────────────────────
 
-return function (concord)
-    local PawnMovementSystem = concord.system({
-        entities = { 'position', 'targetPosition' }
+
+return function(concord)
+    local PawnAISystem = concord.system({
+        entities = { "target" }
     })
 
     --------------------------
     -- [[ Core Functions ]] --
     --------------------------
-    function PawnMovementSystem:update(dt)
+    function PawnAISystem:update(dt)
         for _, e in ipairs(self.entities) do
-            self:_moveTowardsTarget(e, dt)
+            local target = e.target
+            if target.position then
+                self:_moveToPosition(e, target.position.x, target.position.y, dt)
+            end
         end
     end
 
@@ -29,19 +34,22 @@ return function (concord)
     -----------------------------
     -- [[ Private Functions ]] --
     -----------------------------
+    -- Move an entity towards the specified location.
     ---@param e Pawn | table
+    ---@param x number
+    ---@param y number
     ---@param dt number
-    function PawnMovementSystem:_moveTowardsTarget(e, dt)
+    function PawnAISystem:_moveToPosition(e, x, y, dt)
         local world = self:getWorld()
         if world then
             local distance = math.sqrt(
-                (e.targetPosition.x - e.position.x) ^ 2 +
-                (e.targetPosition.y - e.position.y) ^ 2
+                (x - e.position.x) ^ 2 +
+                (y - e.position.y) ^ 2
             )
             if distance > ARRIVAL_THRESHOLD then
                 local direction = math.atan2(
-                    e.targetPosition.y - e.position.y,
-                    e.targetPosition.x - e.position.x
+                    y - e.position.y,
+                    x - e.position.x
                 )
                 e:ensure('movement')
                 if e.physics then
@@ -56,6 +64,5 @@ return function (concord)
             end
         end
     end
-
-    return PawnMovementSystem
+    return PawnAISystem
 end

@@ -44,7 +44,7 @@ function CombatScene:keypressed(key)
             self.world,
             'basicTroop',
             100, 100
-        )
+        ):give("selectable",100,100)
     end
 end
 function CombatScene:mousepressed(x, y, button)
@@ -72,7 +72,7 @@ function CombatScene:_loadSystems()
     loadSystem('RenderSystem')
     loadSystem('PhysicsSystem')
     loadSystem('CharacterMovementSystem')
-    loadSystem('MouseControlsSystem', self.camera)
+    loadSystem('EntitySelectionSystem', self.camera)
 
     self.world:addSystems(unpack(systems))
 end

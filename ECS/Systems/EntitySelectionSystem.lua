@@ -1,8 +1,7 @@
 ---@author Gage Henderson 2024-02-16 09:54
 --
----@class MouseControlsSystem : System
--- Handles all controls for the mouse.
--- Selecting, dragging, commanding, etc,.
+---@class EntitySelectionSystem : System
+-- Handles selecting entities with the mouse.
 --
 -- Also draws the selection rectangle.
 
@@ -15,37 +14,37 @@ local SELECTION_LINE_COLOR = { 1, 1, 1, 1 }
 -- ──────────────────────────────────────────────────────────────────────
 
 return function (concord, camera)
-    ---@class MouseControlsSystem : System
+    ---@class EntitySelectionSystem : System
     ---@field selectionRectangle {x:number, y:number, width:number, height:number} | nil
     ---@field selectableEntities table[] - Would be Character[] but I'm not
     -- sure, maybe you will be able to select other things?
-    local MouseControlsSystem = concord.system({
-        selectableEntities = { 'selectable', 'position' }
+    ---@field selectedEntities table[]
+    local EntitySelectionSystem = concord.system({
+        selectableEntities = { 'selectable', 'position' },
+        selectedEntities   = { 'selected', 'position' }
     })
 
 
     --------------------------
     -- [[ Core Functions ]] --
     --------------------------
-    function MouseControlsSystem:update(dt)
+    function EntitySelectionSystem:update(dt)
         if self.selectionRectangle then
             self:_updateSelectionRectangle()
             self:_selectEntities()
         end
-
-        -- DEV:
     end
-    function MouseControlsSystem:draw()
+    function EntitySelectionSystem:draw()
         if self.selectionRectangle then
             self:_drawSelectionRectangle()
         end
     end
-    function MouseControlsSystem:mousepressed(_, _, button)
+    function EntitySelectionSystem:mousepressed(_, _, button)
         if button == 1 then
             self:_startDrag()
         end
     end
-    function MouseControlsSystem:mousereleased()
+    function EntitySelectionSystem:mousereleased()
         self.selectionRectangle = nil
     end
 
@@ -54,7 +53,7 @@ return function (concord, camera)
     -- [[ Private Functions ]] --
     -----------------------------
     -- Start a click-and-drag selection.
-    function MouseControlsSystem:_startDrag(x, y)
+    function EntitySelectionSystem:_startDrag(x, y)
         x, y = camera:getTranslatedMousePosition()
         self.selectionRectangle = {
             x      = x,
@@ -65,7 +64,7 @@ return function (concord, camera)
     end
 
     -- Expand / shrink the selection rectangle.
-    function MouseControlsSystem:_updateSelectionRectangle()
+    function EntitySelectionSystem:_updateSelectionRectangle()
         if self.selectionRectangle then
             local x, y                     = camera:getTranslatedMousePosition()
             self.selectionRectangle.width  = x - self.selectionRectangle.x
@@ -73,7 +72,7 @@ return function (concord, camera)
         end
     end
 
-    function MouseControlsSystem:_drawSelectionRectangle()
+    function EntitySelectionSystem:_drawSelectionRectangle()
         love.graphics.setColor(SELECTION_LINE_COLOR)
         love.graphics.setLineWidth(SELECTION_LINE_WIDTH)
         love.graphics.rectangle(
@@ -86,15 +85,23 @@ return function (concord, camera)
     end
 
     -- Select all entities within the selection rectangle.
-    function MouseControlsSystem:_selectEntities()
+    function EntitySelectionSystem:_selectEntities()
         local entities = self.selectableEntities
         local x, y, width, height = self:_getNormalizedSelectionRectangle()
+        local sr = { x = x, y = y, width = width, height = height } -- Selection rectangle.
         for i = 1, #entities do
             local entity = entities[i]
-            local position = entity.position
-            if position.x > x and position.x < x + width and
-            position.y > y and position.y < y + height then
-                entity:addComponent('selected')
+            local er = { -- Entity rectangle.
+                x      = entity.position.x,
+                y      = entity.position.y,
+                width  = entity.selectable.width,
+                height = entity.selectable.height
+            }
+            if sr.x + sr.width > er.x and sr.x < er.x + er.width and
+            sr.y + sr.height > er.y and sr.y < er.y + er.height then
+                entity:give('selected')
+            else
+                entity:remove('selected')
             end
         end
     end
@@ -102,7 +109,7 @@ return function (concord, camera)
     -- Return the selection rectangle ensured that width and height are
     -- positive.
     ---@return number, number, number, number
-    function MouseControlsSystem:_getNormalizedSelectionRectangle()
+    function EntitySelectionSystem:_getNormalizedSelectionRectangle()
         local x      = self.selectionRectangle.x
         local y      = self.selectionRectangle.y
         local width  = self.selectionRectangle.width
@@ -117,5 +124,5 @@ return function (concord, camera)
         end
         return x, y, width, height
     end
-    return MouseControlsSystem
+    return EntitySelectionSystem
 end

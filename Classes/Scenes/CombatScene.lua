@@ -8,8 +8,10 @@
 local Camera = require('Classes.Camera')
 
 ---@class CombatScene
-local CombatScene = Goop.Class({
-})
+---@field concord Concord
+---@field camera Camera
+---@field world World
+local CombatScene = Goop.Class({})
 
 
 --------------------------
@@ -22,9 +24,8 @@ function CombatScene:init()
     self:_loadComponents()
     self:_loadSystems()
 
-    -- Testing
-    self.concord.entity(self.world):give('position', 50, 50)
-        :give('renderRectangle', 50, 50)
+    -- DEV:
+    console.world = self.world
 end
 function CombatScene:update(dt)
     self.world:emit('update', dt)
@@ -34,10 +35,14 @@ function CombatScene:draw()
     self.world:emit('draw')
     self.camera:unset()
 end
-function CombatScene:buttonpressed(button)
-    self.world:emit('buttonpressed', button)
+function CombatScene:keypressed(key)
+    if key == 'space' then
+        local util = require('util')({ 'entityAssembler' })
+        util.entityAssembler.assemble(self.world, 'basicTroop', 100, 100)
+    end
 end
-
+function CombatScene:mousepressed(x, y, button)
+end
 
 -----------------------------
 -- [[ Private Functions ]] --
@@ -46,16 +51,16 @@ end
 -- Can provide arguments to systems if needed.
 function CombatScene:_loadSystems()
     local dir = 'ECS.Systems.'
-    self.systems = {}
+    local systems = {}
     local loadSystem = function (name, ...)
         table.insert(
-            self.systems,
+            systems,
             require(dir .. name)(self.concord, ...)
         )
     end
     loadSystem('RenderSystem')
 
-    self.world:addSystems(unpack(self.systems))
+    self.world:addSystems(unpack(systems))
 end
 
 -- Auto-load all components.

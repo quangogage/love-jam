@@ -8,7 +8,7 @@
 -- The primary purpose is to be able to print out debug information for convenience,
 -- and also input world events through text input.
 -- 
--- Externally set the `console.rooms` parameter to 
+-- Externally set the `console.world` parameter to 
 -- enable the ability to execute world emissions from the console.
 -- 
 local Console         = Goop.Class({

@@ -1,5 +1,6 @@
 ---
 ---@class Concord
+---@field world World
 
 local PATH = (...):gsub('%.init$', '')
 

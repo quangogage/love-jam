@@ -1,9 +1,11 @@
 ---@author: Gage Henderson a long time ago
 --
----@class Camera
 -- Basic camera class that I use in my games.
 --
+
 local util = require('util')({ 'table' }) ---@type util
+
+---@class Camera
 local Camera = Goop.Class({
     static = {
         type         = 'Camera',

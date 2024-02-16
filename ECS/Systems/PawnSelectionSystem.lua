@@ -28,7 +28,7 @@ return function (concord, camera)
     --------------------------
     -- [[ Core Functions ]] --
     --------------------------
-    function EntitySelectionSystem:update(dt)
+    function EntitySelectionSystem:update()
         if self.selectionRectangle then
             self:_updateSelectionRectangle()
             self:_selectEntities()
@@ -97,8 +97,10 @@ return function (concord, camera)
                 width  = entity.clickDimensions.width,
                 height = entity.clickDimensions.height
             }
-            if sr.x + sr.width > er.x and sr.x < er.x + er.width and
-            sr.y + sr.height > er.y and sr.y < er.y + er.height then
+            if sr.x + sr.width > er.x - er.width / 2 and
+            sr.x - sr.width < er.x + er.width / 2 and
+            sr.y + sr.height > er.y - er.height / 2 and
+            sr.y - sr.height < er.y + er.height / 2 then
                 entity:give('selected')
             else
                 entity:remove('selected')

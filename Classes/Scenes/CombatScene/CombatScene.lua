@@ -40,12 +40,18 @@ end
 function CombatScene:keypressed(key)
     if key == 'space' then
         local util = require('util')({ 'entityAssembler' })
-        self.testEntity = util.entityAssembler.assemble(self.world, 'basicTroop',
-            100, 100)
+        self.testEntity = util.entityAssembler.assemble(
+            self.world,
+            'basicTroop',
+            100, 100
+        )
     end
 end
 function CombatScene:mousepressed(x, y, button)
-    self.world:emit('character_moveTowards', self.testEntity, x, y)
+    self.world:emit('mousepressed', x, y, button)
+end
+function CombatScene:mousereleased(x, y, button)
+    self.world:emit('mousereleased', x, y, button)
 end
 
 
@@ -66,6 +72,7 @@ function CombatScene:_loadSystems()
     loadSystem('RenderSystem')
     loadSystem('PhysicsSystem')
     loadSystem('CharacterMovementSystem')
+    loadSystem('MouseControlsSystem', self.camera)
 
     self.world:addSystems(unpack(systems))
 end

@@ -6,10 +6,11 @@
 local util = require('util')({ 'table' }) ---@type util
 
 ---@class Camera
+---@field followSpeed number
+---@field scale {x:number, y:number}
 local Camera = Goop.Class({
     static = {
         type         = 'Camera',
-        aimInfluence = 0,
         followSpeed  = 7
     },
     dynamic = {
@@ -35,6 +36,10 @@ local Camera = Goop.Class({
 ----------------------------
 -- [[ Public Functions ]] --
 ----------------------------
+function Camera:getTranslatedMousePosition()
+    local x, y = love.mouse.getPosition()
+    return (x + self.x) * self.scale.x, (y + self.y) * self.scale.y
+end
 function Camera:centerOn(x, y)
     self.x = x - love.graphics.getWidth() / 2
     self.y = y - love.graphics.getHeight() / 2
@@ -57,42 +62,17 @@ function Camera:unset()
 end
 
 function Camera:follow(x, y, dt)
-    local mouseX, mouseY = love.mouse.getPosition()
-    local screenCenter = {
-        x = love.graphics.getWidth() / 2,
-        y = love.graphics.getHeight() / 2
-    }
-    local scaledScreenWidth = love.graphics.getWidth() * self.scale.x
-    local scaledScreenHeight = love.graphics.getHeight() * self.scale.y
-    local targetX, targetY
-    local angle = 0
-    local push = 0
-    if userInput.controllerIsAiming then
-        angle = userInput.aim.angle
-        push = userInput.aim.distance
-    else
-        angle = math.atan2(mouseY - screenCenter.y, mouseX - screenCenter.x) ---@diagnostic disable-line
-        local xPush = (mouseX - love.graphics.getWidth() / 2) /
-            (love.graphics.getWidth() / 2)
-        local yPush = (mouseY - love.graphics.getHeight() / 2) /
-            (love.graphics.getHeight() / 2)
-        push = math.sqrt(xPush * xPush + yPush * yPush)
-        push = math.min(push, 1)
-    end
-    push    = push * self.aimInfluence
-    targetX = (x - scaledScreenWidth / 2) + math.cos(angle) * push
-    targetY = (y - scaledScreenHeight / 2) + math.sin(angle) * push
-    self.x  = self.x + (targetX - self.x) * self.followSpeed * dt
-    self.y  = self.y + (targetY - self.y) * self.followSpeed * dt
+    self.x  = self.x + (x - self.x) * self.followSpeed * dt
+    self.y  = self.y + (y - self.y) * self.followSpeed * dt
 end
 
-function Camera:update(dt)
-    self:_handleShake(dt)
-end
 
 --------------------------
 -- [[ Core Functions ]] --
 --------------------------
+function Camera:update(dt)
+    self:_handleShake(dt)
+end
 ---CURRENTLY UNUSED.
 function Camera:onWindowResize(width, height)
     self.scale.x = self.referenceDimensions.width / width

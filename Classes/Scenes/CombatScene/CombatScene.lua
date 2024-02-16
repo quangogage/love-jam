@@ -71,8 +71,8 @@ function CombatScene:_loadSystems()
     end
     loadSystem('RenderSystem')
     loadSystem('PhysicsSystem')
-    loadSystem('CharacterMovementSystem')
-    loadSystem('EntitySelectionSystem', self.camera)
+    loadSystem('PawnSelectionSystem', self.camera)
+    loadSystem('PawnCommandSystem', self.camera)
 
     self.world:addSystems(unpack(systems))
 end

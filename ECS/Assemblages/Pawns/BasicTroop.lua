@@ -11,4 +11,9 @@ return function (e, x, y)
         :give('health', 10)
         :give('renderRectangle', 25, 50)
         :give('dimensions', 25, 50)
+        :give("combatProperties", "melee", {
+            damageAmount = 1,
+            attackSpeed = 1,
+            range = 35
+        })
 end

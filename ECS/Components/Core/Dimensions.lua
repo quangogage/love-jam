@@ -1,6 +1,6 @@
 ---@author Gage Henderson 2024-02-16 11:17
 --
----@class ClickDimensions : Component
+---@class Dimensions : Component
 -- Dimensions used to determine mouse interaction with an entity.
 ---@field width number
 ---@field height number

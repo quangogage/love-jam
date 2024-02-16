@@ -9,13 +9,12 @@
 -- ╭─────────────────────────────────────────────────────────╮
 -- │ Configuration:                                          │
 -- ╰─────────────────────────────────────────────────────────╯
-local ARRIVAL_THRESHOLD = 15
+local DEFAULT_ARRIVAL_THRESHOLD = 50
 -- ──────────────────────────────────────────────────────────────────────
 
-
-return function(concord)
+return function (concord)
     local PawnAISystem = concord.system({
-        entities = { "target" }
+        entities = { 'target' }
     })
 
     --------------------------
@@ -24,9 +23,7 @@ return function(concord)
     function PawnAISystem:update(dt)
         for _, e in ipairs(self.entities) do
             local target = e.target
-            if target.position then
-                self:_moveToPosition(e, target.position.x, target.position.y, dt)
-            end
+            self:_moveTowardsTarget(e, dt)
         end
     end
 
@@ -34,19 +31,27 @@ return function(concord)
     -----------------------------
     -- [[ Private Functions ]] --
     -----------------------------
-    -- Move an entity towards the specified location.
+    -- Move an entity towards either `target.position` or the `target.entity`.
     ---@param e Pawn | table
-    ---@param x number
-    ---@param y number
     ---@param dt number
-    function PawnAISystem:_moveToPosition(e, x, y, dt)
+    function PawnAISystem:_moveTowardsTarget(e, dt)
         local world = self:getWorld()
         if world then
-            local distance = math.sqrt(
-                (x - e.position.x) ^ 2 +
-                (y - e.position.y) ^ 2
-            )
-            if distance > ARRIVAL_THRESHOLD then
+            local distance = self:_getDistanceToTarget(e)
+            local arrivalThreshold
+            local x, y
+
+            -- Are we targeting a position or an entity?
+            if e.target.position then
+                x, y = e.target.position.x, e.target.position.y
+                arrivalThreshold = DEFAULT_ARRIVAL_THRESHOLD
+            elseif e.target.entity then
+                x, y = e.target.entity.position.x, e.target.entity.position.y
+                arrivalThreshold = self:_getArrivalThreshold(e)
+            end
+            
+
+            if distance > arrivalThreshold then
                 local direction = math.atan2(
                     y - e.position.y,
                     x - e.position.x
@@ -58,11 +63,37 @@ return function(concord)
                         math.sin(direction) * e.movement.walkSpeed
                     )
                 else
-                    e.position.x = e.position.x + math.cos(direction) * e.movement.walkSpeed * dt
-                    e.position.y = e.position.y + math.sin(direction) * e.movement.walkSpeed * dt
+                    e.position.x = e.position.x +
+                        math.cos(direction) * e.movement.walkSpeed * dt
+                    e.position.y = e.position.y +
+                        math.sin(direction) * e.movement.walkSpeed * dt
                 end
             end
         end
+    end
+
+    -- Get how close the pawn needs to be to the target before they
+    -- stop moving.
+    ---@param e Pawn | table
+    ---@return number
+    function PawnAISystem:_getArrivalThreshold(e)
+        return e.combatProperties.range or 50
+    end
+
+    -- Get the distance between the pawn and the target.
+    -- The bottom of each entity is used as the reference point.
+    function PawnAISystem:_getDistanceToTarget(e)
+        local targetX, targetY
+        if e.target.position then
+            targetX, targetY = e.target.position.x, e.target.position.y
+        else
+            targetX = e.target.entity.position.x
+            targetY = e.target.entity.position.y + e.target.entity.dimensions.height / 2
+        end
+        return math.sqrt(
+            (targetX - e.position.x) ^ 2 +
+            (targetY - e.position.y) ^ 2
+        )
     end
     return PawnAISystem
 end

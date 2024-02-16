@@ -6,6 +6,7 @@
 -- them easily).
 
 local Camera = require('Classes.Camera')
+local CombatInterface = require('Classes.Scenes.CombatScene.CombatInterface')
 
 ---@class CombatScene
 ---@field concord Concord
@@ -18,9 +19,10 @@ local CombatScene = Goop.Class({})
 -- [[ Core Functions ]] --
 --------------------------
 function CombatScene:init()
-    self.concord = require('libs.Concord')
-    self.camera  = Camera()
-    self.world   = self.concord.world()
+    self.concord   = require('libs.Concord')
+    self.camera    = Camera()
+    self.world     = self.concord.world()
+    self.interface = CombatInterface()
     self:_loadComponents()
     self:_loadSystems()
 
@@ -38,11 +40,12 @@ end
 function CombatScene:keypressed(key)
     if key == 'space' then
         local util = require('util')({ 'entityAssembler' })
-        self.testEntity = util.entityAssembler.assemble(self.world, 'basicTroop', 100, 100)
+        self.testEntity = util.entityAssembler.assemble(self.world, 'basicTroop',
+            100, 100)
     end
 end
 function CombatScene:mousepressed(x, y, button)
-    self.world:emit("character_moveTowards", self.testEntity, x, y)
+    self.world:emit('character_moveTowards', self.testEntity, x, y)
 end
 
 

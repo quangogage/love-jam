@@ -42,10 +42,10 @@ return function (concord)
     function CharacterMovementSystem:init()
         self.movingEntities = {}
     end
-    function CharacterMovementSystem:update(dt)
-        for i=#self.movingEntities, 1, -1 do
+    function CharacterMovementSystem:update()
+        for i = #self.movingEntities, 1, -1 do
             local e = self.movingEntities[i]
-            self:_moveEntity(e, dt)
+            self:_moveEntity(e)
             self:_checkIfEntityHasReachedTarget(i, e)
         end
     end
@@ -71,7 +71,7 @@ return function (concord)
     -- Move a character towards their target location.
     ---@param e Character
     ---@param dt number
-    function CharacterMovementSystem:_moveEntity(e, dt)
+    function CharacterMovementSystem:_moveEntity(e)
         local world = self:getWorld()
         local movement = e.movement
         local targetLocation = movement.targetLocation
@@ -80,7 +80,7 @@ return function (concord)
             targetLocation.x - e.position.x
         )
         if world then
-            world:emit("physics_applyForce", e,
+            world:emit('physics_applyForce', e,
                 math.cos(angle) * movement.walkSpeed,
                 math.sin(angle) * movement.walkSpeed
             )

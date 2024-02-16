@@ -1,0 +1,15 @@
+// Most of these should not be necessary with the love2d neovim plugin.
+//
+// However, having this file here makes the lsp consider this the root
+// directroy.
+{
+    "runtime.version": "LuaJIT",
+    "runtime.special": {
+        "love.filesystem.load": "loadfile"
+    },
+    "workspace.library": [
+        "${3rd}/love2d/library"
+    ],
+    "diagnostics.disable": [
+    ]
+}

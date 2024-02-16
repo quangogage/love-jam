@@ -28,6 +28,8 @@ function CombatScene:init()
 
     -- DEV:
     console.world = self.world
+    local util = require('util')({ 'entityAssembler' })
+    util.entityAssembler.assemble(self.world, 'basicTower', 200, 200)
 end
 function CombatScene:update(dt)
     self.world:emit('update', dt)
@@ -44,7 +46,7 @@ function CombatScene:keypressed(key)
             self.world,
             'basicTroop',
             100, 100
-        ):give("selectable",100,100)
+        ):give('selectable', 100, 100)
     end
 end
 function CombatScene:mousepressed(x, y, button)

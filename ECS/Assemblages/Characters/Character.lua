@@ -11,8 +11,6 @@ return function (e, x, y)
     e
         :give('position', x, y)
         :give('health', 10)
-        :give('movement', {
-            walkSpeed = 100
-        })
+        :give('movement')
         :give('physics')
 end

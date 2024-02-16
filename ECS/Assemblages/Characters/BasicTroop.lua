@@ -9,5 +9,5 @@ return function (e, x, y)
     e
         :assemble(CharacterAssemblage, x, y)
         :give('health', 10)
-        :give('renderRectangle', 10, 10)
+        :give('renderRectangle', 25,50)
 end

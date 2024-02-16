@@ -28,6 +28,7 @@ function CombatScene:init()
 
     -- DEV:
     console.world = self.world
+    console:launchOptions()
     local util = require('util')({ 'entityAssembler' })
     util.entityAssembler.assemble(self.world, 'basicTower', 200, 200)
 end
@@ -77,6 +78,7 @@ function CombatScene:_loadSystems()
     loadSystem('Pawn.PawnCommandSystem', self.camera)
     loadSystem('Pawn.PawnAISystem')
     loadSystem('Pawn.PawnAttackSystem')
+    loadSystem('DebugSystem')
 
     self.world:addSystems(unpack(systems))
 end

@@ -51,10 +51,9 @@ function Console:executeCommand(input)
     if commandRef then -- If the command is registered in commandList
         -- Execute custom function or emit world event.
         if commandRef.customFunction and self.world then
-            msg = commandRef.customFunction(self.world,unpack(args))
+            commandRef.customFunction(self.world,unpack(args))
         elseif self.world then
             self.world:emit(inputCommand,unpack(args))
-            msg = commandRef.successMessage
         end
     elseif not commandRef then
         -- Command isn't registered in commandList.

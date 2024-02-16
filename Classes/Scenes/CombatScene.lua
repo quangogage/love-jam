@@ -59,6 +59,7 @@ function CombatScene:_loadSystems()
         )
     end
     loadSystem('RenderSystem')
+    loadSystem('PhysicsSystem')
 
     self.world:addSystems(unpack(systems))
 end

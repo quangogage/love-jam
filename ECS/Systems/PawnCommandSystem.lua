@@ -20,7 +20,7 @@ return function (concord, camera)
         if button == 2 and world then
             local x, y = camera:getTranslatedMousePosition()
             for _, e in ipairs(self.selectedEntities) do
-                e:give("targetLocation")
+                e:give("targetPosition", x, y)
             end
         end
     end

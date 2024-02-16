@@ -14,6 +14,6 @@ return function (e, x, y)
         :give("combatProperties", "melee", {
             damageAmount = 1,
             attackSpeed = 1,
-            range = 35
+            range = 50
         })
 end

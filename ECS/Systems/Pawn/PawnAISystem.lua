@@ -49,7 +49,7 @@ return function (concord)
                 x, y = e.target.entity.position.x, e.target.entity.position.y
                 arrivalThreshold = self:_getArrivalThreshold(e)
             end
-            
+
 
             if distance > arrivalThreshold then
                 local direction = math.atan2(
@@ -77,7 +77,7 @@ return function (concord)
     ---@param e Pawn | table
     ---@return number
     function PawnAISystem:_getArrivalThreshold(e)
-        return e.combatProperties.range or 50
+        return e.combatProperties.range
     end
 
     -- Get the distance between the pawn and the target.

@@ -17,6 +17,6 @@ return function(concord)
         c.damageAmount  = data.damageAmount or 1
         c.attackSpeed   = data.attackSpeed or 0.5
         c.attackTimer   = 0
-        c.range         = data.range or 35
+        c.range         = data.range or 150
     end)
 end

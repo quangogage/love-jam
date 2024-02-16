@@ -94,8 +94,8 @@ return function (concord, camera)
             local er = { -- Entity rectangle.
                 x      = entity.position.x,
                 y      = entity.position.y,
-                width  = entity.selectable.width,
-                height = entity.selectable.height
+                width  = entity.clickDimensions.width,
+                height = entity.clickDimensions.height
             }
             if sr.x + sr.width > er.x and sr.x < er.x + er.width and
             sr.y + sr.height > er.y and sr.y < er.y + er.height then

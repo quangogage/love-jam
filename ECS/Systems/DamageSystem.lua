@@ -23,7 +23,6 @@ return function (concord)
     ---@param damageAmount number
     function DamageSystem:entity_attemptAttack(attacker, target, damageAmount)
         if target.health then
-            console:log("hit")
             target.health.value = target.health.value - damageAmount
         end
     end

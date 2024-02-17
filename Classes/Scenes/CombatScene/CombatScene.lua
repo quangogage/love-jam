@@ -29,8 +29,6 @@ function CombatScene:init()
     -- DEV:
     console.world = self.world
     console:launchOptions()
-    local util = require('util')({ 'entityAssembler' })
-    util.entityAssembler.assemble(self.world, 'basicTower', 200, 200)
 end
 function CombatScene:update(dt)
     self.world:emit('update', dt)
@@ -53,6 +51,12 @@ function CombatScene:keypressed(key)
 end
 function CombatScene:mousepressed(x, y, button)
     self.world:emit('mousepressed', x, y, button)
+
+    -- Dev:
+    if button == 2 then
+        local util = require('util')({ 'entityAssembler' })
+        util.entityAssembler.assemble(self.world, 'basicTower', x,y)
+    end
 end
 function CombatScene:mousereleased(x, y, button)
     self.world:emit('mousereleased', x, y, button)
@@ -80,6 +84,7 @@ function CombatScene:_loadSystems()
     loadSystem('Pawn.PawnAISystem')
     loadSystem('Pawn.PawnAttackSystem')
     loadSystem('Pawn.PawnPushSystem')
+    loadSystem('HealthBarSystem')
     loadSystem('DebugSystem')
 
     self.world:addSystems(unpack(systems))

@@ -5,5 +5,5 @@
 --
 
 return {
-    "toggleRanges"
+    -- "toggleRanges"
 }

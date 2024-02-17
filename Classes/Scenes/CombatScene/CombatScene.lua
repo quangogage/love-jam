@@ -44,7 +44,7 @@ function CombatScene:keypressed(key)
         local util = require('util')({ 'entityAssembler' })
         self.testEntity = util.entityAssembler.assemble(
             self.world,
-            'basicTroop',
+            'BasicPawn',
             x,y
         ):give("friendly")
     end

@@ -1,6 +1,6 @@
 ---@author Gage Henderson 2024-02-16 06:19
 --
----@class BasicTroop : Pawn
+---@class BasicPawn : Pawn
 --
 
 local CharacterAssemblage = require('ECS.Assemblages.Pawns.Pawn')

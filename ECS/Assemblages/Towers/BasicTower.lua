@@ -13,4 +13,8 @@ return function (e, x, y)
         :give('color', 1, 0, 0)
         :give('renderRectangle', 50, 100)
         :give('dimensions', 50, 100)
+        :give('pawnGeneration', {
+            pawnType = 'BasicPawn',
+            spawnRate = 1,
+        })
 end

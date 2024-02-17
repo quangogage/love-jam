@@ -6,9 +6,9 @@
 
 local BACKGROUND_COLOR = { 0.4, 0.4, 0.4 }
 local FOREGROUND_COLOR = { 0, 1, 0 }
-local HEIGHT = 5
-local WIDTH = 50
-local VERTICAL_OFFSET = 10
+local HEIGHT           = 5
+local WIDTH            = 50
+local VERTICAL_OFFSET  = 10
 
 return function (concord)
     local HealthBarSystem = concord.system({

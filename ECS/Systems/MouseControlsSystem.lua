@@ -6,7 +6,7 @@
 -- ──────────────────────────────────────────────────────────────────────
 -- How far you have to move the mouse before it is consideree a drag and
 -- not a click.
-local DRAG_THRESHOLD = 30
+local DRAG_THRESHOLD = 35
 -- ──────────────────────────────────────────────────────────────────────
 
 ---@param concord table
@@ -14,6 +14,7 @@ local DRAG_THRESHOLD = 30
 return function (concord, camera)
     ---@class MouseControlsSystem : System
     ---@field selectedEntities table[]
+    ---@field friendlyEntities table[]
     ---@field hostileEntities table[]
     local MouseControlsSystem = concord.system({
         selectedEntities = { 'selected' },
@@ -25,7 +26,7 @@ return function (concord, camera)
     --------------------------
     -- [[ Core Functions ]] --
     --------------------------
-    function MouseControlsSystem:update(dt)
+    function MouseControlsSystem:update()
         self:_updateSelectionRectangle()
         self:_updateSelectedEntities()
     end
@@ -34,19 +35,33 @@ return function (concord, camera)
     end
     function MouseControlsSystem:mousepressed(_, _, button)
         if button == 1 then
-            local x,y = camera:getTranslatedMousePosition()
+            local x, y = camera:getTranslatedMousePosition()
+
+            -- If you clicked on a pawn, select it.
+            for _, e in ipairs(self.friendlyEntities) do
+                if x > e.position.x - e.dimensions.width / 2 and
+                x < e.position.x + e.dimensions.width / 2 and
+                y > e.position.y - e.dimensions.height / 2 and
+                y < e.position.y + e.dimensions.height / 2 then
+                    self:_unselectAll()
+                    e:give('selected')
+                    return
+                end
+            end
             self.mousepressOrigin = { x = x, y = y }
         end
     end
     function MouseControlsSystem:mousereleased(_, _, button)
         if button == 1 then
-            local x,y = camera:getTranslatedMousePosition()
-            local dx = x - self.mousepressOrigin.x
-            local dy = y - self.mousepressOrigin.y
-            if math.sqrt(dx * dx + dy * dy) < DRAG_THRESHOLD then
-                self:_targetMouseCoords()
+            if self.mousepressOrigin then
+                local x, y = camera:getTranslatedMousePosition()
+                local dx = x - self.mousepressOrigin.x
+                local dy = y - self.mousepressOrigin.y
+                if math.sqrt(dx * dx + dy * dy) < DRAG_THRESHOLD then
+                    self:_targetMouseCoords()
+                end
+                self.mousepressOrigin = nil
             end
-            self.mousepressOrigin = nil
             self.selectionRectangle = nil
         end
     end
@@ -121,16 +136,16 @@ return function (concord, camera)
             x < hostile.position.x + hostile.dimensions.width / 2 and
             y > hostile.position.y - hostile.dimensions.height / 2 and
             y < hostile.position.y + hostile.dimensions.height / 2 then
-                targetData = {entity = hostile}
+                targetData = { entity = hostile }
             end
         end
 
         -- Clicking on the ground.
         if not targetData then
-            targetData = {position = {x = x, y = y}}
+            targetData = { position = { x = x, y = y } }
         end
 
-        for _,e in ipairs(self.selectedEntities) do
+        for _, e in ipairs(self.selectedEntities) do
             e:give('target', targetData)
         end
     end
@@ -153,6 +168,12 @@ return function (concord, camera)
             rect.height = -rect.height
         end
         return rect
+    end
+
+    function MouseControlsSystem:_unselectAll()
+        for _, e in ipairs(self.selectedEntities) do
+            e:remove('selected')
+        end
     end
 
     return MouseControlsSystem

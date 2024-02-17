@@ -3,10 +3,14 @@
 ---@class Tower : Entity
 -- Upper-most assemblage for towers.
 ---@field position Position
+---@field health Health
+---@field hostile Hostile
+---@field pawnGeneration PawnGeneration
 
 return function (e, x, y)
     e
         :give('position', x, y)
         :give('health')
         :give('hostile')
+        :give("pawnGeneration")
 end

@@ -3,6 +3,8 @@
 ---@class BasicTower : Tower
 ---@field color Color
 ---@field renderRectangle RenderRectangle
+---@field dimensions Dimensions
+---@field pawnGeneration PawnGeneration
 
 local TowerAssemblage = require('ECS.Assemblages.Towers.Tower')
 
@@ -15,6 +17,6 @@ return function (e, x, y)
         :give('dimensions', 50, 100)
         :give('pawnGeneration', {
             pawnType = 'BasicPawn',
-            spawnRate = 1,
+            spawnRate = 5,
         })
 end

@@ -5,7 +5,11 @@
 
 local CharacterAssemblage = require('ECS.Assemblages.Pawns.Pawn')
 
-return function (e, x, y)
+---@param e Entity
+---@param x number
+---@param y number
+---@param friendly boolean
+return function (e, x, y, friendly)
     e
         :assemble(CharacterAssemblage, x, y)
         :give('health', 10)
@@ -16,4 +20,12 @@ return function (e, x, y)
             attackSpeed = 1,
             range = 50
         })
+
+    if friendly then
+        e:give('friendly')
+        e:give("color", 1, 1, 1)
+    else
+        e:give('hostile')
+        e:give("color", 1, 0.1, 0.1)
+    end
 end

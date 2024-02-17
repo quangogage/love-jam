@@ -40,13 +40,14 @@ function CombatScene:draw()
 end
 function CombatScene:keypressed(key)
     if key == 'space' then
-        local x,y = self.camera:getTranslatedMousePosition()
+        local x, y = self.camera:getTranslatedMousePosition()
         local util = require('util')({ 'entityAssembler' })
         self.testEntity = util.entityAssembler.assemble(
             self.world,
             'BasicPawn',
-            x,y
-        ):give("friendly")
+            x, y,
+            true
+        )
     end
 end
 function CombatScene:mousepressed(x, y, button)
@@ -55,7 +56,7 @@ function CombatScene:mousepressed(x, y, button)
     -- Dev:
     if button == 2 then
         local util = require('util')({ 'entityAssembler' })
-        util.entityAssembler.assemble(self.world, 'basicTower', x,y)
+        util.entityAssembler.assemble(self.world, 'basicTower', x, y)
     end
 end
 function CombatScene:mousereleased(x, y, button)
@@ -85,6 +86,7 @@ function CombatScene:_loadSystems()
     loadSystem('Pawn.PawnAttackSystem')
     loadSystem('Pawn.PawnPushSystem')
     loadSystem('HealthBarSystem')
+    loadSystem('PawnGenerationSystem')
     loadSystem('DebugSystem')
 
     self.world:addSystems(unpack(systems))

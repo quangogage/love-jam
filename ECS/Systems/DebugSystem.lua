@@ -72,8 +72,8 @@ return function (concord)
         end
         for _,hitbox in ipairs(self.hitboxes) do
             drawHitbox({
-                position = otherHitbox.position,
-                dimensions = otherHitbox.dimensions
+                position = hitbox.position,
+                dimensions = hitbox.dimensions
             })
         end
     end

@@ -2,22 +2,17 @@
 --
 -- In order for an entity to attack it must have both a Target and
 -- CombatProperties component.
--- 
+--
 -- See `ECS.Systems.Pawn.PawnAISystem` for more information about pawn
 -- behavior: targeting, movement, etc,.
 --
-
-local util = require('util')({ 'entityAssembler' })
+-- See `ECS.Systems.DamageSystem` for attack resolution.
 
 return function (concord)
     ---@class PawnAttackSystem : System
     ---@field entities table[] | Pawn[]
-    ---@field enemies table[] | Pawn[]
-    ---@field friendlies table[] | Pawn[]
     local PawnAttackSystem = concord.system({
-        entities   = { 'target', 'combatProperties' },
-        enemies    = { 'health', 'hostile' },
-        friendlies = { 'health', 'friendly' }
+        entities = { 'target', 'combatProperties' },
     })
 
     --------------------------
@@ -42,18 +37,14 @@ return function (concord)
     ---@param e Pawn | table
     ---@param dt number
     function PawnAttackSystem:_meleeAttack(e, dt)
-        local world                    = self:getWorld()
-        local targetEntity             = e.target.entity
-        local bottomOfTarget           = targetEntity.position.y +
+        local world          = self:getWorld()
+        local targetEntity   = e.target.entity
+        local bottomOfTarget = targetEntity.position.y +
             targetEntity.dimensions.height
-        local bottomOfPawn             = e.position.y + e.dimensions.height
-        local distance                 = math.sqrt(
+        local bottomOfPawn = e.position.y + e.dimensions.height
+        local distance     = math.sqrt(
             (e.position.x - targetEntity.position.x) ^ 2 +
             (bottomOfPawn - bottomOfTarget) ^ 2
-        )
-        local angle                    = math.atan2(
-            targetEntity.position.y - e.position.y,
-            targetEntity.position.x - e.position.x
         )
 
         e.combatProperties.attackTimer = e.combatProperties.attackTimer + dt
@@ -61,10 +52,9 @@ return function (concord)
         -- Start attacking once we are in range.
         if distance >= e.combatProperties.range then return end -- Too far away.
         if e.combatProperties.attackTimer >= e.combatProperties.attackSpeed then
-            world:emit("entity_attemptAttack", 
+            world:emit('entity_attemptAttack',
                 e, targetEntity, e.combatProperties.damageAmount
             )
-            -- Create melee attack hitbox.
             e.combatProperties.attackTimer = 0
         end
     end

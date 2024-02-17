@@ -17,6 +17,7 @@ return function (concord)
         entities = { 'target' }
     })
 
+
     --------------------------
     -- [[ Core Functions ]] --
     --------------------------
@@ -86,9 +87,10 @@ return function (concord)
         local targetX, targetY
         if e.target.position then
             targetX, targetY = e.target.position.x, e.target.position.y
-        else
+        elseif e.target.entity then
             targetX = e.target.entity.position.x
-            targetY = e.target.entity.position.y + e.target.entity.dimensions.height / 2
+            targetY = e.target.entity.position.y +
+            e.target.entity.dimensions.height / 2
         end
         return math.sqrt(
             (targetX - e.position.x) ^ 2 +

@@ -17,8 +17,10 @@ return function (concord)
     -- [[ Core Functions ]] --
     --------------------------
     function RenderSystem:draw()
-        table.sort(self.entities, self._zIndexSort)
-        for _, entity in ipairs(self.entities) do
+        local sortedEntities = {}
+        table.move(self.entities, 1, #self.entities, 1, sortedEntities)
+        table.sort(sortedEntities, self._zIndexSort)
+        for _, entity in ipairs(sortedEntities) do
             self:_renderEntity(entity)
         end
     end

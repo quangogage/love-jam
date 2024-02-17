@@ -3,4 +3,5 @@
 -- Commands with no `customFunction` will be emitted as world events.
 return {
     toggleRanges = {},
+    toggleHitboxes = {}
 }

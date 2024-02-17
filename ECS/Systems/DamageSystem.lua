@@ -2,7 +2,6 @@
 --
 -- Handles inflicting and receiving damage.
 --
--- Ensures entities don't target dead entities.
 
 return function (concord)
 
@@ -42,7 +41,6 @@ return function (concord)
             for i = 1, #self.healthEntities do
                 local entity = self.healthEntities[i]
                 if entity.health.value <= 0 then
-                    self:_stopTargetingEntity(entity)
                     world:emit('event_entityDied', entity)
                     entity:destroy()
                 end
@@ -50,17 +48,5 @@ return function (concord)
         end
     end
 
-
-    -----------------------------
-    -- [[ Private Functions ]] --
-    -----------------------------
-    ---@param entity Pawn | table
-    function DamageSystem:_stopTargetingEntity(entity)
-        for _, targetingEntity in ipairs(self.targetingEntities) do
-            if targetingEntity.target.entity == entity then
-                targetingEntity:remove("target")
-            end
-        end
-    end
     return DamageSystem
 end

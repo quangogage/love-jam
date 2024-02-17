@@ -57,6 +57,9 @@ function CombatScene:mousepressed(x, y, button)
     if button == 2 then
         local util = require('util')({ 'entityAssembler' })
         util.entityAssembler.assemble(self.world, 'basicTower', x, y)
+    elseif button == 3 then
+        local util = require('util')({ 'entityAssembler' })
+        util.entityAssembler.assemble(self.world, 'basicPawn', x, y)
     end
 end
 function CombatScene:mousereleased(x, y, button)
@@ -87,6 +90,7 @@ function CombatScene:_loadSystems()
     loadSystem('Pawn.PawnPushSystem')
     loadSystem('HealthBarSystem')
     loadSystem('PawnGenerationSystem')
+    loadSystem('SelectedHighlightSystem')
     loadSystem('DebugSystem')
 
     self.world:addSystems(unpack(systems))

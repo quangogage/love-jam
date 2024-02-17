@@ -17,7 +17,7 @@ return function(concord)
     concord.component("combatProperties", function(c, type, data)
         c.type                = type or "melee"
         c.damageAmount        = data.damageAmount or 1
-        c.attackSpeed         = data.attackSpeed or 0.5
+        c.attackSpeed         = data.attackSpeed or 1
         c.attackTimer         = 0
         c.range               = data.range or 150
         c.attackSpawnDistance = data.attackSpawnDistance or 30

@@ -2,6 +2,9 @@
 --
 -- In order for an entity to attack it must have both a Target and
 -- CombatProperties component.
+-- 
+-- See `ECS.Systems.Pawn.PawnAISystem` for more information about pawn
+-- behavior: targeting, movement, etc,.
 --
 
 local util = require('util')({ 'entityAssembler' })
@@ -39,6 +42,7 @@ return function (concord)
     ---@param e Pawn | table
     ---@param dt number
     function PawnAttackSystem:_meleeAttack(e, dt)
+        local world                    = self:getWorld()
         local targetEntity             = e.target.entity
         local bottomOfTarget           = targetEntity.position.y +
             targetEntity.dimensions.height
@@ -57,25 +61,10 @@ return function (concord)
         -- Start attacking once we are in range.
         if distance >= e.combatProperties.range then return end -- Too far away.
         if e.combatProperties.attackTimer >= e.combatProperties.attackSpeed then
-            local ignoreEntities, targetEntities
-            if e.target.entity.hostile then
-                ignoreEntities = self.enemies
-                targetEntities = self.friendlies
-            else
-                ignoreEntities = self.friendlies
-                targetEntities = self.enemies
-            end
-            -- Create melee attack hitbox.
-            util.entityAssembler.assemble(
-                self:getWorld(),
-                'meleeHitbox',
-                e.position.x + math.cos(angle) * e.combatProperties.attackSpawnDistance,
-                e.position.y + math.sin(angle) * e.combatProperties.attackSpawnDistance,
-                e.combatProperties.meleeHitboxSize,
-                e.combatProperties.meleeHitboxSize,
-                targetEntities,
-                ignoreEntities
+            world:emit("entity_attemptAttack", 
+                e, targetEntity, e.combatProperties.damageAmount
             )
+            -- Create melee attack hitbox.
             e.combatProperties.attackTimer = 0
         end
     end

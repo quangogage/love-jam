@@ -42,11 +42,12 @@ function CombatScene:draw()
 end
 function CombatScene:keypressed(key)
     if key == 'space' then
+        local x,y = self.camera:getTranslatedMousePosition()
         local util = require('util')({ 'entityAssembler' })
         self.testEntity = util.entityAssembler.assemble(
             self.world,
             'basicTroop',
-            100, 100
+            x,y
         ):give("friendly")
     end
 end
@@ -79,7 +80,6 @@ function CombatScene:_loadSystems()
     loadSystem('Pawn.PawnAISystem')
     loadSystem('Pawn.PawnAttackSystem')
     loadSystem('Pawn.PawnPushSystem')
-    loadSystem('Combat.MeleeHitboxSystem')
     loadSystem('DebugSystem')
 
     self.world:addSystems(unpack(systems))

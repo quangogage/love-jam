@@ -8,8 +8,7 @@
 return function (concord)
     local DebugSystem = concord.system({
         rangeEntities = { 'combatProperties', 'position' },
-        meleeHitboxes = { 'position', 'meleeHitbox' },
-        otherHitboxes = { 'position', 'dimensions' }
+        hitboxes = { 'position', 'dimensions' }
     })
 
 
@@ -71,13 +70,7 @@ return function (concord)
                 hitbox.dimensions.height
             )
         end
-        for _,meleeHitbox in ipairs(self.meleeHitboxes) do
-            drawHitbox({
-                position = meleeHitbox.position,
-                dimensions = meleeHitbox.meleeHitbox
-            })
-        end
-        for _,otherHitbox in ipairs(self.otherHitboxes) do
+        for _,hitbox in ipairs(self.hitboxes) do
             drawHitbox({
                 position = otherHitbox.position,
                 dimensions = otherHitbox.dimensions

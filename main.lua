@@ -20,7 +20,11 @@ function love.draw()
     game:draw()
     finalOutputCanvas:stopDrawing()
     finalOutputCanvas:draw()
+
+    -- Dev:
     console:draw()
+    love.graphics.setColor(1,1,1)
+    love.graphics.print(love.timer.getFPS(), 150, 10)
 end
 function love.keypressed(key)
     console:keypressed(key)

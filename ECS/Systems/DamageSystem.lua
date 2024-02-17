@@ -38,8 +38,8 @@ return function (concord)
             for i = 1, #self.healthEntities do
                 local entity = self.healthEntities[i]
                 if entity.health.value <= 0 then
-                    world:emit('event_entityDied', entity)
                     self:_stopTargetingEntity(entity)
+                    world:emit('event_entityDied', entity)
                     entity:destroy()
                 end
             end

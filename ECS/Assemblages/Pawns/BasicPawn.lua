@@ -12,7 +12,7 @@ local CharacterAssemblage = require('ECS.Assemblages.Pawns.Pawn')
 return function (e, x, y, friendly)
     e
         :assemble(CharacterAssemblage, x, y)
-        :give('health', 10)
+        :give('health', 5)
         :give('renderRectangle', 25, 50)
         :give('dimensions', 25, 50)
         :give("combatProperties", "melee", {

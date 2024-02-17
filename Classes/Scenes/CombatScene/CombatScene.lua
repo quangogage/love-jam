@@ -48,6 +48,7 @@ function CombatScene:keypressed(key)
             x, y,
             true
         )
+        self.world:emit('event_pawnSpawned', self.testEntity)
     end
 end
 function CombatScene:mousepressed(x, y, button)
@@ -59,7 +60,8 @@ function CombatScene:mousepressed(x, y, button)
         util.entityAssembler.assemble(self.world, 'basicTower', x, y)
     elseif button == 3 then
         local util = require('util')({ 'entityAssembler' })
-        util.entityAssembler.assemble(self.world, 'basicPawn', x, y)
+        local pawn = util.entityAssembler.assemble(self.world, 'basicPawn', x, y)
+        self.world:emit('event_pawnSpawned', pawn)
     end
 end
 function CombatScene:mousereleased(x, y, button)
@@ -88,8 +90,9 @@ function CombatScene:_loadSystems()
     loadSystem('Pawn.PawnAISystem')
     loadSystem('Pawn.PawnAttackSystem')
     loadSystem('Pawn.PawnPushSystem')
-    loadSystem('HealthBarSystem')
+    loadSystem('Pawn.EnemyPawnTargetSystem')
     loadSystem('PawnGenerationSystem')
+    loadSystem('HealthBarSystem')
     loadSystem('SelectedHighlightSystem')
     loadSystem('DebugSystem')
 

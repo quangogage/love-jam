@@ -35,11 +35,12 @@ return function (concord)
     function PawnGenerationSystem:_spawnPawn(e)
         local world = self:getWorld()
         if world then
-            util.entityAssembler.assemble(world,
+            local newPawn = util.entityAssembler.assemble(world,
                 e.pawnGeneration.pawnType,
                 e.position.x, e.position.y,
                 e.friendly
             )
+            world:emit("event_pawnSpawned", newPawn)
         end
     end
 

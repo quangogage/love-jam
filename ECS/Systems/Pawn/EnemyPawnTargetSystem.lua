@@ -22,7 +22,9 @@ return function (concord)
         if pawn.hostile then
             self:_targetClosestFriendlyPawn(pawn)
         else
-            self.shouldRetarget = true
+            for _, e in ipairs(self.enemyEntities) do
+                self:_targetClosestFriendlyPawn(e)
+            end
         end
     end
     function EnemyPawnTargetSystem:event_entityDied(pawn)

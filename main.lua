@@ -1,13 +1,11 @@
 require('globals')
 local Game = require('Classes.Game')
-local FinalOutputCanvas = require('Classes.FinalOutputCanvas')
 local game
 local finalOutputCanvas
 
 function love.load()
     if arg[#arg] == "-debug" then require("mobdebug").start() end -- Zerobrane studio debugging.
     game = Game()
-    finalOutputCanvas = FinalOutputCanvas()
 
     game:setScene('CombatScene')
 end
@@ -16,10 +14,7 @@ function love.update(dt)
     game:update(dt)
 end
 function love.draw()
-    finalOutputCanvas:startDrawing()
     game:draw()
-    finalOutputCanvas:stopDrawing()
-    finalOutputCanvas:draw()
 
     -- Dev:
     console:draw()
@@ -42,5 +37,4 @@ function love.mousereleased(x, y, button)
     game:mousereleased(x, y, button)
 end
 function love.resize(w, h)
-    finalOutputCanvas:resize(w, h)
 end

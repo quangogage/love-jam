@@ -16,21 +16,44 @@ return function (concord)
     })
 
 
+    ----------------------------
+    -- [[ Public Functions ]] --
+    ----------------------------
+    function HealthBarSystem:event_damageDealt(_, target)
+        target.health.bar.hidden = false
+        target.health.bar.timer  = 0
+    end
+
+
+    --------------------------
+    -- [[ Core Functions ]] --
+    --------------------------
+    function HealthBarSystem:update(dt)
+        for _, e in ipairs(self.entities) do
+            e.health.bar.timer = e.health.bar.timer + dt
+            if e.health.bar.timer > e.health.bar.duration then
+                e.health.bar.hidden = true
+            end
+        end
+    end
+
     --------------------------
     -- [[ Core Functions ]] --
     --------------------------
     function HealthBarSystem:draw()
         for _, e in ipairs(self.entities) do
-            local x = e.position.x - WIDTH / 2
-            local y =
-                e.position.y - e.dimensions.height / 2 -
-                HEIGHT - VERTICAL_OFFSET
-            local width = (e.health.value / e.health.max) * WIDTH
-            local height = HEIGHT
-            love.graphics.setColor(BACKGROUND_COLOR)
-            love.graphics.rectangle('fill', x, y, WIDTH, height)
-            love.graphics.setColor(FOREGROUND_COLOR)
-            love.graphics.rectangle('fill', x, y, width, height)
+            if not e.health.bar.hidden then
+                local x = e.position.x - WIDTH / 2
+                local y =
+                    e.position.y - e.dimensions.height / 2 -
+                    HEIGHT - VERTICAL_OFFSET
+                local width = (e.health.value / e.health.max) * WIDTH
+                local height = HEIGHT
+                love.graphics.setColor(BACKGROUND_COLOR)
+                love.graphics.rectangle('fill', x, y, WIDTH, height)
+                love.graphics.setColor(FOREGROUND_COLOR)
+                love.graphics.rectangle('fill', x, y, width, height)
+            end
         end
     end
     return HealthBarSystem

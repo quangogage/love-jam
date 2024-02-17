@@ -22,8 +22,12 @@ return function (concord)
     ---@param target Pawn | table
     ---@param damageAmount number
     function DamageSystem:entity_attemptAttack(attacker, target, damageAmount)
-        if target.health then
-            target.health.value = target.health.value - damageAmount
+        local world = self:getWorld()
+        if world then
+            if target.health then
+                target.health.value = target.health.value - damageAmount
+                world:emit("event_damageDealt", attacker, target, damageAmount)
+            end
         end
     end
 

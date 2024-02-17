@@ -6,7 +6,7 @@
 -- them easily).
 
 local Camera = require('Classes.Camera')
-local CombatInterface = require('Classes.Scenes.CombatScene.CombatInterface')
+local CombatInterface = require('Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
 
 ---@class CombatScene
 ---@field concord Concord
@@ -32,11 +32,13 @@ function CombatScene:init()
 end
 function CombatScene:update(dt)
     self.world:emit('update', dt)
+    self.interface:update(dt)
 end
 function CombatScene:draw()
     self.camera:set()
     self.world:emit('draw')
     self.camera:unset()
+    self.interface:draw()
 end
 function CombatScene:keypressed(key)
     if key == 'space' then

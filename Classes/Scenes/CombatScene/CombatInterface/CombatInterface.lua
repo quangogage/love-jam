@@ -6,6 +6,7 @@
 
 local CombatInterface = Goop.Class({})
 
+
 function CombatInterface:init()
 end
 function CombatInterface:update(dt)

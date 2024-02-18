@@ -8,6 +8,8 @@ local Vec2     = require("Classes.Types.Vec2")
 ---@class CameraControls
 ---@field camera Camera
 ---@field velocity Vec2
+---@field lastMouseX number
+---@field lastMouseY number
 local CameraControls = Goop.Class({
     arguments = {"camera"},
     static = {
@@ -23,8 +25,7 @@ function CameraControls:update(dt)
     self:_applyVelocityAndFriction(dt)
     self:_keyboardMovement(dt)
     self:_mousePushMovement(dt)
-end
-function CameraControls:mousepressed(x,y,button)
+    self:_updateDrag(dt)
 end
 
 
@@ -43,14 +44,14 @@ end
 function CameraControls:_keyboardMovement(dt)
     local speed = settings.cameraWASDMoveSpeed
     if love.keyboard.isDown("w") then
-        CameraControls.velocity.y = CameraControls.velocity.y - speed * dt
+        self.velocity.y = self.velocity.y - speed * dt
     elseif love.keyboard.isDown("s") then
-        CameraControls.velocity.y = CameraControls.velocity.y + speed * dt
+        self.velocity.y = self.velocity.y + speed * dt
     end
     if love.keyboard.isDown("a") then
-        CameraControls.velocity.x = CameraControls.velocity.x - speed * dt
+        self.velocity.x = self.velocity.x - speed * dt
     elseif love.keyboard.isDown("d") then
-        CameraControls.velocity.x = CameraControls.velocity.x + speed * dt
+        self.velocity.x = self.velocity.x + speed * dt
     end
 end
 
@@ -71,6 +72,22 @@ function CameraControls:_mousePushMovement(dt)
     end
 end
 
+function CameraControls:_updateDrag(dt)
+    local speed = settings.cameraPanSpeed
+    if love.mouse.isDown(2) then
+        if self.lastMouseX then
+            local x, y = love.mouse.getPosition()
+            local dx = (x - self.lastMouseX) * dt
+            local dy = (y - self.lastMouseY) * dt
+            self.velocity.x = self.velocity.x - dx * speed * dt
+            self.velocity.y = self.velocity.y - dy * speed * dt
+        end
+        self.lastMouseX, self.lastMouseY = love.mouse.getPosition()
+    else
+        self.lastMouseX = nil
+        self.lastMouseY = nil
+    end
+end
 
 return CameraControls
 

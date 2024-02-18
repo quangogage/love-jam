@@ -3,5 +3,6 @@
 
 return {
     cameraWASDMoveSpeed = 2000,
-    cameraPushMoveSpeed = 2000
+    cameraPushMoveSpeed = 2000,
+    cameraPanSpeed      = 1100000
 }

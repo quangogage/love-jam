@@ -67,15 +67,14 @@ function CombatScene:mousepressed(x, y, button)
 
     if not didClickInterface then
         self.world:emit('mousepressed', x, y, button)
-        self.cameraControls:mousepressed(x, y, button)
 
         -- Dev:
         if button == 2 then
-            util.entityAssembler.assemble(self.world, 'basicTower', x, y)
+            -- util.entityAssembler.assemble(self.world, 'basicTower', x, y)
         elseif button == 3 then
-            local pawn = util.entityAssembler.assemble(self.world, 'basicPawn', x,
-                y)
-            self.world:emit('event_pawnSpawned', pawn)
+            -- local pawn = util.entityAssembler.assemble(self.world, 'basicPawn', x,
+            --     y)
+            -- self.world:emit('event_pawnSpawned', pawn)
         end
     end
 end

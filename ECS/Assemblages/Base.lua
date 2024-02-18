@@ -22,7 +22,9 @@ return function (e, x, y, friendly)
 
     if friendly then
         e:give('friendly')
+        :give("color",1,1,1)
     else
         e:give('hostile')
+        :give("color",1,0,0)
     end
 end

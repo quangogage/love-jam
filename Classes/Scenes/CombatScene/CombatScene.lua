@@ -10,6 +10,7 @@
 
 local util            = require('util')({ 'entityAssembler' })
 local Vec2            = require('Classes.Types.Vec2')
+local levels          = require('lists.levels')
 local Camera          = require('Classes.Camera')
 local CameraControls  = require('Classes.Scenes.CombatScene.CameraControls')
 local CombatInterface = require(
@@ -39,7 +40,8 @@ function CombatScene:init()
     self.cameraControls = CameraControls(self.camera, self.world)
     self:_loadComponents()
     self:_loadSystems()
-    self:_generateLevel()
+    self:_initLevels()
+    self:_generateLevel(1)
     self:_createSubscriptions()
     -- DEV:
     console.world = self.world
@@ -68,15 +70,6 @@ function CombatScene:mousepressed(x, y, button)
 
     if not didClickInterface then
         self.world:emit('mousepressed', x, y, button)
-
-        -- Dev:
-        if button == 2 then
-            -- util.entityAssembler.assemble(self.world, 'basicTower', x, y)
-        elseif button == 3 then
-            -- local pawn = util.entityAssembler.assemble(self.world, 'basicPawn', x,
-            --     y)
-            -- self.world:emit('event_pawnSpawned', pawn)
-        end
     end
 end
 function CombatScene:mousereleased(x, y, button)
@@ -140,15 +133,6 @@ function CombatScene:_loadComponents()
     loadFilesInDir('/ECS/Components/')
 end
 
-function CombatScene:_generateLevel()
-    self.world.bounds = { x = 0, y = 0, width = 1280, height = 2500 }
-    self.friendlyBase = util.entityAssembler.assemble(self.world, 'Base',
-        self.world.bounds.width / 2,
-        self.world.bounds.height - 100,
-        true
-    )
-end
-
 -- Subscribe to various events.
 function CombatScene:_createSubscriptions()
     self.subscriptions = {}
@@ -176,6 +160,45 @@ function CombatScene:_drawWorldBoundary()
     love.graphics.setLineWidth(1)
     love.graphics.rectangle('line', 0, 0, self.world.bounds.width,
         self.world.bounds.height)
+end
+
+function CombatScene:_initLevels()
+    self.levels = {}
+    for _,level in pairs(levels) do
+        table.insert(self.levels, level)
+    end
+    table.sort(self.levels, function (a, b)
+        return tonumber(a.level) < tonumber(b.level)
+    end)
+end
+
+---@param index integer
+function CombatScene:_generateLevel(index)
+    local level = self.levels[index]
+    for _,e in ipairs(level.entities) do
+        if e.className == "EnemyBase" then
+            util.entityAssembler.assemble(
+                self.world, "Base",
+                e.position.x, e.position.y
+            )
+        elseif e.className == "EnemyTower" then
+            util.entityAssembler.assemble(
+                self.world, e.type,
+                e.position.x, e.position.y
+            )
+        elseif e.className == "FriendlyBase" then
+            self.friendlyBase = util.entityAssembler.assemble(
+                self.world, "Base",
+                e.position.x, e.position.y,
+                true
+            )
+        end
+    end
+
+    self.world.bounds = {
+        x = 0, y = 0,
+        width = level.dimensions.width, height = level.dimensions.height
+    }
 end
 
 return CombatScene

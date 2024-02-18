@@ -8,13 +8,16 @@
 -- Interface behavior is currently hooked into the game-world in here via
 -- the EventManager.
 
-local util            = require('util')({ 'entityAssembler' })
-local Vec2            = require('Classes.Types.Vec2')
-local levels          = require('lists.levels')
-local Camera          = require('Classes.Camera')
-local CameraControls  = require('Classes.Scenes.CombatScene.CameraControls')
-local CombatInterface = require(
-    'Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
+local util                = require('util')({ 'entityAssembler' })
+local levels              = require('lists.levels')
+local Camera              = require('Classes.Camera')
+local CameraControls      = require('Classes.Scenes.CombatScene.CameraControls')
+local LevelStartAnimation = require(
+    'Classes.Scenes.CombatScene.LevelStartAnimation'
+)
+local CombatInterface     = require(
+    'Classes.Scenes.CombatScene.CombatInterface.CombatInterface'
+)
 
 
 ---@class CombatScene
@@ -24,9 +27,9 @@ local CombatInterface = require(
 ---@field interface CombatInterface
 ---@field eventManager EventManager
 ---@field friendlyBase Base The player's base.
----@field animatingCamera boolean
+---@field levelStartAnimation LevelStartAnimation
 local CombatScene = Goop.Class({
-    arguments = { 'eventManager' }
+    arguments = { 'eventManager' },
 })
 
 
@@ -43,8 +46,12 @@ function CombatScene:init()
     self:_loadSystems()
     self:_initLevels()
     self:_generateLevel(1)
-    self:_startLevelCameraAnimation()
     self:_createSubscriptions()
+
+    -- Start the intro animation
+    -- TODO: Dynamic level number
+    self.levelStartAnimation = LevelStartAnimation(self.camera, self, 1)
+
     -- DEV:
     console.world = self.world
     console:launchOptions()
@@ -56,11 +63,10 @@ function CombatScene:update(dt)
     self.world:emit('update', dt)
     self.interface:update(dt)
     self.camera:update(dt)
-    if not self.animatingCamera then
+    if not self.levelStartAnimation.active then
         self.cameraControls:update(dt)
-    else
-        self:_updateLevelCameraAnimation(dt)
     end
+    self.levelStartAnimation:update(dt)
 end
 function CombatScene:draw()
     self.camera:set()
@@ -68,11 +74,12 @@ function CombatScene:draw()
     self:_drawWorldBoundary()
     self.camera:unset()
     self.interface:draw()
+    self.levelStartAnimation:draw()
 end
 function CombatScene:keypressed(key)
     self.world:emit('keypressed', key)
     self.interface:keypressed(key)
-    self:_endLevelCameraAnimation()
+    self.levelStartAnimation:endAnimation()
 end
 function CombatScene:mousepressed(x, y, button)
     local didClickInterface = self.interface:mousepressed(x, y, button)
@@ -80,16 +87,16 @@ function CombatScene:mousepressed(x, y, button)
     if not didClickInterface then
         self.world:emit('mousepressed', x, y, button)
     end
-    self:_endLevelCameraAnimation()
+    self.levelStartAnimation:endAnimation()
 end
 function CombatScene:mousereleased(x, y, button)
     self.world:emit('mousereleased', x, y, button)
 end
 function CombatScene:wheelmoved(x, y)
-    if not self.animatingCamera then
+    if not self.levelStartAnimation.active then
         self.cameraControls:wheelmoved(x, y)
     end
-    self:_endLevelCameraAnimation()
+    self.levelStartAnimation:endAnimation()
 end
 
 
@@ -218,53 +225,5 @@ function CombatScene:_generateLevel(index)
     }
 end
 
--- Start the camera animation for when you begin a level.
-function CombatScene:_startLevelCameraAnimation()
-    self.animatingCamera = true
-    self.camera:centerOnPosition(
-        self.enemyBase.position.x,
-        self.enemyBase.position.y
-    )
-end
-
--- Update the camera animation for when you begin a level.
-function CombatScene:_updateLevelCameraAnimation(dt)
-    if self.animatingCamera then
-        local cameraX, cameraY = self.camera:getPosition()
-        local scaledWidth  = love.graphics.getWidth() * self.camera.zoom
-        local scaledHeight = love.graphics.getHeight() * self.camera.zoom
-        local targetX      = self.friendlyBase.position.x - scaledWidth / 2
-        local targetY      = self.friendlyBase.position.y - scaledHeight / 2
-        local speed        = 2500
-        if targetX < cameraX then
-            self.camera.velocity.x = self.camera.velocity.x - speed * dt
-        elseif targetX > cameraX then
-            self.camera.velocity.x = self.camera.velocity.x + speed * dt
-        end
-        if targetY < cameraY then
-            self.camera.velocity.y = self.camera.velocity.y - speed * dt
-        elseif targetY > cameraY then
-            self.camera.velocity.y = self.camera.velocity.y + speed * dt
-        end
-        if math.abs(targetX - cameraX) < 1 and
-        math.abs(targetY - cameraY) < 1 then
-            self:_endLevelCameraAnimation()
-        end
-    end
-end
-
--- End the camera animation for when you begin a level.
-function CombatScene:_endLevelCameraAnimation()
-    if self.animatingCamera then
-        self.camera.velocity.x = 0
-        self.camera.velocity.y = 0
-        self.camera:centerOnPosition(
-            self.friendlyBase.position.x,
-            self.friendlyBase.position.y
-        )
-        self.camera:setToMaxZoom()
-        self.animatingCamera = false
-    end
-end
 
 return CombatScene

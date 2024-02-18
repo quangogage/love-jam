@@ -62,12 +62,12 @@ function CameraControls:_mousePushMovement(dt)
 
     if x < SCREEN_EDGE_THRESHOLD then
         self.camera.velocity.x = self.camera.velocity.x - speed * dt
-    elseif x > love.graphics.getWidth() - SCREEN_EDGE_THRESHOLD then
+    elseif x > renderResolution.width - SCREEN_EDGE_THRESHOLD then
         self.camera.velocity.x = self.camera.velocity.x + speed * dt
     end
     if y < SCREEN_EDGE_THRESHOLD then
         self.camera.velocity.y = self.camera.velocity.y - speed * dt
-    elseif y > love.graphics.getHeight() - SCREEN_EDGE_THRESHOLD then
+    elseif y > renderResolution.height - SCREEN_EDGE_THRESHOLD then
         self.camera.velocity.y = self.camera.velocity.y + speed * dt
     end
 end
@@ -103,8 +103,8 @@ end
 
 function CameraControls:_enforceWorldBounds()
     local cameraZoom = self.camera:getZoom()
-    local scaledWidth = love.graphics.getWidth() * cameraZoom
-    local scaledHeight = love.graphics.getHeight() * cameraZoom
+    local scaledWidth = renderResolution.width * cameraZoom
+    local scaledHeight = renderResolution.height * cameraZoom
     local cameraX, cameraY = self.camera:getPosition()
     local center = {
         x = cameraX + scaledWidth / 2,

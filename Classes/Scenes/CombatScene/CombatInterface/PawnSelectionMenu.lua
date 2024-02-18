@@ -53,7 +53,8 @@ function PawnSelectionMenu:keypressed(key)
         self.eventManager:broadcast('interface_selectPawnType', self.cards[tonumber(key)].name)
     end
 end
-function PawnSelectionMenu:mousepressed(x, y, button)
+function PawnSelectionMenu:mousepressed(_, _, button)
+    local x, y = renderResolution:getMousePosition()
     if button == 1 then
         for _, card in ipairs(self.cards) do
             if x > card.position.x and x < card.position.x + card.dimensions.width and
@@ -67,7 +68,7 @@ function PawnSelectionMenu:mousepressed(x, y, button)
             end
         end
     end
-    return y > love.graphics.getHeight() - self.height
+    return y > renderResolution.height - self.height
 end
 
 -----------------------------
@@ -79,7 +80,7 @@ function PawnSelectionMenu:_initCards()
         local card = PawnSelectionCard({
             position       = {
                 x = x,
-                y = love.graphics.getHeight() - self.height + VERTICAL_CARD_PADDING / 2
+                y = renderResolution.height - self.height + VERTICAL_CARD_PADDING / 2
             },
             name           = pawnType.name,
             price          = pawnType.price,
@@ -95,8 +96,8 @@ end
 function PawnSelectionMenu:_drawBackground()
     love.graphics.setColor(palette.background)
     love.graphics.rectangle('fill',
-        0, love.graphics.getHeight() - self.height,
-        love.graphics.getWidth(), self.height
+        0, renderResolution.height - self.height,
+        renderResolution.width, self.height
     )
 end
 

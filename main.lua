@@ -13,7 +13,10 @@ function love.update(dt)
     end
 end
 function love.draw()
+    renderResolution:startDrawing()
     game:draw()
+    renderResolution:stopDrawing()
+    renderResolution:draw()
 
     -- Dev:
     console:draw()

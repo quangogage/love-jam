@@ -71,7 +71,7 @@ function PowerupSelectionMenu:draw()
     if self.active then
         -- Temp:
         love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        love.graphics.rectangle('fill', 0, 0, renderResolution.width, renderResolution.height)
 
         for _, card in ipairs(self.powerupCards) do
             card:draw()
@@ -79,7 +79,8 @@ function PowerupSelectionMenu:draw()
     end
     self:_drawOverlay()
 end
-function PowerupSelectionMenu:mousepressed(x, y, button)
+function PowerupSelectionMenu:mousepressed(_, _, button)
+    local x,y = renderResolution:getMousePosition()
     if self.active and button == 1 then
         for _, card in ipairs(self.powerupCards) do
             if x > card.position.x and x < card.position.x + card.width and
@@ -103,15 +104,15 @@ function PowerupSelectionMenu:_generatePowerupCards()
 
     for i = 1, CHOICES do
         local x = 0
-        local y = love.graphics.getHeight() / 2
+        local y = renderResolution.height / 2
         local index = math.random(1, #powerupChoices)
         local powerup = powerupChoices[index]
         if i == 1 then
-            x = love.graphics.getWidth() * 0.25
+            x = renderResolution.width * 0.25
         elseif i == 2 then
-            x = love.graphics.getWidth() * 0.5
+            x = renderResolution.width * 0.5
         elseif i == 3 then
-            x = love.graphics.getWidth() * 0.75
+            x = renderResolution.width * 0.75
         end
         local card = PowerupCard({
             position    = { x = x, y = y },
@@ -172,7 +173,7 @@ end
 function PowerupSelectionMenu:_drawOverlay()
     if self.overlay.alpha > 0 then
         love.graphics.setColor(0, 0, 0, self.overlay.alpha)
-        love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        love.graphics.rectangle('fill', 0, 0, renderResolution.width, renderResolution.height)
     end
 end
 

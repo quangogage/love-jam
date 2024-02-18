@@ -199,7 +199,7 @@ end
 
 function CombatScene:_drawWorldBoundary()
     love.graphics.setColor(1, 1, 1, 0.5)
-    love.graphics.setLineWidth(1)
+    love.graphics.setLineWidth(2)
     love.graphics.rectangle('line', 0, 0, self.world.bounds.width, self.world.bounds.height)
 end
 

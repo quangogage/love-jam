@@ -1,7 +1,7 @@
 ---@author Gage Henderson
 --
 
-local EventManager = require('Classes.EventManager')
+local EventManager     = require('Classes.EventManager')
 local sceneClasses = {
     CombatScene = require('Classes.Scenes.CombatScene.CombatScene'),
     MainMenuScene = require('Classes.Scenes.MainMenuScene.MainMenuScene'),
@@ -24,7 +24,7 @@ end
 -- [[ Core Functions ]] --
 --------------------------
 function Game:init()
-    self.eventManager = EventManager()
+    self.eventManager     = EventManager()
     self:setScene('MainMenuScene', function()
         self:setScene('CombatScene',self.eventManager)
     end)

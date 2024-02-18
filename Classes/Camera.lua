@@ -44,8 +44,8 @@ local Camera = Goop.Class({
 -- zoomOffset.
 function Camera:setToMaxZoom()
     self.zoom = ZOOM_MAX
-    self.zoomOffset.x = (love.graphics.getWidth() / 2) * (1 - self.zoom)
-    self.zoomOffset.y = (love.graphics.getHeight() / 2) * (1 - self.zoom)
+    self.zoomOffset.x = (renderResolution.width / 2) * (1 - self.zoom)
+    self.zoomOffset.y = (renderResolution.height / 2) * (1 - self.zoom)
 end
 function Camera:setZoom(zoom)
     self.zoom = zoom
@@ -54,7 +54,7 @@ function Camera:getZoom()
     return self.currentZoom
 end
 function Camera:getTranslatedMousePosition()
-    local x, y = love.mouse.getPosition()
+    local x, y = renderResolution:getMousePosition()
     local cameraX, cameraY = self:getPosition()
     return x * self.currentZoom + cameraX, y * self.currentZoom + cameraY
 end
@@ -84,8 +84,8 @@ end
 ---@param x number
 ---@param y number
 function Camera:centerOnPosition(x, y)
-    local scaledWidth = love.graphics.getWidth() * self.currentZoom
-    local scaledHeight = love.graphics.getHeight() * self.currentZoom
+    local scaledWidth = renderResolution.width * self.currentZoom
+    local scaledHeight = renderResolution.height * self.currentZoom
     self.position.x = x - scaledWidth / 2 - self.zoomOffset.x
     self.position.y = y - scaledHeight / 2 - self.zoomOffset.y
 end
@@ -112,8 +112,8 @@ end
 function Camera:_updateZoom(dt)
     self.currentZoom = self.currentZoom + (self.zoom - self.currentZoom) * ZOOM_SPEED * dt
     self.currentZoom = math.max(ZOOM_MIN, math.min(ZOOM_MAX, self.currentZoom))
-    self.zoomOffset.x = (love.graphics.getWidth() / 2) * (1 - self.currentZoom)
-    self.zoomOffset.y = (love.graphics.getHeight() / 2) * (1 - self.currentZoom)
+    self.zoomOffset.x = (renderResolution.width / 2) * (1 - self.currentZoom)
+    self.zoomOffset.y = (renderResolution.height / 2) * (1 - self.currentZoom)
 end
 
 return Camera

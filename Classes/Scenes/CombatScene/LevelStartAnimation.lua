@@ -93,8 +93,8 @@ end
 function LevelStartAnimation:_moveCamera(dt)
     if self.active and self.timer >= self.cameraWaitTime then
         local cameraX, cameraY = self.camera:getPosition()
-        local scaledWidth      = love.graphics.getWidth() * self.camera.zoom
-        local scaledHeight     = love.graphics.getHeight() * self.camera.zoom
+        local scaledWidth      = renderResolution.width * self.camera.zoom
+        local scaledHeight     = renderResolution.height * self.camera.zoom
         local targetX          = self.combatScene.friendlyBase.position.x - scaledWidth / 2
         local targetY          = self.combatScene.friendlyBase.position.y - scaledHeight / 2
         if math.abs(targetX - cameraX) > LOCATION_ARRIVAL_THRESHOLD then
@@ -130,8 +130,8 @@ end
 
 function LevelStartAnimation:_checkForArrival()
     local cameraX, cameraY = self.camera:getPosition()
-    local scaledWidth      = love.graphics.getWidth() * self.camera.zoom
-    local scaledHeight     = love.graphics.getHeight() * self.camera.zoom
+    local scaledWidth      = renderResolution.width * self.camera.zoom
+    local scaledHeight     = renderResolution.height * self.camera.zoom
     local targetX          = self.combatScene.friendlyBase.position.x - scaledWidth / 2
     local targetY          = self.combatScene.friendlyBase.position.y - scaledHeight / 2
 
@@ -143,7 +143,7 @@ end
 
 function LevelStartAnimation:_drawOverlay()
     love.graphics.setColor(0, 0, 0, self.overlay.alpha)
-    love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    love.graphics.rectangle('fill', 0, 0, renderResolution.width, renderResolution.height)
 end
 
 function LevelStartAnimation:_printText()
@@ -153,8 +153,8 @@ function LevelStartAnimation:_printText()
     love.graphics.printf(
         str,
         0,
-        love.graphics.getHeight() / 2 - self.text.font:getHeight() / 2,
-        love.graphics.getWidth(),
+        renderResolution.height / 2 - self.text.font:getHeight() / 2,
+        renderResolution.width,
         'center'
     )
 end

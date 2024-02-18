@@ -47,7 +47,7 @@ function PowerupCard:update()
 end
 function PowerupCard:draw()
     love.graphics.setColor(1,1,1)
-    love.graphics.setLineWidth(1)
+    love.graphics.setLineWidth(2)
     love.graphics.rectangle("line", self.position.x, self.position.y, self.width, self.height)
     if self.selected then
         love.graphics.setColor(0,1,0,0.5)

@@ -102,7 +102,7 @@ function LevelTransitionHandler:_drawOverlay()
     if self.fadingOut then
         love.graphics.setColor(0, 0, 0, self.overlay.alpha)
         love.graphics.rectangle(
-            'fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight()
+            'fill', 0, 0, renderResolution.width, renderResolution.height
         )
     end
 end

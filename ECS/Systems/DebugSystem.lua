@@ -65,7 +65,7 @@ return function (concord, camera, onLevelComplete)
             local combatProperties = entity:get('combatProperties')
             local position = entity:get('position')
             local dimensions = entity:get('dimensions')
-            love.graphics.setLineWidth(1)
+            love.graphics.setLineWidth(2)
             love.graphics.setColor(1, 0, 0)
             love.graphics.circle(
                 'line',

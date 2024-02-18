@@ -41,7 +41,7 @@ function Button:init()
     self.currentColor = util.table.createDeepCopy(self.color)
 end
 function Button:update(dt)
-    local mouseX, mouseY = love.mouse.getPosition()
+    local mouseX, mouseY = renderResolution:getMousePosition()
     if mouseX > self.position.x and mouseX < self.position.x + self.dimensions.x and
     mouseY > self.position.y and mouseY < self.position.y + self.dimensions.y then
         self.hovered = true

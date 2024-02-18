@@ -45,7 +45,8 @@ function MainMenuScene:draw()
         el:draw()
     end
 end
-function MainMenuScene:mousepressed(x, y, button)
+function MainMenuScene:mousepressed(_, _, button)
+    local x,y = renderResolution:getMousePosition()
     for _, el in ipairs(self.elements) do
         el:mousepressed(x, y, button)
     end
@@ -67,7 +68,7 @@ function MainMenuScene:_setMenu(name)
         self.elements = {
             Button({
                 text = 'Start Game',
-                position = { x = 100, y = love.graphics.getHeight() / 2 },
+                position = { x = 100, y = renderResolution.height / 2 },
                 onClick = function ()
                     love.mouse.setCursor()
                     self.startGame()

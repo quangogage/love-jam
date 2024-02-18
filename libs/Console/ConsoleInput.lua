@@ -1,6 +1,5 @@
 ---@author Gage Henderson 2023-10-26 22:08
 -- 
----@class ConsoleInput
 -- Handles logic for and rendering of text input for the console.
 
 local modifierKeys = {
@@ -33,6 +32,8 @@ local comboKeys = {
     ["`"] = "~",
 }
 
+---@class ConsoleInput
+---@field active boolean
 local ConsoleInput = Goop.Class({
     parameters = {
         {"executeCommand","function"}

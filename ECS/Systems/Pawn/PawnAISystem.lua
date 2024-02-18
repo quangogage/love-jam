@@ -14,7 +14,7 @@ local DEFAULT_ARRIVAL_THRESHOLD = 50
 
 return function (concord)
     local PawnAISystem = concord.system({
-        entities = { 'target' }
+        entities = { 'target' },
     })
 
 
@@ -23,7 +23,6 @@ return function (concord)
     --------------------------
     function PawnAISystem:update(dt)
         for _, e in ipairs(self.entities) do
-            local target = e.target
             self:_moveTowardsTarget(e, dt)
         end
     end
@@ -90,7 +89,7 @@ return function (concord)
         elseif e.target.entity then
             targetX = e.target.entity.position.x
             targetY = e.target.entity.position.y +
-            e.target.entity.dimensions.height / 2
+                e.target.entity.dimensions.height / 2
         end
         return math.sqrt(
             (targetX - e.position.x) ^ 2 +

@@ -5,10 +5,13 @@
 -- Some functions can be called via console commands.
 --
 
-return function (concord)
+local util = require("util")({ "entityAssembler" })
+
+return function (concord, camera)
     local DebugSystem = concord.system({
         rangeEntities = { 'combatProperties', 'position' },
-        hitboxes = { 'position', 'dimensions' }
+        hitboxes = { 'position', 'dimensions' },
+        hostileEntities = { 'hostile' }
     })
 
 
@@ -23,6 +26,14 @@ return function (concord)
         self.showHitboxes = not self.showHitboxes
         console:log('Hitboxes toggled ' .. (self.showHitboxes and 'on' or 'off'))
     end
+    function DebugSystem:testRoom()
+        for _, entity in ipairs(self.hostileEntities) do
+            self:getWorld():emit('event_pawnDied', entity)
+            entity:destroy()
+        end
+        self.testRoom = true
+        console:log('Killed all enemies')
+    end
 
 
     --------------------------
@@ -36,6 +47,9 @@ return function (concord)
         self:_drawRanges()
         self:_drawHitboxes()
     end
+    function DebugSystem:keypressed(key)
+        self:_spawnPawnsInTestRoom(key)
+    end
 
 
     -----------------------------
@@ -44,12 +58,12 @@ return function (concord)
     function DebugSystem:_drawRanges()
         if not self.showRanges then return end
 
-        for _,entity in ipairs(self.rangeEntities) do
+        for _, entity in ipairs(self.rangeEntities) do
             local combatProperties = entity:get('combatProperties')
             local position = entity:get('position')
             local dimensions = entity:get('dimensions')
             love.graphics.setLineWidth(1)
-            love.graphics.setColor(1,0,0)
+            love.graphics.setColor(1, 0, 0)
             love.graphics.circle(
                 'line',
                 position.x,
@@ -60,8 +74,8 @@ return function (concord)
     end
     function DebugSystem:_drawHitboxes()
         if not self.showHitboxes then return end
-        local drawHitbox = function(hitbox)
-            love.graphics.setColor(1,0,1)
+        local drawHitbox = function (hitbox)
+            love.graphics.setColor(1, 0, 1)
             love.graphics.rectangle(
                 'line',
                 hitbox.position.x - hitbox.dimensions.width / 2,
@@ -70,11 +84,29 @@ return function (concord)
                 hitbox.dimensions.height
             )
         end
-        for _,hitbox in ipairs(self.hitboxes) do
+        for _, hitbox in ipairs(self.hitboxes) do
             drawHitbox({
                 position = hitbox.position,
                 dimensions = hitbox.dimensions
             })
+        end
+    end
+    function DebugSystem:_spawnPawnsInTestRoom(key)
+        if self.testRoom then
+            local x,y = camera:getTranslatedMousePosition()
+            if key == 't' then
+                util.entityAssembler.assemble(
+                    self:getWorld(),
+                    'BasicTower',
+                    x, y
+                )
+            elseif key == "r" then
+                util.entityAssembler.assemble(
+                    self:getWorld(),
+                    'BasicPawn',
+                    x, y
+                )
+            end
         end
     end
     return DebugSystem

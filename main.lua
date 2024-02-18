@@ -8,7 +8,9 @@ function love.load()
 end
 function love.update(dt)
     console:update(dt)
-    game:update(dt)
+    if not console.input.active then
+        game:update(dt)
+    end
 end
 function love.draw()
     game:draw()
@@ -20,7 +22,9 @@ function love.draw()
 end
 function love.keypressed(key)
     console:keypressed(key)
-    game:keypressed(key)
+    if not console.input.active then
+        game:keypressed(key)
+    end
 
     -- Dev
     if key == 'escape' then

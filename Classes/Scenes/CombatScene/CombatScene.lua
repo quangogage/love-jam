@@ -14,7 +14,7 @@ local levels          = require('lists.levels')
 local Camera          = require('Classes.Camera')
 local CameraControls  = require('Classes.Scenes.CombatScene.CameraControls')
 local CombatInterface = require(
-'Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
+    'Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
 
 
 ---@class CombatScene
@@ -33,9 +33,9 @@ local CombatScene = Goop.Class({
 -- [[ Core Functions ]] --
 --------------------------
 function CombatScene:init()
-    self.concord        = require('libs.Concord')
-    self.camera         = Camera()
-    self.interface      = CombatInterface(self.eventManager)
+    self.concord   = require('libs.Concord')
+    self.camera    = Camera()
+    self.interface = CombatInterface(self.eventManager)
     self:_initWorld()
     self.cameraControls = CameraControls(self.camera, self.world)
     self:_loadComponents()
@@ -63,6 +63,7 @@ function CombatScene:draw()
     self.interface:draw()
 end
 function CombatScene:keypressed(key)
+    self.world:emit('keypressed', key)
     self.interface:keypressed(key)
 end
 function CombatScene:mousepressed(x, y, button)
@@ -111,7 +112,7 @@ function CombatScene:_loadSystems()
     loadSystem('PawnGenerationSystem')
     loadSystem('HealthBarSystem')
     loadSystem('SelectedHighlightSystem')
-    loadSystem('DebugSystem')
+    loadSystem('DebugSystem', self.camera)
 
     self.world:addSystems(unpack(systems))
 end
@@ -135,7 +136,8 @@ end
 -- Subscribe to various events.
 function CombatScene:_createSubscriptions()
     self.subscriptions = {}
-    self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager:subscribe(
+    self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager
+                                                           :subscribe(
         'interface_attemptSpawnPawn',
         function ()
             local pawn = util.entityAssembler.assemble(self.world, 'basicPawn',
@@ -163,7 +165,7 @@ end
 
 function CombatScene:_initLevels()
     self.levels = {}
-    for _,level in pairs(levels) do
+    for _, level in pairs(levels) do
         table.insert(self.levels, level)
     end
     table.sort(self.levels, function (a, b)
@@ -174,20 +176,20 @@ end
 ---@param index integer
 function CombatScene:_generateLevel(index)
     local level = self.levels[index]
-    for _,e in ipairs(level.entities) do
-        if e.className == "EnemyBase" then
+    for _, e in ipairs(level.entities) do
+        if e.className == 'EnemyBase' then
             util.entityAssembler.assemble(
-                self.world, "Base",
+                self.world, 'Base',
                 e.position.x, e.position.y
             )
-        elseif e.className == "EnemyTower" then
+        elseif e.className == 'EnemyTower' then
             util.entityAssembler.assemble(
                 self.world, e.type,
                 e.position.x, e.position.y
             )
-        elseif e.className == "FriendlyBase" then
+        elseif e.className == 'FriendlyBase' then
             self.friendlyBase = util.entityAssembler.assemble(
-                self.world, "Base",
+                self.world, 'Base',
                 e.position.x, e.position.y,
                 true
             )
@@ -195,8 +197,10 @@ function CombatScene:_generateLevel(index)
     end
 
     self.world.bounds = {
-        x = 0, y = 0,
-        width = level.dimensions.width, height = level.dimensions.height
+        x = 0,
+        y = 0,
+        width = level.dimensions.width,
+        height = level.dimensions.height
     }
 end
 

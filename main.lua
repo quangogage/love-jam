@@ -3,7 +3,7 @@ local Game = require('Classes.Game')
 local game
 
 function love.load()
-    if arg[#arg] == "-debug" then require("mobdebug").start() end -- Zerobrane studio debugging.
+    if arg[#arg] == '-debug' then require('mobdebug').start() end -- Zerobrane studio debugging.
     game = Game()
 end
 function love.update(dt)
@@ -20,13 +20,30 @@ function love.draw()
 
     -- Dev:
     console:draw()
-    love.graphics.setColor(1,1,1)
+    love.graphics.setColor(1, 1, 1)
     love.graphics.print(love.timer.getFPS(), 150, 10)
 end
 function love.keypressed(key)
     console:keypressed(key)
     if not console.input.active then
         game:keypressed(key)
+    end
+
+    -- Toggle fullscreen
+    local toggleFull = function ()
+        local _, _, flags = love.window.getMode()
+        local width, height = 0, 0
+        if flags.fullscreen then
+            width, height = renderResolution.width - 50, renderResolution.height - 50
+        end
+        love.window.setMode(width, height, { fullscreen = not flags.fullscreen })
+    end
+    if love.keyboard.isDown('lalt') or love.keyboard.isDown('ralt') then
+        if key == 'return' or key == 'enter' then
+            toggleFull()
+        end
+    elseif key == 'f11' then
+        toggleFull()
     end
 
     -- Dev

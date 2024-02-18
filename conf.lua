@@ -4,6 +4,8 @@ function love.conf(t)
     -- t.window.height    = 1080
     t.window.width     = 1700
     t.window.height    = 900
+    t.window.minwidth  = 800
+    t.window.minheight = 600
     t.window.resizable = true
     t.window.display   = 1
     t.window.vsync     = 0

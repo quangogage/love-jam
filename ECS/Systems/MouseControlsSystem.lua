@@ -34,23 +34,28 @@ return function (concord, camera)
         self:_drawSelectionRectangle()
     end
     function MouseControlsSystem:mousepressed(_, _, button)
-        if button == 1 then
-            local x, y = camera:getTranslatedMousePosition()
+        local world = self:getWorld()
+        local x, y = camera:getTranslatedMousePosition()
+        if not world then return end
+        if x > world.bounds.x and x < world.bounds.x + world.bounds.width and
+        y > world.bounds.y and y < world.bounds.y + world.bounds.height then
+            if button == 1 then
 
-            -- If you clicked on a pawn, select it.
-            for _, e in ipairs(self.friendlyEntities) do
-                if not e.unselectable then
-                    if x > e.position.x - e.dimensions.width / 2 and
-                    x < e.position.x + e.dimensions.width / 2 and
-                    y > e.position.y - e.dimensions.height / 2 and
-                    y < e.position.y + e.dimensions.height / 2 then
-                        self:_unselectAll()
-                        e:give('selected')
-                        return
+                -- If you clicked on a pawn, select it.
+                for _, e in ipairs(self.friendlyEntities) do
+                    if not e.unselectable then
+                        if x > e.position.x - e.dimensions.width / 2 and
+                        x < e.position.x + e.dimensions.width / 2 and
+                        y > e.position.y - e.dimensions.height / 2 and
+                        y < e.position.y + e.dimensions.height / 2 then
+                            self:_unselectAll()
+                            e:give('selected')
+                            return
+                        end
                     end
                 end
+                self.mousepressOrigin = { x = x, y = y }
             end
-            self.mousepressOrigin = { x = x, y = y }
         end
     end
     function MouseControlsSystem:mousereleased(_, _, button)

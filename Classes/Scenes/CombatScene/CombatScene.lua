@@ -92,8 +92,9 @@ end
 -----------------------------
 function CombatScene:_initWorld()
     ---@class World
-    ---@field dimensions Vec2
+    ---@field bounds { x: number, y: number, width: number, height: number }
     self.world = self.concord.world()
+    self.world.bounds = { x = 0, y = 0, width = 1280, height = 720 }
 end
 -- Manually load all systems.
 -- Can provide arguments to systems if needed.
@@ -140,10 +141,10 @@ function CombatScene:_loadComponents()
 end
 
 function CombatScene:_generateLevel()
-    self.world.dimensions = Vec2(1280, 2500)
+    self.world.bounds = { x = 0, y = 0, width = 1280, height = 2500 }
     self.friendlyBase = util.entityAssembler.assemble(self.world, 'Base',
-        self.world.dimensions.x / 2,
-        self.world.dimensions.y - 100,
+        self.world.bounds.width / 2,
+        self.world.bounds.height - 100,
         true
     )
 end
@@ -174,8 +175,8 @@ end
 function CombatScene:_drawWorldBoundary()
     love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.setLineWidth(1)
-    love.graphics.rectangle('line', 0, 0, self.world.dimensions.x,
-        self.world.dimensions.y)
+    love.graphics.rectangle('line', 0, 0, self.world.bounds.width,
+        self.world.bounds.height)
 end
 
 return CombatScene

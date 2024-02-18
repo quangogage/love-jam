@@ -24,6 +24,7 @@ local CombatInterface = require(
 ---@field interface CombatInterface
 ---@field eventManager EventManager
 ---@field friendlyBase Base The player's base.
+---@field animatingCamera boolean
 local CombatScene = Goop.Class({
     arguments = { 'eventManager' }
 })
@@ -42,6 +43,7 @@ function CombatScene:init()
     self:_loadSystems()
     self:_initLevels()
     self:_generateLevel(1)
+    self:_startLevelCameraAnimation()
     self:_createSubscriptions()
     -- DEV:
     console.world = self.world
@@ -53,7 +55,12 @@ end
 function CombatScene:update(dt)
     self.world:emit('update', dt)
     self.interface:update(dt)
-    self.cameraControls:update(dt)
+    self.camera:update(dt)
+    if not self.animatingCamera then
+        self.cameraControls:update(dt)
+    else
+        self:_updateLevelCameraAnimation(dt)
+    end
 end
 function CombatScene:draw()
     self.camera:set()
@@ -65,6 +72,7 @@ end
 function CombatScene:keypressed(key)
     self.world:emit('keypressed', key)
     self.interface:keypressed(key)
+    self:_endLevelCameraAnimation()
 end
 function CombatScene:mousepressed(x, y, button)
     local didClickInterface = self.interface:mousepressed(x, y, button)
@@ -72,12 +80,16 @@ function CombatScene:mousepressed(x, y, button)
     if not didClickInterface then
         self.world:emit('mousepressed', x, y, button)
     end
+    self:_endLevelCameraAnimation()
 end
 function CombatScene:mousereleased(x, y, button)
     self.world:emit('mousereleased', x, y, button)
 end
 function CombatScene:wheelmoved(x, y)
-    self.cameraControls:wheelmoved(x, y)
+    if not self.animatingCamera then
+        self.cameraControls:wheelmoved(x, y)
+    end
+    self:_endLevelCameraAnimation()
 end
 
 
@@ -204,6 +216,22 @@ function CombatScene:_generateLevel(index)
         width = level.dimensions.width,
         height = level.dimensions.height
     }
+end
+
+-- Start the camera animation for when you begin a level.
+function CombatScene:_startLevelCameraAnimation()
+    self.animatingCamera = true
+end
+
+-- Update the camera animation for when you begin a level.
+function CombatScene:_updateLevelCameraAnimation(dt)
+end
+
+-- End the camera animation for when you begin a level.
+function CombatScene:_endLevelCameraAnimation()
+    if self.animatingCamera then
+        self.animatingCamera = false
+    end
 end
 
 return CombatScene

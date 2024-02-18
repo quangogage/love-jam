@@ -26,7 +26,6 @@ local CameraControls        = Goop.Class({
 -- [[ Core Functions ]] --
 --------------------------
 function CameraControls:update(dt)
-    self:_applyVelocityAndFriction(dt)
     self:_keyboardMovement(dt)
     self:_mousePushMovement(dt)
     self:_updateDrag(dt)
@@ -42,27 +41,17 @@ end
 -- [[ Private Functions ]] --
 -----------------------------
 ---@param dt number
-function CameraControls:_applyVelocityAndFriction(dt)
-    self.camera.position.x = self.camera.position.x +
-    CameraControls.velocity.x * dt
-    self.camera.position.y = self.camera.position.y +
-    CameraControls.velocity.y * dt
-    self.velocity.x = self.velocity.x * (1 - FRICTION * dt)
-    self.velocity.y = self.velocity.y * (1 - FRICTION * dt)
-end
-
----@param dt number
 function CameraControls:_keyboardMovement(dt)
     local speed = settings.cameraWASDMoveSpeed * self.camera.zoom
     if love.keyboard.isDown('w') then
-        self.velocity.y = self.velocity.y - speed * dt
+        self.camera.velocity.y = self.camera.velocity.y - speed * dt
     elseif love.keyboard.isDown('s') then
-        self.velocity.y = self.velocity.y + speed * dt
+        self.camera.velocity.y = self.camera.velocity.y + speed * dt
     end
     if love.keyboard.isDown('a') then
-        self.velocity.x = self.velocity.x - speed * dt
+        self.camera.velocity.x = self.camera.velocity.x - speed * dt
     elseif love.keyboard.isDown('d') then
-        self.velocity.x = self.velocity.x + speed * dt
+        self.camera.velocity.x = self.camera.velocity.x + speed * dt
     end
 end
 
@@ -72,14 +61,14 @@ function CameraControls:_mousePushMovement(dt)
     local speed = settings.cameraPushMoveSpeed * self.camera.zoom
 
     if x < SCREEN_EDGE_THRESHOLD then
-        self.velocity.x = self.velocity.x - speed * dt
+        self.camera.velocity.x = self.camera.velocity.x - speed * dt
     elseif x > love.graphics.getWidth() - SCREEN_EDGE_THRESHOLD then
-        self.velocity.x = self.velocity.x + speed * dt
+        self.camera.velocity.x = self.camera.velocity.x + speed * dt
     end
     if y < SCREEN_EDGE_THRESHOLD then
-        self.velocity.y = self.velocity.y - speed * dt
+        self.camera.velocity.y = self.camera.velocity.y - speed * dt
     elseif y > love.graphics.getHeight() - SCREEN_EDGE_THRESHOLD then
-        self.velocity.y = self.velocity.y + speed * dt
+        self.camera.velocity.y = self.camera.velocity.y + speed * dt
     end
 end
 
@@ -90,8 +79,8 @@ function CameraControls:_updateDrag(dt)
             local x, y = love.mouse.getPosition()
             local dx = (x - self.lastMouseX) * dt
             local dy = (y - self.lastMouseY) * dt
-            self.velocity.x = self.velocity.x - dx * speed * dt
-            self.velocity.y = self.velocity.y - dy * speed * dt
+            self.camera.velocity.x = self.camera.velocity.x - dx * speed * dt
+            self.camera.velocity.y = self.camera.velocity.y - dy * speed * dt
         end
         self.lastMouseX, self.lastMouseY = love.mouse.getPosition()
     else
@@ -101,28 +90,13 @@ function CameraControls:_updateDrag(dt)
 end
 
 function CameraControls:_cameraZoom(y)
-    local originalWidth  = love.graphics.getWidth() * self.camera.zoom
-    local originalHeight = love.graphics.getHeight() * self.camera.zoom
-    local didScroll      = false
     if y then
         if y < 0 then
             self.camera.zoom = math.min(ZOOM_MAX,
                 self.camera.zoom + ZOOM_INCREMENT)
-            didScroll = true
         elseif y > 0 then
             self.camera.zoom = math.max(ZOOM_MIN,
                 self.camera.zoom - ZOOM_INCREMENT)
-            didScroll = true
-        end
-
-        if didScroll then
-            local newWidth         = love.graphics.getWidth() * self.camera.zoom
-            local newHeight        = love.graphics.getHeight() * self.camera
-                                                                     .zoom
-            local xDiff            = (newWidth - originalWidth) / 2
-            local yDiff            = (newHeight - originalHeight) / 2
-            self.camera.position.x = self.camera.position.x - xDiff
-            self.camera.position.y = self.camera.position.y - yDiff
         end
     end
 end
@@ -130,25 +104,20 @@ end
 function CameraControls:_enforceWorldBounds()
     local scaledWidth = love.graphics.getWidth() * self.camera.zoom
     local scaledHeight = love.graphics.getHeight() * self.camera.zoom
+    local cameraX, cameraY = self.camera:getPosition()
     local center = {
-        x = self.camera.position.x + scaledWidth / 2,
-        y = self.camera.position.y + scaledHeight / 2
+        x = cameraX + scaledWidth / 2,
+        y = cameraY + scaledHeight / 2
     }
     if center.x < self.world.bounds.x then
-        self.camera.position.x = self.world.bounds.x - scaledWidth / 2
-        self.velocity.x = 0
+        self.camera:setPosition(self.world.bounds.x - scaledWidth / 2)
     elseif center.x > self.world.bounds.x + self.world.bounds.width then
-        self.camera.position.x = self.world.bounds.x + self.world.bounds.width -
-        scaledWidth / 2
-        self.velocity.x = 0
+        self.camera:setPosition(self.world.bounds.x + self.world.bounds.width - scaledWidth / 2)
     end
     if center.y < self.world.bounds.y then
-        self.camera.position.y = self.world.bounds.y - scaledHeight / 2
-        self.velocity.y = 0
+        self.camera:setPosition(nil,self.world.bounds.y - scaledHeight / 2)
     elseif center.y > self.world.bounds.y + self.world.bounds.height then
-        self.camera.position.y = self.world.bounds.y + self.world.bounds.height -
-        scaledHeight / 2
-        self.velocity.y = 0
+        self.camera:setPosition(nil, self.world.bounds.y + self.world.bounds.height - scaledHeight / 2)
     end
 end
 

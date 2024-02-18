@@ -57,6 +57,8 @@ function CombatScene:loadNextLevel()
     self:_generateLevel(self.currentLevelIndex)
     self.levelComplete = false
     self.levelStartAnimation = LevelStartAnimation(self.camera, self, self.currentLevelIndex)
+
+    self.world:emit("event_newLevel")
 end
 function CombatScene:completeLevel()
     self.levelComplete = true

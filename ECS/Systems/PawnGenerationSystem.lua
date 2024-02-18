@@ -23,6 +23,9 @@ return function (concord)
     ----------------------------
     -- [[ Public Functions ]] --
     ----------------------------
+    function PawnGenerationSystem:event_newLevel()
+        self.playerHasCommanded = false
+    end
     function PawnGenerationSystem:event_playerCommand()
         self.playerHasCommanded = true
     end

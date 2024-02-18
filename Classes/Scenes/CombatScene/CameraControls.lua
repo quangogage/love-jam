@@ -42,7 +42,7 @@ end
 -----------------------------
 ---@param dt number
 function CameraControls:_keyboardMovement(dt)
-    local speed = settings.cameraWASDMoveSpeed * self.camera.zoom
+    local speed = settings.cameraWASDMoveSpeed * self.camera:getZoom()
     if love.keyboard.isDown('w') then
         self.camera.velocity.y = self.camera.velocity.y - speed * dt
     elseif love.keyboard.isDown('s') then
@@ -58,7 +58,7 @@ end
 -- Move the camera by pushing your mouse to the edge of the screen.
 function CameraControls:_mousePushMovement(dt)
     local x, y = love.mouse.getPosition()
-    local speed = settings.cameraPushMoveSpeed * self.camera.zoom
+    local speed = settings.cameraPushMoveSpeed * self.camera:getZoom()
 
     if x < SCREEN_EDGE_THRESHOLD then
         self.camera.velocity.x = self.camera.velocity.x - speed * dt
@@ -73,7 +73,7 @@ function CameraControls:_mousePushMovement(dt)
 end
 
 function CameraControls:_updateDrag(dt)
-    local speed = settings.cameraPanSpeed * self.camera.zoom
+    local speed = settings.cameraPanSpeed * self.camera:getZoom()
     if love.mouse.isDown(2) then
         if self.lastMouseX then
             local x, y = love.mouse.getPosition()
@@ -92,18 +92,19 @@ end
 function CameraControls:_cameraZoom(y)
     if y then
         if y < 0 then
-            self.camera.zoom = math.min(ZOOM_MAX,
-                self.camera.zoom + ZOOM_INCREMENT)
+            self.camera:setZoom(math.min(ZOOM_MAX,
+                self.camera.zoom + ZOOM_INCREMENT))
         elseif y > 0 then
-            self.camera.zoom = math.max(ZOOM_MIN,
-                self.camera.zoom - ZOOM_INCREMENT)
+            self.camera:setZoom(math.max(ZOOM_MIN,
+                self.camera.zoom - ZOOM_INCREMENT))
         end
     end
 end
 
 function CameraControls:_enforceWorldBounds()
-    local scaledWidth = love.graphics.getWidth() * self.camera.zoom
-    local scaledHeight = love.graphics.getHeight() * self.camera.zoom
+    local cameraZoom = self.camera:getZoom()
+    local scaledWidth = love.graphics.getWidth() * cameraZoom
+    local scaledHeight = love.graphics.getHeight() * cameraZoom
     local cameraX, cameraY = self.camera:getPosition()
     local center = {
         x = cameraX + scaledWidth / 2,

@@ -40,9 +40,23 @@ local Camera = Goop.Class({
 ----------------------------
 -- [[ Public Functions ]] --
 ----------------------------
+-- Zoom the camera out all the way smoothly while staying centered using
+-- zoomOffset.
+function Camera:setToMaxZoom()
+    self.zoom = ZOOM_MAX
+    self.zoomOffset.x = (love.graphics.getWidth() / 2) * (1 - self.zoom)
+    self.zoomOffset.y = (love.graphics.getHeight() / 2) * (1 - self.zoom)
+end
+function Camera:setZoom(zoom)
+    self.zoom = zoom
+end
+function Camera:getZoom()
+    return self.currentZoom
+end
 function Camera:getTranslatedMousePosition()
     local x, y = love.mouse.getPosition()
-    return x * self.currentZoom + self.position.x, y * self.currentZoom + self.position.y
+    local cameraX, cameraY = self:getPosition()
+    return x * self.currentZoom + cameraX, y * self.currentZoom + cameraY
 end
 function Camera:set()
     love.graphics.push()
@@ -66,6 +80,14 @@ function Camera:setPosition(x,y)
     if y then
         self.position.y = y - self.zoomOffset.y
     end
+end
+---@param x number
+---@param y number
+function Camera:centerOnPosition(x, y)
+    local scaledWidth = love.graphics.getWidth() * self.currentZoom
+    local scaledHeight = love.graphics.getHeight() * self.currentZoom
+    self.position.x = x - scaledWidth / 2 - self.zoomOffset.x
+    self.position.y = y - scaledHeight / 2 - self.zoomOffset.y
 end
 
 

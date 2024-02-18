@@ -192,7 +192,7 @@ function CombatScene:_generateLevel(index)
     local level = self.levels[index]
     for _, e in ipairs(level.entities) do
         if e.className == 'EnemyBase' then
-            util.entityAssembler.assemble(
+            self.enemyBase = util.entityAssembler.assemble(
                 self.world, 'Base',
                 e.position.x, e.position.y
             )
@@ -221,15 +221,48 @@ end
 -- Start the camera animation for when you begin a level.
 function CombatScene:_startLevelCameraAnimation()
     self.animatingCamera = true
+    self.camera:centerOnPosition(
+        self.enemyBase.position.x,
+        self.enemyBase.position.y
+    )
 end
 
 -- Update the camera animation for when you begin a level.
 function CombatScene:_updateLevelCameraAnimation(dt)
+    if self.animatingCamera then
+        local cameraX, cameraY = self.camera:getPosition()
+        local scaledWidth  = love.graphics.getWidth() * self.camera.zoom
+        local scaledHeight = love.graphics.getHeight() * self.camera.zoom
+        local targetX      = self.friendlyBase.position.x - scaledWidth / 2
+        local targetY      = self.friendlyBase.position.y - scaledHeight / 2
+        local speed        = 2500
+        if targetX < cameraX then
+            self.camera.velocity.x = self.camera.velocity.x - speed * dt
+        elseif targetX > cameraX then
+            self.camera.velocity.x = self.camera.velocity.x + speed * dt
+        end
+        if targetY < cameraY then
+            self.camera.velocity.y = self.camera.velocity.y - speed * dt
+        elseif targetY > cameraY then
+            self.camera.velocity.y = self.camera.velocity.y + speed * dt
+        end
+        if math.abs(targetX - cameraX) < 1 and
+        math.abs(targetY - cameraY) < 1 then
+            self:_endLevelCameraAnimation()
+        end
+    end
 end
 
 -- End the camera animation for when you begin a level.
 function CombatScene:_endLevelCameraAnimation()
     if self.animatingCamera then
+        self.camera.velocity.x = 0
+        self.camera.velocity.y = 0
+        self.camera:centerOnPosition(
+            self.friendlyBase.position.x,
+            self.friendlyBase.position.y
+        )
+        self.camera:setToMaxZoom()
         self.animatingCamera = false
     end
 end

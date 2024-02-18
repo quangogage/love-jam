@@ -1,4 +1,9 @@
 ---@author Gage Henderson 2024-02-17 08:49
+-- 
+-- The menu at the bottom of the screen listing every pawn you can buy.
+--
+-- Actual creation of the cards is handled in CombatScene via the 
+-- `interface_attemptSpawnPawn` event.
 
 local palette               = require('lists.interfaceColorPalette')
 local pawnTypes             = require('lists.pawnTypes')
@@ -44,6 +49,7 @@ function PawnSelectionMenu:mousepressed(x, y, button)
         for _, card in ipairs(self.cards) do
             if x > card.position.x and x < card.position.x + card.dimensions.width and
             y > card.position.y and y < card.position.y + card.dimensions.height then
+                -- Resolved in CombatScene.
                 self.eventManager:broadcast(
                     'interface_attemptSpawnPawn', card.assemblageName
                 )
@@ -63,8 +69,7 @@ function PawnSelectionMenu:_initCards()
         local card = PawnSelectionCard({
             position       = {
                 x = x,
-                y = love.graphics.getHeight() - self.height +
-                VERTICAL_CARD_PADDING / 2
+                y = love.graphics.getHeight() - self.height + VERTICAL_CARD_PADDING / 2
             },
             name           = pawnType.name,
             price          = pawnType.price,

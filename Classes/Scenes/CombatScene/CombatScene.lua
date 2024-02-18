@@ -160,10 +160,11 @@ function CombatScene:_createSubscriptions()
                                                            :subscribe(
             'interface_attemptSpawnPawn',
             function ()
+                local angle    = math.random() * math.pi * 2
+                local distance = math.random(10, 50)
+                local x,y      = self:_getRandomSpawnPoint()
                 local pawn = util.entityAssembler.assemble(self.world,
-                    'basicPawn',
-                    self.friendlyBase.position.x, self.friendlyBase.position.y,
-                    true
+                    'basicPawn', x, y, true
                 )
                 self.world:emit('event_pawnSpawned', pawn)
             end
@@ -226,5 +227,12 @@ function CombatScene:_generateLevel(index)
     }
 end
 
+---@return number, number
+function CombatScene:_getRandomSpawnPoint()
+    local angle    = math.random() * math.pi * 2
+    local distance = math.random(10, 50)
+    return self.friendlyBase.position.x + math.cos(angle) * distance,
+           self.friendlyBase.position.y + math.sin(angle) * distance
+end
 
 return CombatScene

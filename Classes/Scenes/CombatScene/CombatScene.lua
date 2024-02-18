@@ -13,16 +13,12 @@
 local util                   = require('util')({ 'entityAssembler' })
 local levels                 = require('lists.levels')
 local Camera                 = require('Classes.Camera')
-local CameraControls         = require(
-'Classes.Scenes.CombatScene.CameraControls')
-local FriendlySpawnHandler   = require(
-'Classes.Scenes.CombatScene.FriendlySpawnHandler')
-local LevelStartAnimation    = require(
-'Classes.Scenes.CombatScene.LevelStartAnimation')
-local CombatInterface        = require(
-'Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
-local LevelTransitionHandler = require(
-'Classes.Scenes.CombatScene.LevelTransitionHandler')
+local CameraControls         = require('Classes.Scenes.CombatScene.CameraControls')
+local FriendlySpawnHandler   = require('Classes.Scenes.CombatScene.FriendlySpawnHandler')
+local PowerupStateManager    = require('Classes.Scenes.CombatScene.PowerupStateManager')
+local LevelStartAnimation    = require('Classes.Scenes.CombatScene.LevelStartAnimation')
+local CombatInterface        = require('Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
+local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
 
 ---@class CombatScene
 ---@field concord Concord
@@ -35,6 +31,7 @@ local LevelTransitionHandler = require(
 ---@field levelStartAnimation LevelStartAnimation
 ---@field levels table[]
 ---@field friendlySpawnHandler FriendlySpawnHandler
+---@field powerupStateManager PowerupStateManager
 ---@field cameraControls CameraControls
 ---@field currentLevelIndex integer
 ---@field levelComplete boolean
@@ -54,10 +51,10 @@ function CombatScene:init()
     self:_initWorld()
     self.camera                 = Camera()
     self.interface              = CombatInterface(self.eventManager)
-    self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager,
-        self.world, self)
+    self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self)
+    self.powerupStateManager    = PowerupStateManager(self.eventManager)
     self.cameraControls         = CameraControls(self.camera, self.world)
-    self.levelTransitionHandler = LevelTransitionHandler()
+    self.levelTransitionHandler = LevelTransitionHandler(self.eventManager)
     self:_loadComponents()
     self:_loadSystems()
     self:_initLevels()
@@ -70,6 +67,7 @@ function CombatScene:init()
 end
 function CombatScene:destroy()
     self.friendlySpawnHandler:destroy()
+    self.levelTransitionHandler:destroy()
 end
 function CombatScene:update(dt)
     if not self.levelComplete then
@@ -95,14 +93,13 @@ end
 function CombatScene:keypressed(key)
     if not self.levelComplete then
         self.world:emit('keypressed', key)
-        self.interface:keypressed(key)
         self.levelStartAnimation:endAnimation()
     end
+    self.interface:keypressed(key)
 end
 function CombatScene:mousepressed(x, y, button)
+    local didClickInterface = self.interface:mousepressed(x, y, button)
     if not self.levelComplete then
-        local didClickInterface = self.interface:mousepressed(x, y, button)
-
         if not didClickInterface then
             self.world:emit('mousepressed', x, y, button)
         end
@@ -191,8 +188,7 @@ end
 function CombatScene:_drawWorldBoundary()
     love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.setLineWidth(1)
-    love.graphics.rectangle('line', 0, 0, self.world.bounds.width,
-        self.world.bounds.height)
+    love.graphics.rectangle('line', 0, 0, self.world.bounds.width, self.world.bounds.height)
 end
 
 function CombatScene:_initLevels()

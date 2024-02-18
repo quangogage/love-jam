@@ -1,9 +1,10 @@
 ---@author Gage Henderson 2024-02-18 09:07
 --
----@class PowerupSelectionMenu
 -- Choose wisely...
 --
 -- Initialized in LevelTransitionHandler
+--
+-- See `PowerupStateManager` for how powerups are tracked / applied.
 --
 
 local CHOICES              = 3
@@ -11,7 +12,13 @@ local CHOICES              = 3
 local powerups             = require('lists.powerups')
 local PowerupCard          = require('Classes.Scenes.CombatScene.PowerupSelectionMenu.PowerupCard')
 
+---@class PowerupSelectionMenu
+---@field eventManager EventManager
+---@field powerupCards PowerupCard[]
+---@field active boolean
+---@field selectedPowerupName string
 local PowerupSelectionMenu = Goop.Class({
+    arguments = { 'eventManager' },
     static = {
         powerupCards = {}
     }
@@ -30,6 +37,12 @@ end
 --------------------------
 -- [[ Core Functions ]] --
 --------------------------
+function PowerupSelectionMenu:init()
+    self:_createSubscriptions()
+end
+function PowerupSelectionMenu:destroy()
+    self:_destroySubscriptions()
+end
 function PowerupSelectionMenu:update(dt)
     if self.active then
         for _, card in ipairs(self.powerupCards) do
@@ -49,12 +62,13 @@ function PowerupSelectionMenu:draw()
     end
 end
 function PowerupSelectionMenu:mousepressed(x, y, button)
-    if self.active then
+    if self.active and button == 1 then
         for _, card in ipairs(self.powerupCards) do
-            if x > card.position.x and x < card.position.x + card.width and 
+            if x > card.position.x and x < card.position.x + card.width and
             y > card.position.y and y < card.position.y + card.height then
                 self:_unselectAllCards()
                 card:select()
+                self.selectedPowerupName = card.name
             end
         end
     end
@@ -97,6 +111,31 @@ function PowerupSelectionMenu:_unselectAllCards()
 end
 function PowerupSelectionMenu:_selectCard(card)
     card:select()
+end
+
+function PowerupSelectionMenu:_createSubscriptions()
+    self.subscriptions = {}
+    
+    -- Triggered in `PawnSelectionMenu`
+    self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager:subscribe(
+        'interface_attemptSpawnPawn',
+        function (pawnType)
+            self:_selectPawnType(pawnType)
+        end
+    )
+end
+function PowerupSelectionMenu:_destroySubscriptions()
+    for eventName, uuid in pairs(self.subscriptions) do
+        self.eventManager:unsubscribe(eventName, uuid)
+    end
+end
+
+---@param pawnType string
+function PowerupSelectionMenu:_selectPawnType(pawnType)
+    if self.selectedPowerupName then
+        -- Resolved in `PowerupStateManager`
+        self.eventManager:broadcast("interface_addPowerupToType", pawnType, self.selectedPowerupName)
+    end
 end
 
 return PowerupSelectionMenu

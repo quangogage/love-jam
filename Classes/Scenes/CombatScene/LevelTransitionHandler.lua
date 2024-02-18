@@ -19,8 +19,11 @@ local PowerupSelectionMenu = require(
 )
 
 ---@class LevelTransitionHandler
+---@field eventManager EventManager
 ---@field levelComplete boolean
+---@field powerupSelectionMenu PowerupSelectionMenu
 local LevelTransitionHandler = Goop.Class({
+    arguments = { 'eventManager' },
     static = {
         levelComplete = false
     }
@@ -40,7 +43,10 @@ end
 -- [[ Core Functions ]] --
 --------------------------
 function LevelTransitionHandler:init()
-    self.powerupSelectionMenu = PowerupSelectionMenu()
+    self.powerupSelectionMenu = PowerupSelectionMenu(self.eventManager)
+end
+function LevelTransitionHandler:destroy()
+    self.powerupSelectionMenu:destroy()
 end
 function LevelTransitionHandler:update(dt)
     self.powerupSelectionMenu:update(dt)

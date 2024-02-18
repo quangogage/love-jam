@@ -2,8 +2,8 @@
 --
 --
 
-local TEXT_PADDING = 15
-local NAME_FONT = love.graphics.newFont('assets/fonts/BebasNeue-Regular.ttf', 34)
+local TEXT_PADDING     = 15
+local NAME_FONT        = love.graphics.newFont('assets/fonts/BebasNeue-Regular.ttf', 34)
 local DESCRIPTION_FONT = love.graphics.newFont('assets/fonts/RobotoCondensed-Light.ttf', 24)
 
 ---@class PowerupCard

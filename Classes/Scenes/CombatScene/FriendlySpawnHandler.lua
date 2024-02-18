@@ -27,8 +27,8 @@ local FriendlySpawnHandler = Goop.Class({
 ----------------------------
 -- Triggered by the `interface_attemptSpawnPawn` event.
 ---@param pawnType string The type of pawn to spawn.
----@param x number
----@param y number
+---@param x? number
+---@param y? number
 function FriendlySpawnHandler:_attemptSpawnPawn(pawnType, x, y)
     if not self.combatScene.levelComplete then
         x = x or love.math.random(self.spawnZone.x, self.spawnZone.x + self.spawnZone.width)

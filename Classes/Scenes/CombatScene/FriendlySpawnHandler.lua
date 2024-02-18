@@ -8,13 +8,15 @@ local util = require('util')({ 'entityAssembler' })
 ---@class FriendlySpawnHandler
 ---@field eventManager EventManager
 ---@field world World
----@field spawnZone { x: number, y: number, width: number, height: number }
+---@field powerupStateManager PowerupStateManager
 ---@field combatScene CombatScene
+---@field spawnZone table
 local FriendlySpawnHandler = Goop.Class({
     arguments = {
-        { 'eventManager', 'table' },
-        { 'world',        'table' },
-        { 'combatScene',  'table' }
+        { 'eventManager',        'table' },
+        { 'world',               'table' },
+        { 'powerupStateManager', 'table' },
+        { 'combatScene',         'table' },
     },
     static = {
         spawnZone = { x = 0, y = 0, width = 0, height = 0 }

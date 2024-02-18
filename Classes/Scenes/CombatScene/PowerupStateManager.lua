@@ -8,6 +8,15 @@
 ---@class PowerupStateManager
 ---@field eventManager EventManager
 ---@field pawnTypes table<string, table<string, {name: string, count: integer}>>
+-- pawnTypes = {
+--    ["BasicPawn"] = {
+--        ["Fast Walker"] = {
+--            name = "Fast Walker",
+--            count = 1
+--        }
+--    },
+--    ...
+--}
 local PowerupStateManager = Goop.Class({
     arguments = { 'eventManager' },
     static = {
@@ -35,6 +44,12 @@ function PowerupStateManager:addPowerup(pawnType, powerupName)
     end
 end
 
+-- Get all of the powerups for a given pawn type.
+---@param pawnType string
+---@return table<string, {name: string, count: integer}> | nil
+function PowerupStateManager:getPowerupsForType(pawnType)
+    return self.pawnTypes[pawnType]
+end
 
 --------------------------
 -- [[ Core Functions ]] --

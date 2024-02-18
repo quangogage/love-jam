@@ -1,12 +1,13 @@
 ---@author Gage Henderson
 --
 
----@class Game
-local Game = Goop.Class({})
+local EventManager = require('Classes.EventManager')
 local sceneClasses = {
     CombatScene = require('Classes.Scenes.CombatScene.CombatScene'),
 }
 
+---@class Game
+local Game         = Goop.Class({})
 
 ----------------------------
 -- [[ Public Functions ]] --
@@ -21,6 +22,10 @@ end
 --------------------------
 -- [[ Core Functions ]] --
 --------------------------
+function Game:init()
+    self.eventManager = EventManager()
+    self:setScene('CombatScene', self.eventManager)
+end
 function Game:update(dt)
     if self.currentScene then
         self.currentScene:update(dt)

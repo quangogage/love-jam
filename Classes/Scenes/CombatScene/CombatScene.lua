@@ -10,11 +10,14 @@ local Vec2            = require('Classes.Types.Vec2')
 local Camera          = require('Classes.Camera')
 local CombatInterface = require('Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
 
+
 ---@class CombatScene
 ---@field concord Concord
 ---@field camera Camera
 ---@field world World
-local CombatScene = Goop.Class({})
+local CombatScene = Goop.Class({
+    arguments = {"eventManager"}
+})
 
 
 --------------------------

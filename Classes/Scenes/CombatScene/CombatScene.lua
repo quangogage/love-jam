@@ -187,6 +187,7 @@ end
 function CombatScene:_initLevels()
     self.levels = {}
     for _, level in pairs(levels) do
+        level.level = tonumber(level.name)
         table.insert(self.levels, level)
     end
     table.sort(self.levels, function (a, b)

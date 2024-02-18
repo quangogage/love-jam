@@ -36,14 +36,14 @@ function Game:draw()
         self.currentScene:draw()
     end
 end
-function Game:mousepressed(x,y,button)
+function Game:mousepressed(x, y, button)
     if self.currentScene then
-        self.currentScene:mousepressed(x,y,button)
+        self.currentScene:mousepressed(x, y, button)
     end
 end
-function Game:mousereleased(x,y,button)
+function Game:mousereleased(x, y, button)
     if self.currentScene then
-        self.currentScene:mousereleased(x,y,button)
+        self.currentScene:mousereleased(x, y, button)
     end
 end
 function Game:keypressed(key)

@@ -6,10 +6,12 @@
 
 local PawnSelectionMenu = require("Classes.Scenes.CombatScene.CombatInterface.PawnSelectionMenu")
 
-local CombatInterface = Goop.Class({})
+local CombatInterface = Goop.Class({
+    arguments = {'eventManager'}
+})
 
 function CombatInterface:init()
-    self.pawnSelectionMenu = PawnSelectionMenu()
+    self.pawnSelectionMenu = PawnSelectionMenu(self.eventManager)
 end
 function CombatInterface:update(dt)
     self.pawnSelectionMenu:update(dt)

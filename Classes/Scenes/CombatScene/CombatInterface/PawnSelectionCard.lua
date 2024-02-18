@@ -13,6 +13,7 @@ local Vec2 = require('Classes.Types.Vec2')
 ---@field nameFont love.Font
 ---@field descriptionFont love.Font
 ---@field textPadding number
+---@field eventManager EventManager
 local PawnSelectionCard = Goop.Class({
     parameters = {
         { 'position',       'table' },
@@ -20,6 +21,7 @@ local PawnSelectionCard = Goop.Class({
         { 'assemblageName', 'string' },
         { 'description',    'string' },
         { 'height',         'number' },
+        { 'eventManager',   'table' }
     },
     static = {
         nameFont        = love.graphics.newFont(16),
@@ -46,7 +48,15 @@ function PawnSelectionCard:draw()
     y = self:_printName(y)
     y = self:_printDescription(y)
 end
-
+function PawnSelectionCard:mousepressed(x, y, button)
+    if x > self.position.x and x < self.position.x + self.dimensions.width and
+    y > self.position.y and y < self.position.y + self.dimensions.height and
+    button == 1 then
+        self.eventManager:broadcast(
+            'interface_attemptSpawnPawn', self.assemblageName
+        )
+    end
+end
 
 -----------------------------
 -- [[ Private Functions ]] --

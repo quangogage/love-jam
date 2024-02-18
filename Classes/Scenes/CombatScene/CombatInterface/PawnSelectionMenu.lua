@@ -10,7 +10,9 @@ local VERTICAL_CARD_PADDING = 10
 ---@class PawnSelectionMenu
 ---@field height number
 ---@field cards PawnSelectionCard[]
+---@field eventManager EventManager
 local PawnSelectionMenu     = Goop.Class({
+    arguments = {'eventManager'},
     static = {
         cards = {},
         height = 200,
@@ -31,6 +33,9 @@ function PawnSelectionMenu:draw()
     self:_drawCards()
 end
 function PawnSelectionMenu:mousepressed(x, y, button)
+    for _, card in ipairs(self.cards) do
+        card:mousepressed(x, y, button)
+    end
     return y > love.graphics.getHeight() - self.height
 end
 
@@ -49,7 +54,8 @@ function PawnSelectionMenu:_initCards()
             name           = pawnType.name,
             assemblageName = pawnType.assemblageName,
             description    = pawnType.description,
-            height         = self.height - VERTICAL_CARD_PADDING
+            height         = self.height - VERTICAL_CARD_PADDING,
+            eventManager   = self.eventManager
         })
         table.insert(self.cards, card)
         x = x + card.dimensions.width + CARD_SPACING

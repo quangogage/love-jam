@@ -15,6 +15,9 @@ local CombatInterface = require('Classes.Scenes.CombatScene.CombatInterface.Comb
 ---@field concord Concord
 ---@field camera Camera
 ---@field world World
+---@field interface CombatInterface
+---@field eventManager EventManager
+---@field friendlyBase Base The player's base.
 local CombatScene = Goop.Class({
     arguments = {"eventManager"}
 })
@@ -26,15 +29,18 @@ local CombatScene = Goop.Class({
 function CombatScene:init()
     self.concord   = require('libs.Concord')
     self.camera    = Camera()
-    self.interface = CombatInterface()
+    self.interface = CombatInterface(self.eventManager)
     self:_initWorld()
     self:_loadComponents()
     self:_loadSystems()
     self:_generateLevel()
-
+    self:_createSubscriptions()
     -- DEV:
     console.world = self.world
     console:launchOptions()
+end
+function CombatScene:destroy()
+    self:_destroySubscriptions()
 end
 function CombatScene:update(dt)
     self.world:emit('update', dt)
@@ -135,10 +141,25 @@ end
 
 function CombatScene:_generateLevel()
     self.world.dimensions = Vec2(1280,720)
-    util.entityAssembler.assemble(self.world, 'Base',
+    self.friendlyBase = util.entityAssembler.assemble(self.world, 'Base',
         self.world.dimensions.x / 2,
         self.world.dimensions.y - 100,
         true
+    )
+end
+
+-- Subscribe to various events.
+function CombatScene:_createSubscriptions()
+    self.subscriptions = {}
+    self.subscriptions["interface_attemptSpawnPawn"] = self.eventManager:subscribe(
+        "interface_attemptSpawnPawn",
+        function ()
+            local pawn = util.entityAssembler.assemble(self.world, 'basicPawn',
+                self.friendlyBase.position.x, self.friendlyBase.position.y,
+                true
+            )
+            self.world:emit('event_pawnSpawned', pawn)
+        end
     )
 end
 

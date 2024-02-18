@@ -1,7 +1,6 @@
 require('globals')
 local Game = require('Classes.Game')
 local game
-local finalOutputCanvas
 
 function love.load()
     if arg[#arg] == "-debug" then require("mobdebug").start() end -- Zerobrane studio debugging.

@@ -17,5 +17,9 @@ end
 function CombatInterface:draw()
     self.pawnSelectionMenu:draw()
 end
+---@return boolean Whether or not we clicked an interface element.
+function CombatInterface:mousepressed(x, y, button)
+    return self.pawnSelectionMenu:mousepressed(x, y, button)
+end
 
 return CombatInterface

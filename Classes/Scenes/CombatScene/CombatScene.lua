@@ -5,7 +5,9 @@
 -- See `util.entityAssembler` for assemblages being loaded (and how to create
 -- them easily).
 
-local Camera = require('Classes.Camera')
+local util            = require("util")({ "entityAssembler" })
+local Vec2            = require('Classes.Types.Vec2')
+local Camera          = require('Classes.Camera')
 local CombatInterface = require('Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
 
 ---@class CombatScene
@@ -21,10 +23,11 @@ local CombatScene = Goop.Class({})
 function CombatScene:init()
     self.concord   = require('libs.Concord')
     self.camera    = Camera()
-    self.world     = self.concord.world()
     self.interface = CombatInterface()
+    self:_initWorld()
     self:_loadComponents()
     self:_loadSystems()
+    self:_generateLevel()
 
     -- DEV:
     console.world = self.world
@@ -54,16 +57,20 @@ function CombatScene:keypressed(key)
     end
 end
 function CombatScene:mousepressed(x, y, button)
-    self.world:emit('mousepressed', x, y, button)
+    local didClickInterface = self.interface:mousepressed(x, y, button)
 
-    -- Dev:
-    if button == 2 then
-        local util = require('util')({ 'entityAssembler' })
-        util.entityAssembler.assemble(self.world, 'basicTower', x, y)
-    elseif button == 3 then
-        local util = require('util')({ 'entityAssembler' })
-        local pawn = util.entityAssembler.assemble(self.world, 'basicPawn', x, y)
-        self.world:emit('event_pawnSpawned', pawn)
+    if not didClickInterface then
+        self.world:emit('mousepressed', x, y, button)
+
+        -- Dev:
+        if button == 2 then
+            local util = require('util')({ 'entityAssembler' })
+            util.entityAssembler.assemble(self.world, 'basicTower', x, y)
+        elseif button == 3 then
+            local util = require('util')({ 'entityAssembler' })
+            local pawn = util.entityAssembler.assemble(self.world, 'basicPawn', x, y)
+            self.world:emit('event_pawnSpawned', pawn)
+        end
     end
 end
 function CombatScene:mousereleased(x, y, button)
@@ -74,6 +81,11 @@ end
 -----------------------------
 -- [[ Private Functions ]] --
 -----------------------------
+function CombatScene:_initWorld()
+    ---@class World
+    ---@field dimensions Vec2
+    self.world = self.concord.world()
+end
 -- Manually load all systems.
 -- Can provide arguments to systems if needed.
 function CombatScene:_loadSystems()
@@ -116,6 +128,15 @@ function CombatScene:_loadComponents()
         end
     end
     loadFilesInDir('/ECS/Components/')
+end
+
+function CombatScene:_generateLevel()
+    self.world.dimensions = Vec2(1280,720)
+    util.entityAssembler.assemble(self.world, 'Base',
+        self.world.dimensions.x / 2,
+        self.world.dimensions.y - 100,
+        true
+    )
 end
 
 return CombatScene

@@ -7,6 +7,9 @@
 --
 -- Intended to be global.
 --
+-- Horrible way of handling this but the fastest and easiest.
+-- If you're reading this, it means I didn't have time to do it properly.
+--
 
 local Vec2 = require("Classes.Types.Vec2")
 
@@ -37,7 +40,9 @@ end
 ---@return number, number
 function RenderResolution:getMousePosition()
     local x,y = love.mouse.getPosition()
-    return x / self.scale, y / self.scale
+    local offsetX = (love.graphics.getWidth() - self.width * self.scale) / 2
+    local offsetY = (love.graphics.getHeight() - self.height * self.scale) / 2
+    return (x - offsetX) / self.scale, (y - offsetY) / self.scale
 end
 
 --------------------------

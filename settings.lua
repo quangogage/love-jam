@@ -3,7 +3,7 @@
 -- Used to store settings that should probably be customizable by the player.
 
 return {
-    cameraWASDMoveSpeed = 2000,
+    cameraWASDMoveSpeed = 10000,
     cameraPushMoveSpeed = 2000,
     cameraPanSpeed      = 1800000
 }

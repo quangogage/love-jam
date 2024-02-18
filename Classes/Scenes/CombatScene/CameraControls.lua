@@ -53,7 +53,7 @@ end
 
 ---@param dt number
 function CameraControls:_keyboardMovement(dt)
-    local speed = settings.cameraWASDMoveSpeed
+    local speed = settings.cameraWASDMoveSpeed * self.camera.zoom
     if love.keyboard.isDown('w') then
         self.velocity.y = self.velocity.y - speed * dt
     elseif love.keyboard.isDown('s') then
@@ -69,7 +69,7 @@ end
 -- Move the camera by pushing your mouse to the edge of the screen.
 function CameraControls:_mousePushMovement(dt)
     local x, y = love.mouse.getPosition()
-    local speed = settings.cameraPushMoveSpeed
+    local speed = settings.cameraPushMoveSpeed * self.camera.zoom
 
     if x < SCREEN_EDGE_THRESHOLD then
         self.velocity.x = self.velocity.x - speed * dt
@@ -84,7 +84,7 @@ function CameraControls:_mousePushMovement(dt)
 end
 
 function CameraControls:_updateDrag(dt)
-    local speed = settings.cameraPanSpeed
+    local speed = settings.cameraPanSpeed * self.camera.zoom
     if love.mouse.isDown(2) then
         if self.lastMouseX then
             local x, y = love.mouse.getPosition()

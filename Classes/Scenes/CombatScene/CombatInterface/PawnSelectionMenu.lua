@@ -15,7 +15,7 @@ local PawnSelectionMenu     = Goop.Class({
     arguments = {'eventManager'},
     static = {
         cards = {},
-        height = 200,
+        height = 230,
     }
 })
 

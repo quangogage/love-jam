@@ -27,9 +27,9 @@ local PawnSelectionCard = Goop.Class({
         { 'eventManager',   'table' }
     },
     static = {
-        nameFont        = love.graphics.newFont(16),
-        descriptionFont = love.graphics.newFont(11),
-        priceFont       = love.graphics.newFont(17),
+        nameFont        = love.graphics.newFont('assets/fonts/BebasNeue-Regular.ttf', 34),
+        descriptionFont = love.graphics.newFont('assets/fonts/RobotoCondensed-Light.ttf', 16),
+        priceFont       = love.graphics.newFont('assets/fonts/BebasNeue-Regular.ttf', 35),
     },
     dynamic = {
         position        = { x = 0, y = 0 },

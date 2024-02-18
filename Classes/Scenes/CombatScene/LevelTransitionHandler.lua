@@ -8,6 +8,9 @@
 --
 -- Level completion is checked for in DamageSystem.
 --
+-- If you are seeing any of this code it means I didn't have enough time to
+-- redo this heap of fuckin garbage. This entire system for transitioning,
+-- fading, etc (LevelStartAnimation too) is some stinky poo poo.
 --
 -- ──────────────────────────────────────────────────────────────────────
 -- Crude, ugly, and bad way of handling this high level stuff. But the fastest

@@ -34,9 +34,9 @@ local CombatScene = Goop.Class({
 function CombatScene:init()
     self.concord        = require('libs.Concord')
     self.camera         = Camera()
-    self.cameraControls = CameraControls(self.camera)
     self.interface      = CombatInterface(self.eventManager)
     self:_initWorld()
+    self.cameraControls = CameraControls(self.camera, self.world)
     self:_loadComponents()
     self:_loadSystems()
     self:_generateLevel()
@@ -152,8 +152,7 @@ end
 -- Subscribe to various events.
 function CombatScene:_createSubscriptions()
     self.subscriptions = {}
-    self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager
-                                                           :subscribe(
+    self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager:subscribe(
         'interface_attemptSpawnPawn',
         function ()
             local pawn = util.entityAssembler.assemble(self.world, 'basicPawn',

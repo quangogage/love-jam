@@ -13,8 +13,9 @@ local Vec2                  = require('Classes.Types.Vec2')
 ---@field velocity Vec2
 ---@field lastMouseX number
 ---@field lastMouseY number
+---@field world World
 local CameraControls        = Goop.Class({
-    arguments = { 'camera' },
+    arguments = { 'camera' , 'world' },
     static = {
         velocity = Vec2(0, 0)
     }
@@ -30,6 +31,7 @@ function CameraControls:update(dt)
     self:_mousePushMovement(dt)
     self:_updateDrag(dt)
     self:_cameraZoom()
+    self:_enforceWorldBounds()
 end
 function CameraControls:wheelmoved(x, y)
     self:_cameraZoom(y)
@@ -122,6 +124,31 @@ function CameraControls:_cameraZoom(y)
             self.camera.position.x = self.camera.position.x - xDiff
             self.camera.position.y = self.camera.position.y - yDiff
         end
+    end
+end
+
+function CameraControls:_enforceWorldBounds()
+    local scaledWidth = love.graphics.getWidth() * self.camera.zoom
+    local scaledHeight = love.graphics.getHeight() * self.camera.zoom
+    local center = {
+        x = self.camera.position.x + scaledWidth / 2,
+        y = self.camera.position.y + scaledHeight / 2
+    }
+    if center.x < self.world.bounds.x then
+        self.camera.position.x = self.world.bounds.x - scaledWidth / 2
+        self.velocity.x = 0
+    elseif center.x > self.world.bounds.x + self.world.bounds.width then
+        self.camera.position.x = self.world.bounds.x + self.world.bounds.width -
+        scaledWidth / 2
+        self.velocity.x = 0
+    end
+    if center.y < self.world.bounds.y then
+        self.camera.position.y = self.world.bounds.y - scaledHeight / 2
+        self.velocity.y = 0
+    elseif center.y > self.world.bounds.y + self.world.bounds.height then
+        self.camera.position.y = self.world.bounds.y + self.world.bounds.height -
+        scaledHeight / 2
+        self.velocity.y = 0
     end
 end
 

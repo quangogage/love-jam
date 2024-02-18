@@ -28,14 +28,14 @@ local FriendlySpawnHandler = Goop.Class({
 -- [[ Public Functions ]] --
 ----------------------------
 -- Triggered by the `interface_attemptSpawnPawn` event.
----@param pawnType string The type of pawn to spawn.
+---@param pawnTypeAssemblage string The name of the assemblage to spawn.
 ---@param x? number
 ---@param y? number
-function FriendlySpawnHandler:_attemptSpawnPawn(pawnType, x, y)
+function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, x, y)
     if not self.combatScene.levelComplete then
         x = x or love.math.random(self.spawnZone.x, self.spawnZone.x + self.spawnZone.width)
         y = y or love.math.random(self.spawnZone.y, self.spawnZone.y + self.spawnZone.height)
-        util.entityAssembler.assemble(self.world, pawnType, x, y, true)
+        util.entityAssembler.assemble(self.world, pawnTypeAssemblage, x, y, true)
     end
 end
 
@@ -66,8 +66,8 @@ end
 function FriendlySpawnHandler:_createSubscriptions()
     self.subscriptions = {}
     self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager:subscribe(
-        'interface_attemptSpawnPawn', function (pawnType, x, y)
-            self:_attemptSpawnPawn(pawnType, x, y)
+        'interface_attemptSpawnPawn', function (pawnTypeAssemblage, x, y)
+            self:attemptSpawnPawn(pawnTypeAssemblage, x, y)
         end
     )
 end

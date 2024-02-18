@@ -1,9 +1,12 @@
 ---@author Gage Henderson 2024-02-17 08:49
--- 
+--
+-- Initialized in `CombatInterface`.
+--
 -- The menu at the bottom of the screen listing every pawn you can buy.
 --
--- Actual creation of the cards is handled in CombatScene via the 
+-- Actual creation of the cards is handled in `FriendlySpawnHandler` via the
 -- `interface_attemptSpawnPawn` event.
+--
 
 local palette               = require('lists.interfaceColorPalette')
 local pawnTypes             = require('lists.pawnTypes')
@@ -17,9 +20,9 @@ local VERTICAL_CARD_PADDING = 10
 ---@field cards PawnSelectionCard[]
 ---@field eventManager EventManager
 local PawnSelectionMenu     = Goop.Class({
-    arguments = {'eventManager'},
+    arguments = { 'eventManager' },
     static = {
-        cards = {},
+        cards  = {},
         height = 230,
     }
 })
@@ -30,6 +33,10 @@ local PawnSelectionMenu     = Goop.Class({
 --------------------------
 function PawnSelectionMenu:init()
     self:_initCards()
+    self:_createSubscriptions()
+end
+function PawnSelectionMenu:destroy()
+    self:_destroySubscriptions()
 end
 function PawnSelectionMenu:update()
 end
@@ -39,9 +46,11 @@ function PawnSelectionMenu:draw()
 end
 function PawnSelectionMenu:keypressed(key)
     if self.cards[tonumber(key)] then
+        -- Resolved in `FriendlySpawnHandler`.
         self.eventManager:broadcast(
             'interface_attemptSpawnPawn', self.cards[tonumber(key)].assemblageName
         )
+        self.eventManager:broadcast('interface_selectPawnType', self.cards[tonumber(key)].name)
     end
 end
 function PawnSelectionMenu:mousepressed(x, y, button)
@@ -53,6 +62,7 @@ function PawnSelectionMenu:mousepressed(x, y, button)
                 self.eventManager:broadcast(
                     'interface_attemptSpawnPawn', card.assemblageName
                 )
+                self.eventManager:broadcast('interface_selectPawnType', card.name)
                 break
             end
         end
@@ -96,5 +106,23 @@ function PawnSelectionMenu:_drawCards()
     end
 end
 
-return PawnSelectionMenu
+function PawnSelectionMenu:_createSubscriptions()
+    self.subscriptions = {}
 
+    -- Broadcast from `PowerupStateManager`.
+    -- Sync powerup information for each card.
+    self.subscriptions["interface_syncPowerupState"] = self.eventManager:subscribe(
+        "interface_syncPowerupState",
+        function(pawnTypePowerups)
+            for _, card in pairs(self.cards) do
+                if pawnTypePowerups[card.name] then
+                    card:syncPowerups(pawnTypePowerups[card.name])
+                end
+            end
+        end
+    )
+end
+function PawnSelectionMenu:_destroySubscriptions()
+end
+
+return PawnSelectionMenu

@@ -115,10 +115,10 @@ end
 
 function PowerupSelectionMenu:_createSubscriptions()
     self.subscriptions = {}
-    
+
     -- Triggered in `PawnSelectionMenu`
-    self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager:subscribe(
-        'interface_attemptSpawnPawn',
+    self.subscriptions['interface_selectPawnType'] = self.eventManager:subscribe(
+        'interface_selectPawnType',
         function (pawnType)
             self:_selectPawnType(pawnType)
         end

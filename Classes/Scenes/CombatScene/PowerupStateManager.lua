@@ -38,18 +38,15 @@ function PowerupStateManager:addPowerup(pawnType, powerupName)
     end
 
     if not thisType[powerupName] then
-        thisType[powerupName] = {name = powerupName, count = 1}
+        self.pawnTypes[pawnType][powerupName] = {name = powerupName, count = 1}
     else
-        thisType[powerupName].count = thisType[powerupName].count + 1
+        self.pawnTypes[pawnType][powerupName].count = thisType[powerupName].count + 1
     end
+
+    -- As of writing only resolved in PawnSelectionMenu.
+    self.eventManager:broadcast('interface_syncPowerupState', self.pawnTypes)
 end
 
--- Get all of the powerups for a given pawn type.
----@param pawnType string
----@return table<string, {name: string, count: integer}> | nil
-function PowerupStateManager:getPowerupsForType(pawnType)
-    return self.pawnTypes[pawnType]
-end
 
 --------------------------
 -- [[ Core Functions ]] --
@@ -67,6 +64,7 @@ end
 -----------------------------
 function PowerupStateManager:_createSubscriptions()
     self.subscriptions = {}
+    -- Called from PowerupSelectionMenu.
     self.subscriptions["interface_addPowerupToType"] = self.eventManager:subscribe(
         "interface_addPowerupToType", function(pawnType, powerupName)
             self:addPowerup(pawnType, powerupName)

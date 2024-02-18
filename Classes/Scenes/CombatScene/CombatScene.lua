@@ -68,6 +68,7 @@ end
 function CombatScene:destroy()
     self.friendlySpawnHandler:destroy()
     self.levelTransitionHandler:destroy()
+    self.interface:destroy()
 end
 function CombatScene:update(dt)
     if not self.levelComplete then

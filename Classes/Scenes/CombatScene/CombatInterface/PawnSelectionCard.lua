@@ -14,7 +14,9 @@ local Vec2 = require('Classes.Types.Vec2')
 ---@field nameFont love.Font
 ---@field descriptionFont love.Font
 ---@field priceFont love.Font
+---@field powerupsFont love.Font
 ---@field textPadding number
+---@field powerups string[]
 ---@field eventManager EventManager
 local PawnSelectionCard = Goop.Class({
     parameters = {
@@ -30,8 +32,10 @@ local PawnSelectionCard = Goop.Class({
         nameFont        = love.graphics.newFont('assets/fonts/BebasNeue-Regular.ttf', 34),
         descriptionFont = love.graphics.newFont('assets/fonts/RobotoCondensed-Light.ttf', 16),
         priceFont       = love.graphics.newFont('assets/fonts/BebasNeue-Regular.ttf', 35),
+        powerupsFont    = love.graphics.newFont('assets/fonts/RobotoCondensed-Light.ttf', 16),
     },
     dynamic = {
+        powerups        = {},
         position        = { x = 0, y = 0 },
         backgroundColor = { 0.5, 0.5, 0.5 },
         dimensions      = Vec2(200, 0),
@@ -39,6 +43,18 @@ local PawnSelectionCard = Goop.Class({
     }
 })
 
+
+----------------------------
+-- [[ Public Functions ]] --
+----------------------------
+-- Sync powerups with PowerupStateManager.
+---@param powerups table<string, {name: string, count: number}>
+function PawnSelectionCard:syncPowerups(powerups)
+    self.powerups = {}
+    for _, powerup in pairs(powerups) do
+        table.insert(self.powerups, powerup.name .. " x" .. powerup.count)
+    end
+end
 
 --------------------------
 -- [[ Core Functions ]] --
@@ -51,6 +67,7 @@ function PawnSelectionCard:draw()
     self:_drawBackground()
     y = self:_printName(y)
     y = self:_printDescription(y)
+    y = self:_printPowerups(y)
     self:_printPrice()
 end
 
@@ -76,7 +93,7 @@ function PawnSelectionCard:_printName(y)
         self.dimensions.width - self.textPadding,
         'center'
     )
-    return y + self.nameFont:getHeight() + self.textPadding
+    return y + self.nameFont:getHeight()
 end
 ---@param y number
 ---@return number
@@ -89,7 +106,7 @@ function PawnSelectionCard:_printDescription(y)
         self.dimensions.width - self.textPadding,
         'center'
     )
-    return y + self.descriptionFont:getHeight() + self.textPadding
+    return y + self.descriptionFont:getHeight() + self.textPadding * 2
 end
 function PawnSelectionCard:_printPrice()
     local stringified = tostring(self.price)
@@ -101,6 +118,18 @@ function PawnSelectionCard:_printPrice()
         self.position.x + self.dimensions.width / 2 - self.priceFont:getWidth(str) / 2,
         self.position.y + self.dimensions.height - self.priceFont:getHeight() - self.textPadding
     )
+end
+function PawnSelectionCard:_printPowerups(y)
+    love.graphics.setColor(1,1,1)
+    love.graphics.setFont(self.powerupsFont)
+    for _, powerup in ipairs(self.powerups) do
+        love.graphics.print(
+            powerup,
+            self.position.x + self.textPadding/2, self.position.y + y
+        )
+        y = y + self.powerupsFont:getHeight()
+    end
+    return y
 end
 
 return PawnSelectionCard

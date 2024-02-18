@@ -32,9 +32,24 @@ function PawnSelectionMenu:draw()
     self:_drawBackground()
     self:_drawCards()
 end
+function PawnSelectionMenu:keypressed(key)
+    if self.cards[tonumber(key)] then
+        self.eventManager:broadcast(
+            'interface_attemptSpawnPawn', self.cards[tonumber(key)].assemblageName
+        )
+    end
+end
 function PawnSelectionMenu:mousepressed(x, y, button)
-    for _, card in ipairs(self.cards) do
-        card:mousepressed(x, y, button)
+    if button == 1 then
+        for _, card in ipairs(self.cards) do
+            if x > card.position.x and x < card.position.x + card.dimensions.width and
+            y > card.position.y and y < card.position.y + card.dimensions.height then
+                self.eventManager:broadcast(
+                    'interface_attemptSpawnPawn', card.assemblageName
+                )
+                break
+            end
+        end
     end
     return y > love.graphics.getHeight() - self.height
 end

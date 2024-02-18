@@ -48,15 +48,7 @@ function PawnSelectionCard:draw()
     y = self:_printName(y)
     y = self:_printDescription(y)
 end
-function PawnSelectionCard:mousepressed(x, y, button)
-    if x > self.position.x and x < self.position.x + self.dimensions.width and
-    y > self.position.y and y < self.position.y + self.dimensions.height and
-    button == 1 then
-        self.eventManager:broadcast(
-            'interface_attemptSpawnPawn', self.assemblageName
-        )
-    end
-end
+
 
 -----------------------------
 -- [[ Private Functions ]] --

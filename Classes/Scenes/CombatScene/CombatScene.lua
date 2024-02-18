@@ -56,6 +56,7 @@ function CombatScene:draw()
     self.interface:draw()
 end
 function CombatScene:keypressed(key)
+    self.interface:keypressed(key)
     if key == 'space' then
         local x, y = self.camera:getTranslatedMousePosition()
         local util = require('util')({ 'entityAssembler' })

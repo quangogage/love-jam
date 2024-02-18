@@ -1,11 +1,11 @@
 ---@author Gage Henderson 2024-02-16 09:02
 --
----@class CombatInterface
 -- Gui for CombatScene.
 --
 
 local PawnSelectionMenu = require("Classes.Scenes.CombatScene.CombatInterface.PawnSelectionMenu")
 
+---@class CombatInterface
 local CombatInterface = Goop.Class({
     arguments = {'eventManager'}
 })
@@ -19,9 +19,12 @@ end
 function CombatInterface:draw()
     self.pawnSelectionMenu:draw()
 end
----@return boolean Whether or not we clicked an interface element.
+---@return boolean - Whether or not we clicked an interface element.
 function CombatInterface:mousepressed(x, y, button)
     return self.pawnSelectionMenu:mousepressed(x, y, button)
+end
+function CombatInterface:keypressed(key)
+    self.pawnSelectionMenu:keypressed(key)
 end
 
 return CombatInterface

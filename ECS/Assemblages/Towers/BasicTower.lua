@@ -17,6 +17,6 @@ return function (e, x, y)
         :give('dimensions', 50, 100)
         :give('pawnGeneration', {
             pawnType = 'BasicPawn',
-            spawnRate = 5,
+            spawnRate = 10,
         })
 end

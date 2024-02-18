@@ -4,14 +4,18 @@
 --
 -- Makes sure entities stop targeting dead entities.
 
-return function (concord)
+---@param concord Concord | table
+---@param onLevelComplete function
+return function (concord, onLevelComplete)
 
     ---@class DamageSystem : System
     ---@field healthEntities Pawn[] | table[]
     ---@field targetingEntities Pawn[] | table[]
+    ---@field enemyBases Base[] | table[]
     local DamageSystem = concord.system({
         healthEntities    = { 'health' },
         targetingEntities = { 'target' },
+        enemyBases        = { 'isBase', 'hostile' }
     })
 
 
@@ -26,7 +30,7 @@ return function (concord)
         if world then
             if target.health then
                 target.health.value = target.health.value - damageAmount
-                world:emit("event_damageDealt", attacker, target, damageAmount)
+                world:emit('event_damageDealt', attacker, target, damageAmount)
             end
         end
     end
@@ -43,23 +47,22 @@ return function (concord)
                 local entity = self.healthEntities[i]
                 if entity.health.value <= 0 then
                     world:emit('event_entityDied', entity)
-                    self:_stopTargetingDeadEntity(entity)
                     entity:destroy()
                 end
             end
         end
+        self:_checkLevelComplete()
     end
 
 
     -----------------------------
     -- [[ Private Functions ]] --
     -----------------------------
-    ---@param deadEntity Pawn | table
-    function DamageSystem:_stopTargetingDeadEntity(deadEntity)
-        for _,e in ipairs(self.targetingEntities) do
-            if e.target.entity == deadEntity then
-                e:remove('target')
-            end
+    -- Check, after killing something, if the level is complete.
+    -- Right now this just means destroying the enemy base.
+    function DamageSystem:_checkLevelComplete()
+        if #self.enemyBases == 0 then
+            onLevelComplete()
         end
     end
 

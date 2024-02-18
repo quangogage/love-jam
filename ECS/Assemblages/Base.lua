@@ -7,6 +7,8 @@
 ---@field friendly? Friendly
 ---@field health Health
 ---@field dimensions Dimensions
+---@field unselectable Unselectable
+---@field isBase IsBase
 
 ---@param e Entity
 ---@param x number
@@ -19,6 +21,7 @@ return function (e, x, y, friendly)
         :give('health', 20)
         :give('renderRectangle', 60, 30)
         :give("unselectable")
+        :give("isBase")
 
     if friendly then
         e:give('friendly')

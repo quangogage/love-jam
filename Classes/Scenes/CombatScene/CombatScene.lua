@@ -7,20 +7,17 @@
 --
 -- Interface behavior is currently hooked into the game-world in here via
 -- the EventManager.
+--
+-- Level completion is checked for in DamageSystem.
 
-local util                 = require('util')({ 'entityAssembler' })
-local levels               = require('lists.levels')
-local Camera               = require('Classes.Camera')
-local CameraControls       = require('Classes.Scenes.CombatScene.CameraControls')
-local FriendlySpawnHandler = require(
-'Classes.Scenes.CombatScene.FriendlySpawnHandler')
-local LevelStartAnimation  = require(
-    'Classes.Scenes.CombatScene.LevelStartAnimation'
-)
-local CombatInterface      = require(
-    'Classes.Scenes.CombatScene.CombatInterface.CombatInterface'
-)
-
+local util                   = require('util')({ 'entityAssembler' })
+local levels                 = require('lists.levels')
+local Camera                 = require('Classes.Camera')
+local CameraControls         = require('Classes.Scenes.CombatScene.CameraControls')
+local FriendlySpawnHandler   = require('Classes.Scenes.CombatScene.FriendlySpawnHandler')
+local LevelStartAnimation    = require('Classes.Scenes.CombatScene.LevelStartAnimation')
+local CombatInterface        = require('Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
+local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
 
 ---@class CombatScene
 ---@field concord Concord
@@ -29,9 +26,17 @@ local CombatInterface      = require(
 ---@field interface CombatInterface
 ---@field eventManager EventManager
 ---@field friendlyBase Base The player's base.
+---@field enemyBase Base The enemy's base.
 ---@field levelStartAnimation LevelStartAnimation
+---@field levels table[]
+---@field friendlySpawnHandler FriendlySpawnHandler
+---@field cameraControls CameraControls
+---@field currentLevelIndex integer
 local CombatScene = Goop.Class({
     arguments = { 'eventManager' },
+    static = {
+        currentLevelIndex = 1
+    }
 })
 
 
@@ -40,22 +45,17 @@ local CombatScene = Goop.Class({
 --------------------------
 function CombatScene:init()
     self.concord   = require('libs.Concord')
-    self.camera    = Camera()
-    self.interface = CombatInterface(self.eventManager)
     self:_initWorld()
-    self.friendlySpawnHandler = FriendlySpawnHandler(
-        self.eventManager, self.world
-    )
-    self.cameraControls = CameraControls(self.camera, self.world)
+    self.camera                 = Camera()
+    self.interface              = CombatInterface(self.eventManager)
+    self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world)
+    self.cameraControls         = CameraControls(self.camera, self.world)
+    self.levelTransitionHandler = LevelTransitionHandler()
     self:_loadComponents()
     self:_loadSystems()
     self:_initLevels()
-    self:_generateLevel(1)
-
-    -- Start the intro animation
-    -- TODO: Dynamic level number
-    self.levelStartAnimation = LevelStartAnimation(self.camera, self, 1)
-
+    self:_generateLevel(self.currentLevelIndex)
+    self.levelStartAnimation = LevelStartAnimation(self.camera, self, self.currentLevelIndex)
     -- DEV:
     console.world = self.world
     console:launchOptions()
@@ -129,7 +129,7 @@ function CombatScene:_loadSystems()
     loadSystem('ClickHandlerSystem', self.camera)
     loadSystem('MouseControlsSystem', self.camera)
     loadSystem('Pawn.EnemyPawnTargetSystem')
-    loadSystem('DamageSystem')
+    loadSystem('DamageSystem', function() self.levelTransitionHandler:onLevelComplete() end)
     loadSystem('Pawn.PawnAISystem')
     loadSystem('Pawn.PawnAttackSystem')
     loadSystem('Pawn.PawnPushSystem')
@@ -210,10 +210,6 @@ function CombatScene:_generateLevel(index)
         width = level.dimensions.width,
         height = level.dimensions.height
     }
-end
-
----@return number, number
-function CombatScene:_getRandomSpawnPoint()
 end
 
 return CombatScene

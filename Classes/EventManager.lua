@@ -20,16 +20,20 @@ local EventManager = Goop.Class({
 ---@param callback function
 ---@return string
 function EventManager:subscribe(eventName, callback)
+    local uuid = self:_generateUUID()
     self:_ensureEventExists(eventName)
-    table.insert(self.events[eventName].listeners, callback)
-    return self:_generateUUID()
+    table.insert(self.events[eventName].listeners, {
+        callback = callback,
+        uuid = uuid
+    })
+    return uuid
 end
 ---@param eventName string
----@param callback function
-function EventManager:unsubscribe(eventName, callback)
+---@param uuid string
+function EventManager:unsubscribe(eventName, uuid)
     self:_ensureEventExists(eventName)
     for i, listener in ipairs(self.events[eventName].listeners) do
-        if listener == callback then
+        if listener.uuid == uuid then
             table.remove(self.events[eventName].listeners, i)
             break
         end
@@ -40,7 +44,7 @@ end
 function EventManager:broadcast(eventName, ...)
     self:_ensureEventExists(eventName)
     for _, listener in ipairs(self.events[eventName].listeners) do
-        listener(...)
+        listener.callback(...)
     end
 end
 

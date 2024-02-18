@@ -18,6 +18,7 @@ return function (e, x, y, friendly)
         :give('dimensions', 60, 30)
         :give('health', 20)
         :give('renderRectangle', 60, 30)
+        :give("unselectable")
 
     if friendly then
         e:give('friendly')

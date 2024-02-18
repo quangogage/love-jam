@@ -4,6 +4,9 @@
 --
 -- See `util.entityAssembler` for assemblages being loaded (and how to create
 -- them easily).
+--
+-- Interface behavior is currently hooked into the game-world in here via
+-- the EventManager.
 
 local util            = require("util")({ "entityAssembler" })
 local Vec2            = require('Classes.Types.Vec2')

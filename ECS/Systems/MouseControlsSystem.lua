@@ -113,13 +113,15 @@ return function (concord, camera)
         if self.selectionRectangle and love.mouse.isDown(1) then
             local rect = self:_getAbsoluteSelectionRectangle()
             for _, entity in ipairs(self.friendlyEntities) do
-                if rect.x + rect.width > entity.position.x - entity.dimensions.width / 2 and
-                rect.x < entity.position.x + entity.dimensions.width / 2 and
-                rect.y + rect.height > entity.position.y - entity.dimensions.height / 2 and
-                rect.y < entity.position.y + entity.dimensions.height / 2 then
-                    entity:give('selected')
-                else
-                    entity:remove('selected')
+                if not entity.unselectable then
+                    if rect.x + rect.width > entity.position.x - entity.dimensions.width / 2 and
+                    rect.x < entity.position.x + entity.dimensions.width / 2 and
+                    rect.y + rect.height > entity.position.y - entity.dimensions.height / 2 and
+                    rect.y < entity.position.y + entity.dimensions.height / 2 then
+                        entity:give('selected')
+                    else
+                        entity:remove('selected')
+                    end
                 end
             end
         end

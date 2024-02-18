@@ -213,8 +213,12 @@ return function (concord, camera)
     -- Set the target for all selected entities.
     ---@param data table
     function MouseControlsSystem:_setTarget(data)
+        local world = self:getWorld()
         for _,e in ipairs(self.selectedEntities) do
             e:give('target', data)
+        end
+        if world then
+            world:emit("event_playerCommand", data)
         end
     end
 

@@ -47,7 +47,7 @@ return function (concord)
                 arrivalThreshold = DEFAULT_ARRIVAL_THRESHOLD
             elseif e.target.entity then
                 x, y = e.target.entity.position.x, e.target.entity.position.y
-                arrivalThreshold = self:_getArrivalThreshold(e)
+                arrivalThreshold = e.combatProperties.range
             end
 
 
@@ -70,14 +70,6 @@ return function (concord)
                 end
             end
         end
-    end
-
-    -- Get how close the pawn needs to be to the target before they
-    -- stop moving.
-    ---@param e Pawn | table
-    ---@return number
-    function PawnAISystem:_getArrivalThreshold(e)
-        return e.combatProperties.range
     end
 
     -- Get the distance between the pawn and the target.

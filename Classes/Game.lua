@@ -4,6 +4,7 @@
 local EventManager = require('Classes.EventManager')
 local sceneClasses = {
     CombatScene = require('Classes.Scenes.CombatScene.CombatScene'),
+    MainMenuScene = require('Classes.Scenes.MainMenuScene.MainMenuScene'),
 }
 
 ---@class Game
@@ -24,7 +25,9 @@ end
 --------------------------
 function Game:init()
     self.eventManager = EventManager()
-    self:setScene('CombatScene', self.eventManager)
+    self:setScene('MainMenuScene', function()
+        self:setScene('CombatScene',self.eventManager)
+    end)
 end
 function Game:update(dt)
     if self.currentScene then

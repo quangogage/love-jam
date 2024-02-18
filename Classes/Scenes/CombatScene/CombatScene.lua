@@ -103,6 +103,7 @@ function CombatScene:_loadSystems()
     end
     loadSystem('RenderSystem')
     loadSystem('PhysicsSystem')
+    loadSystem('ClickHandlerSystem', self.camera)
     loadSystem('MouseControlsSystem', self.camera)
     loadSystem('Pawn.EnemyPawnTargetSystem')
     loadSystem('DamageSystem')
@@ -138,15 +139,16 @@ function CombatScene:_createSubscriptions()
     self.subscriptions = {}
     self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager
                                                            :subscribe(
-        'interface_attemptSpawnPawn',
-        function ()
-            local pawn = util.entityAssembler.assemble(self.world, 'basicPawn',
-                self.friendlyBase.position.x, self.friendlyBase.position.y,
-                true
-            )
-            self.world:emit('event_pawnSpawned', pawn)
-        end
-    )
+            'interface_attemptSpawnPawn',
+            function ()
+                local pawn = util.entityAssembler.assemble(self.world,
+                    'basicPawn',
+                    self.friendlyBase.position.x, self.friendlyBase.position.y,
+                    true
+                )
+                self.world:emit('event_pawnSpawned', pawn)
+            end
+        )
 end
 
 -- Unsubscribe from all events.

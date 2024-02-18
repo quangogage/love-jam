@@ -18,10 +18,16 @@ local PowerupCard          = require('Classes.Scenes.CombatScene.PowerupSelectio
 ---@field active boolean
 ---@field selectedPowerupName string
 ---@field levelTransitionHandler LevelTransitionHandler
+---@field fadingIn boolean
+---@field overlay table
 local PowerupSelectionMenu = Goop.Class({
     arguments = { 'eventManager', 'levelTransitionHandler' },
     static = {
-        powerupCards = {}
+        powerupCards = {},
+        overlay = {
+            alpha     = 0,
+            fadeSpeed = 5
+        }
     }
 })
 
@@ -31,11 +37,15 @@ local PowerupSelectionMenu = Goop.Class({
 ----------------------------
 function PowerupSelectionMenu:show()
     self:_generatePowerupCards()
-    self.active = true
+    self.fadingIn      = true
+    self.overlay.alpha = 1
+    self.active        = true
 end
 function PowerupSelectionMenu:hide()
-    self.active = false
+    self.active              = false
     self.selectedPowerupName = nil
+    self.overlay.alpha       = 0
+    self.fadingIn            = false
     self:_unselectAllCards()
 end
 
@@ -55,6 +65,7 @@ function PowerupSelectionMenu:update(dt)
             card:update(dt)
         end
     end
+    self:_fadeOverlay(dt)
 end
 function PowerupSelectionMenu:draw()
     if self.active then
@@ -66,6 +77,7 @@ function PowerupSelectionMenu:draw()
             card:draw()
         end
     end
+    self:_drawOverlay()
 end
 function PowerupSelectionMenu:mousepressed(x, y, button)
     if self.active and button == 1 then
@@ -144,6 +156,23 @@ function PowerupSelectionMenu:_selectPawnType(pawnType)
         -- Resolved in `PowerupStateManager`
         self.eventManager:broadcast('interface_addPowerupToType', pawnType, self.selectedPowerupName)
         self.levelTransitionHandler:endPowerupSelection()
+    end
+end
+
+function PowerupSelectionMenu:_fadeOverlay(dt)
+    if self.fadingIn then
+        self.overlay.alpha = self.overlay.alpha - self.overlay.fadeSpeed * dt
+        if self.overlay.alpha <= 0 then
+            self.overlay.alpha = 0
+            self.fadingIn = false
+        end
+    end
+end
+
+function PowerupSelectionMenu:_drawOverlay()
+    if self.overlay.alpha > 0 then
+        love.graphics.setColor(0, 0, 0, self.overlay.alpha)
+        love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     end
 end
 

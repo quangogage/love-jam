@@ -56,6 +56,7 @@ end
 function CombatScene:draw()
     self.camera:set()
     self.world:emit('draw')
+    self:_drawWorldBoundary()
     self.camera:unset()
     self.interface:draw()
 end
@@ -139,7 +140,7 @@ function CombatScene:_loadComponents()
 end
 
 function CombatScene:_generateLevel()
-    self.world.dimensions = Vec2(1280, 720)
+    self.world.dimensions = Vec2(1280, 2500)
     self.friendlyBase = util.entityAssembler.assemble(self.world, 'Base',
         self.world.dimensions.x / 2,
         self.world.dimensions.y - 100,
@@ -168,6 +169,13 @@ function CombatScene:_destroySubscriptions()
     for eventName, uuid in pairs(self.subscriptions) do
         self.eventManager:unsubscribe(eventName, uuid)
     end
+end
+
+function CombatScene:_drawWorldBoundary()
+    love.graphics.setColor(1, 1, 1, 0.5)
+    love.graphics.setLineWidth(1)
+    love.graphics.rectangle('line', 0, 0, self.world.dimensions.x,
+        self.world.dimensions.y)
 end
 
 return CombatScene

@@ -67,6 +67,7 @@ function PawnSelectionMenu:_initCards()
                 VERTICAL_CARD_PADDING / 2
             },
             name           = pawnType.name,
+            price          = pawnType.price,
             assemblageName = pawnType.assemblageName,
             description    = pawnType.description,
             height         = self.height - VERTICAL_CARD_PADDING,

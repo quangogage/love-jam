@@ -5,6 +5,7 @@ local Vec2 = require('Classes.Types.Vec2')
 ---@class PawnSelectionCard
 ---@field position {x: number, y: number}
 ---@field name string
+---@field price number
 ---@field assemblageName string
 ---@field description string
 ---@field height number
@@ -12,12 +13,14 @@ local Vec2 = require('Classes.Types.Vec2')
 ---@field backgroundColor table
 ---@field nameFont love.Font
 ---@field descriptionFont love.Font
+---@field priceFont love.Font
 ---@field textPadding number
 ---@field eventManager EventManager
 local PawnSelectionCard = Goop.Class({
     parameters = {
         { 'position',       'table' },
         { 'name',           'string' },
+        { 'price',          'number' },
         { 'assemblageName', 'string' },
         { 'description',    'string' },
         { 'height',         'number' },
@@ -26,6 +29,7 @@ local PawnSelectionCard = Goop.Class({
     static = {
         nameFont        = love.graphics.newFont(16),
         descriptionFont = love.graphics.newFont(11),
+        priceFont       = love.graphics.newFont(17),
     },
     dynamic = {
         position        = { x = 0, y = 0 },
@@ -47,6 +51,7 @@ function PawnSelectionCard:draw()
     self:_drawBackground()
     y = self:_printName(y)
     y = self:_printDescription(y)
+    self:_printPrice()
 end
 
 
@@ -85,6 +90,17 @@ function PawnSelectionCard:_printDescription(y)
         'center'
     )
     return y + self.descriptionFont:getHeight() + self.textPadding
+end
+function PawnSelectionCard:_printPrice()
+    local stringified = tostring(self.price)
+    local str = "$" .. stringified
+    love.graphics.setColor(0.3,1,0.3)
+    love.graphics.setFont(self.priceFont)
+    love.graphics.print(
+        str,
+        self.position.x + self.dimensions.width / 2 - self.priceFont:getWidth(str) / 2,
+        self.position.y + self.dimensions.height - self.priceFont:getHeight() - self.textPadding
+    )
 end
 
 return PawnSelectionCard

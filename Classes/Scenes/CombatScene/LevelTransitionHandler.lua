@@ -14,26 +14,43 @@
 -- and easiest right now.
 -- ──────────────────────────────────────────────────────────────────────
 
+local PowerupSelectionMenu = require(
+    'Classes.Scenes.CombatScene.PowerupSelectionMenu.PowerupSelectionMenu'
+)
+
 ---@class LevelTransitionHandler
-local LevelTransitionHandler = Goop.Class({})
+---@field levelComplete boolean
+local LevelTransitionHandler = Goop.Class({
+    static = {
+        levelComplete = false
+    }
+})
 
 
 ----------------------------
 -- [[ Public Functions ]] --
 ----------------------------
 function LevelTransitionHandler:onLevelComplete()
-    console:log("level complete")
+    self.powerupSelectionMenu:show()
+    self.levelComplete = true
 end
 
 
 --------------------------
 -- [[ Core Functions ]] --
 --------------------------
+function LevelTransitionHandler:init()
+    self.powerupSelectionMenu = PowerupSelectionMenu()
+end
 function LevelTransitionHandler:update(dt)
+    self.powerupSelectionMenu:update(dt)
 end
 function LevelTransitionHandler:draw()
+    self.powerupSelectionMenu:draw()
 end
-
+function LevelTransitionHandler:mousepressed(x, y, button)
+    self.powerupSelectionMenu:mousepressed(x, y, button)
+end
 
 -----------------------------
 -- [[ Private Functions ]] --

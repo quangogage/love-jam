@@ -4,5 +4,6 @@
 return {
     toggleRanges   = {},
     toggleHitboxes = {},
-    testRoom    = {},
+    testRoom       = {},
+    completeLevel  = {}
 }

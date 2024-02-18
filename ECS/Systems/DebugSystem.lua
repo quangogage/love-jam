@@ -7,7 +7,7 @@
 
 local util = require("util")({ "entityAssembler" })
 
-return function (concord, camera)
+return function (concord, camera, onLevelComplete)
     local DebugSystem = concord.system({
         rangeEntities = { 'combatProperties', 'position' },
         hitboxes = { 'position', 'dimensions' },
@@ -33,6 +33,9 @@ return function (concord, camera)
         end
         self.testRoom = true
         console:log('Killed all enemies')
+    end
+    function DebugSystem:completeLevel()
+        onLevelComplete()
     end
 
 

@@ -13,11 +13,16 @@
 local util                   = require('util')({ 'entityAssembler' })
 local levels                 = require('lists.levels')
 local Camera                 = require('Classes.Camera')
-local CameraControls         = require('Classes.Scenes.CombatScene.CameraControls')
-local FriendlySpawnHandler   = require('Classes.Scenes.CombatScene.FriendlySpawnHandler')
-local LevelStartAnimation    = require('Classes.Scenes.CombatScene.LevelStartAnimation')
-local CombatInterface        = require('Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
-local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
+local CameraControls         = require(
+'Classes.Scenes.CombatScene.CameraControls')
+local FriendlySpawnHandler   = require(
+'Classes.Scenes.CombatScene.FriendlySpawnHandler')
+local LevelStartAnimation    = require(
+'Classes.Scenes.CombatScene.LevelStartAnimation')
+local CombatInterface        = require(
+'Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
+local LevelTransitionHandler = require(
+'Classes.Scenes.CombatScene.LevelTransitionHandler')
 
 ---@class CombatScene
 ---@field concord Concord
@@ -32,7 +37,8 @@ local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransiti
 ---@field friendlySpawnHandler FriendlySpawnHandler
 ---@field cameraControls CameraControls
 ---@field currentLevelIndex integer
-local CombatScene = Goop.Class({
+---@field levelComplete boolean
+local CombatScene            = Goop.Class({
     arguments = { 'eventManager' },
     static = {
         currentLevelIndex = 1
@@ -44,18 +50,20 @@ local CombatScene = Goop.Class({
 -- [[ Core Functions ]] --
 --------------------------
 function CombatScene:init()
-    self.concord   = require('libs.Concord')
+    self.concord = require('libs.Concord')
     self:_initWorld()
     self.camera                 = Camera()
     self.interface              = CombatInterface(self.eventManager)
-    self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world)
+    self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager,
+        self.world)
     self.cameraControls         = CameraControls(self.camera, self.world)
     self.levelTransitionHandler = LevelTransitionHandler()
     self:_loadComponents()
     self:_loadSystems()
     self:_initLevels()
     self:_generateLevel(self.currentLevelIndex)
-    self.levelStartAnimation = LevelStartAnimation(self.camera, self, self.currentLevelIndex)
+    self.levelStartAnimation = LevelStartAnimation(self.camera, self,
+        self.currentLevelIndex)
     -- DEV:
     console.world = self.world
     console:launchOptions()
@@ -64,13 +72,16 @@ function CombatScene:destroy()
     self.friendlySpawnHandler:destroy()
 end
 function CombatScene:update(dt)
-    self.world:emit('update', dt)
-    self.interface:update(dt)
-    self.camera:update(dt)
-    if not self.levelStartAnimation.active then
-        self.cameraControls:update(dt)
+    if not self.levelComplete then
+        self.world:emit('update', dt)
+        self.interface:update(dt)
+        self.camera:update(dt)
+        if not self.levelStartAnimation.active then
+            self.cameraControls:update(dt)
+        end
+        self.levelStartAnimation:update(dt)
     end
-    self.levelStartAnimation:update(dt)
+    self.levelTransitionHandler:update(dt)
 end
 function CombatScene:draw()
     self.camera:set()
@@ -79,28 +90,38 @@ function CombatScene:draw()
     self.camera:unset()
     self.interface:draw()
     self.levelStartAnimation:draw()
+    self.levelTransitionHandler:draw()
 end
 function CombatScene:keypressed(key)
-    self.world:emit('keypressed', key)
-    self.interface:keypressed(key)
-    self.levelStartAnimation:endAnimation()
+    if not self.levelComplete then
+        self.world:emit('keypressed', key)
+        self.interface:keypressed(key)
+        self.levelStartAnimation:endAnimation()
+    end
 end
 function CombatScene:mousepressed(x, y, button)
-    local didClickInterface = self.interface:mousepressed(x, y, button)
+    if not self.levelComplete then
+        local didClickInterface = self.interface:mousepressed(x, y, button)
 
-    if not didClickInterface then
-        self.world:emit('mousepressed', x, y, button)
+        if not didClickInterface then
+            self.world:emit('mousepressed', x, y, button)
+        end
+        self.levelStartAnimation:endAnimation()
     end
-    self.levelStartAnimation:endAnimation()
+    self.levelTransitionHandler:mousepressed(x, y, button)
 end
 function CombatScene:mousereleased(x, y, button)
-    self.world:emit('mousereleased', x, y, button)
+    if not self.levelComplete then
+        self.world:emit('mousereleased', x, y, button)
+    end
 end
 function CombatScene:wheelmoved(x, y)
-    if not self.levelStartAnimation.active then
-        self.cameraControls:wheelmoved(x, y)
+    if not self.levelComplete then
+        if not self.levelStartAnimation.active then
+            self.cameraControls:wheelmoved(x, y)
+        end
+        self.levelStartAnimation:endAnimation()
     end
-    self.levelStartAnimation:endAnimation()
 end
 
 
@@ -130,15 +151,24 @@ function CombatScene:_loadSystems()
     loadSystem('ClickHandlerSystem', self.camera)
     loadSystem('MouseControlsSystem', self.camera)
     loadSystem('Pawn.EnemyPawnTargetSystem')
-    loadSystem('DamageSystem', function() self.levelTransitionHandler:onLevelComplete() end)
+    loadSystem('DamageSystem',
+        function ()
+            self.levelComplete = true
+            self.levelTransitionHandler:onLevelComplete()
+        end
+    )
     loadSystem('Pawn.PawnAISystem')
     loadSystem('Pawn.PawnAttackSystem')
     loadSystem('Pawn.PawnPushSystem')
     loadSystem('PawnGenerationSystem')
     loadSystem('HealthBarSystem')
     loadSystem('SelectedHighlightSystem')
-    loadSystem('DebugSystem', self.camera)
-
+    loadSystem('DebugSystem', self.camera,
+        function ()
+            self.levelComplete = true
+            self.levelTransitionHandler:onLevelComplete()
+        end
+    )
     self.world:addSystems(unpack(systems))
 end
 

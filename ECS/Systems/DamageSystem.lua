@@ -2,7 +2,6 @@
 --
 -- Handles inflicting and receiving damage.
 --
--- Makes sure entities stop targeting dead entities.
 
 ---@param concord Concord | table
 ---@param onLevelComplete function

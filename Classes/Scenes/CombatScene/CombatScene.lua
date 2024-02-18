@@ -43,6 +43,26 @@ local CombatScene            = Goop.Class({
 })
 
 
+----------------------------
+-- [[ Public Functions ]] --
+----------------------------
+function CombatScene:loadNextLevel()
+    self.currentLevelIndex = self.currentLevelIndex + 1
+
+    -- TODO: Win game if no more levels.
+    if self.currentLevelIndex > #self.levels then
+        self.currentLevelIndex = 1
+    end
+
+    self:_generateLevel(self.currentLevelIndex)
+    self.levelComplete = false
+    self.levelStartAnimation = LevelStartAnimation(self.camera, self, self.currentLevelIndex)
+end
+function CombatScene:completeLevel()
+    self.levelComplete = true
+    self.levelTransitionHandler:onLevelComplete()
+end
+
 --------------------------
 -- [[ Core Functions ]] --
 --------------------------
@@ -54,13 +74,12 @@ function CombatScene:init()
     self.powerupStateManager    = PowerupStateManager(self.eventManager)
     self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self)
     self.cameraControls         = CameraControls(self.camera, self.world)
-    self.levelTransitionHandler = LevelTransitionHandler(self.eventManager)
+    self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self)
     self:_loadComponents()
     self:_loadSystems()
     self:_initLevels()
-    self:_generateLevel(self.currentLevelIndex)
-    self.levelStartAnimation = LevelStartAnimation(self.camera, self,
-        self.currentLevelIndex)
+    self.currentLevelIndex = 0
+    self:loadNextLevel()
     -- DEV:
     console.world = self.world
     console:launchOptions()
@@ -149,24 +168,14 @@ function CombatScene:_loadSystems()
     loadSystem('ClickHandlerSystem', self.camera)
     loadSystem('MouseControlsSystem', self.camera)
     loadSystem('Pawn.EnemyPawnTargetSystem')
-    loadSystem('DamageSystem',
-        function ()
-            self.levelComplete = true
-            self.levelTransitionHandler:onLevelComplete()
-        end
-    )
+    loadSystem('DamageSystem', function() self:completeLevel() end)
     loadSystem('Pawn.PawnAISystem')
     loadSystem('Pawn.PawnAttackSystem')
     loadSystem('Pawn.PawnPushSystem')
     loadSystem('PawnGenerationSystem')
     loadSystem('HealthBarSystem')
     loadSystem('SelectedHighlightSystem')
-    loadSystem('DebugSystem', self.camera,
-        function ()
-            self.levelComplete = true
-            self.levelTransitionHandler:onLevelComplete()
-        end
-    )
+    loadSystem('DebugSystem', self.camera, function () self:completeLevel() end)
     self.world:addSystems(unpack(systems))
 end
 
@@ -206,6 +215,7 @@ end
 ---@param index integer
 function CombatScene:_generateLevel(index)
     local level = self.levels[index]
+    self.world:clear()
     for _, e in ipairs(level.entities) do
         if e.className == 'EnemyBase' then
             self.enemyBase = util.entityAssembler.assemble(

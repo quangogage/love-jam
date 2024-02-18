@@ -23,7 +23,7 @@ local LevelStartAnimation = Goop.Class({
         'combatScene',
         'levelNumber'
     },
-    static = {
+    dynamic = {
         active         = false,
         timer          = 0,
         cameraWaitTime = 0.7,
@@ -64,6 +64,7 @@ end
 --------------------------
 function LevelStartAnimation:init()
     self.active = true
+    self.camera.zoom = 1
     self.camera:centerOnPosition(
         self.combatScene.enemyBase.position.x,
         self.combatScene.enemyBase.position.y

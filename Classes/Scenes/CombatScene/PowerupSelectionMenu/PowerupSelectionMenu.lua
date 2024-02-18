@@ -17,8 +17,9 @@ local PowerupCard          = require('Classes.Scenes.CombatScene.PowerupSelectio
 ---@field powerupCards PowerupCard[]
 ---@field active boolean
 ---@field selectedPowerupName string
+---@field levelTransitionHandler LevelTransitionHandler
 local PowerupSelectionMenu = Goop.Class({
-    arguments = { 'eventManager' },
+    arguments = { 'eventManager', 'levelTransitionHandler' },
     static = {
         powerupCards = {}
     }
@@ -31,6 +32,11 @@ local PowerupSelectionMenu = Goop.Class({
 function PowerupSelectionMenu:show()
     self:_generatePowerupCards()
     self.active = true
+end
+function PowerupSelectionMenu:hide()
+    self.active = false
+    self.selectedPowerupName = nil
+    self:_unselectAllCards()
 end
 
 
@@ -81,6 +87,7 @@ end
 function PowerupSelectionMenu:_generatePowerupCards()
     local powerupChoices = {}
     table.move(powerups, 1, #powerups, 1, powerupChoices)
+    self.powerupCards = {}
 
     for i = 1, CHOICES do
         local x = 0
@@ -132,9 +139,11 @@ end
 
 ---@param pawnType string
 function PowerupSelectionMenu:_selectPawnType(pawnType)
-    if self.selectedPowerupName then
+    if self.selectedPowerupName and not self.levelTransitionHandler.fadingOut and
+    self.levelTransitionHandler.levelComplete then
         -- Resolved in `PowerupStateManager`
-        self.eventManager:broadcast("interface_addPowerupToType", pawnType, self.selectedPowerupName)
+        self.eventManager:broadcast('interface_addPowerupToType', pawnType, self.selectedPowerupName)
+        self.levelTransitionHandler:endPowerupSelection()
     end
 end
 

@@ -46,6 +46,11 @@ function Game:mousereleased(x, y, button)
         self.currentScene:mousereleased(x, y, button)
     end
 end
+function Game:wheelmoved(x, y)
+    if self.currentScene then
+        self.currentScene:wheelmoved(x, y)
+    end
+end
 function Game:keypressed(key)
     if self.currentScene then
         self.currentScene:keypressed(key)

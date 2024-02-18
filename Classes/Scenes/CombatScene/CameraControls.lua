@@ -1,8 +1,11 @@
 ---@author Gage Henderson 2024-02-17 19:20
 --
 
-local FRICTION = 9
+local FRICTION              = 9
 local SCREEN_EDGE_THRESHOLD = 5
+local ZOOM_INCREMENT        = 0.1
+local ZOOM_MIN              = 0.1
+local ZOOM_MAX              = 2
 local Vec2     = require("Classes.Types.Vec2")
 
 ---@class CameraControls
@@ -26,6 +29,10 @@ function CameraControls:update(dt)
     self:_keyboardMovement(dt)
     self:_mousePushMovement(dt)
     self:_updateDrag(dt)
+    self:_cameraZoom()
+end
+function CameraControls:wheelmoved(x,y)
+    self:_cameraZoom(y)
 end
 
 
@@ -86,6 +93,30 @@ function CameraControls:_updateDrag(dt)
     else
         self.lastMouseX = nil
         self.lastMouseY = nil
+    end
+end
+
+function CameraControls:_cameraZoom(y)
+    local originalWidth  = love.graphics.getWidth() * self.camera.zoom
+    local originalHeight = love.graphics.getHeight() * self.camera.zoom
+    local didScroll      = false
+    if y then
+        if y < 0 then
+            self.camera.zoom = math.min(ZOOM_MAX, self.camera.zoom + ZOOM_INCREMENT)
+            didScroll = true
+        elseif y > 0 then
+            self.camera.zoom = math.max(ZOOM_MIN, self.camera.zoom - ZOOM_INCREMENT)
+            didScroll = true
+        end
+
+        if didScroll then
+            local newWidth  = love.graphics.getWidth() * self.camera.zoom
+            local newHeight = love.graphics.getHeight() * self.camera.zoom
+            local xDiff = (newWidth - originalWidth) / 2
+            local yDiff = (newHeight - originalHeight) / 2
+            self.camera.position.x = self.camera.position.x - xDiff
+            self.camera.position.y = self.camera.position.y - yDiff
+        end
     end
 end
 

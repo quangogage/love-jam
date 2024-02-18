@@ -8,7 +8,7 @@ local util = require('util')({ 'table' }) ---@type util
 ---@class Camera
 ---@field position {x:number, y:number}
 ---@field followSpeed number
----@field scale {x:number, y:number}
+---@field zoom number
 local Camera = Goop.Class({
     static = {
         type         = 'Camera',
@@ -20,10 +20,7 @@ local Camera = Goop.Class({
             y = 0
         },
         rotation = 0,
-        scale = {
-            x = 1,
-            y = 1
-        },
+        zoom = 1,
         shakeValues = {
             x = 0,
             y = 0,
@@ -41,7 +38,7 @@ local Camera = Goop.Class({
 ----------------------------
 function Camera:getTranslatedMousePosition()
     local x, y = love.mouse.getPosition()
-    return (x + self.position.x) * self.scale.x, (y + self.position.y) * self.scale.y
+    return x * self.zoom + self.position.x, y * self.zoom + self.position.y
 end
 function Camera:centerOn(x, y)
     self.position.x = x - love.graphics.getWidth() / 2
@@ -55,7 +52,7 @@ end
 function Camera:set()
     love.graphics.push()
     love.graphics.rotate(-self.rotation)
-    love.graphics.scale(1 / self.scale.x, 1 / self.scale.y)
+    love.graphics.scale(1 / self.zoom, 1 / self.zoom)
     love.graphics.translate(-self.position.x - self.shakeValues.x,
         -self.position.y - self.shakeValues.y)
 end
@@ -76,15 +73,6 @@ end
 function Camera:update(dt)
     self:_handleShake(dt)
 end
----CURRENTLY UNUSED.
-function Camera:onWindowResize(width, height)
-    self.scale.x = self.referenceDimensions.width / width
-    self.scale.y = self.referenceDimensions.height / height
-end
-
-function Camera:init()
-    self:_generateReferenceDimensions()
-end
 
 -----------------------------
 -- [[ Private Functions ]] --
@@ -102,14 +90,6 @@ function Camera:_handleShake(dt)
     else
         shake.amount = 0
     end
-end
-
-function Camera:_generateReferenceDimensions()
-    self.originalScale = util.table.createDeepCopy(self.scale)
-    self.referenceDimensions = {
-        width = 1920 * self.originalScale.x,
-        height = 1080 * self.originalScale.y
-    }
 end
 
 return Camera

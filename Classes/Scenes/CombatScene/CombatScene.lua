@@ -81,6 +81,9 @@ end
 function CombatScene:mousereleased(x, y, button)
     self.world:emit('mousereleased', x, y, button)
 end
+function CombatScene:wheelmoved(x, y)
+    self.cameraControls:wheelmoved(x, y)
+end
 
 
 -----------------------------

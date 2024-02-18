@@ -97,15 +97,19 @@ function LevelStartAnimation:_moveCamera(dt)
         local scaledHeight     = love.graphics.getHeight() * self.camera.zoom
         local targetX          = self.combatScene.friendlyBase.position.x - scaledWidth / 2
         local targetY          = self.combatScene.friendlyBase.position.y - scaledHeight / 2
-        if targetX < cameraX then
-            self.camera.velocity.x = self.camera.velocity.x - CAMERA_MOVE_SPEED * dt
-        elseif targetX > cameraX then
-            self.camera.velocity.x = self.camera.velocity.x + CAMERA_MOVE_SPEED * dt
+        if math.abs(targetX - cameraX) > LOCATION_ARRIVAL_THRESHOLD then
+            if targetX < cameraX then
+                self.camera.velocity.x = self.camera.velocity.x - CAMERA_MOVE_SPEED * dt
+            elseif targetX > cameraX then
+                self.camera.velocity.x = self.camera.velocity.x + CAMERA_MOVE_SPEED * dt
+            end
         end
-        if targetY < cameraY then
-            self.camera.velocity.y = self.camera.velocity.y - CAMERA_MOVE_SPEED * dt
-        elseif targetY > cameraY then
-            self.camera.velocity.y = self.camera.velocity.y + CAMERA_MOVE_SPEED * dt
+        if math.abs(targetY - cameraY) > LOCATION_ARRIVAL_THRESHOLD then
+            if targetY < cameraY then
+                self.camera.velocity.y = self.camera.velocity.y - CAMERA_MOVE_SPEED * dt
+            elseif targetY > cameraY then
+                self.camera.velocity.y = self.camera.velocity.y + CAMERA_MOVE_SPEED * dt
+            end
         end
     end
 end

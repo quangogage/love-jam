@@ -26,12 +26,12 @@ local PowerupSelectionMenu = require(
 ---@field combatScene CombatScene
 ---@field overlay { alpha: number, fadeSpeed: number }
 local LevelTransitionHandler = Goop.Class({
-    arguments = { 'eventManager' , 'combatScene' },
+    arguments = { 'eventManager', 'combatScene' },
     dynamic = {
         levelComplete = false,
         fadingOut     = false,
         overlay       = {
-            alpha = 0,
+            alpha     = 0,
             fadeSpeed = 2
         }
     }

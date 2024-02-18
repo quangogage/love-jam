@@ -31,12 +31,8 @@ local FriendlySpawnHandler = Goop.Class({
 ---@param y number
 function FriendlySpawnHandler:_attemptSpawnPawn(pawnType, x, y)
     if not self.combatScene.levelComplete then
-        x = x or
-            love.math.random(self.spawnZone.x,
-                self.spawnZone.x + self.spawnZone.width)
-        y = y or
-            love.math.random(self.spawnZone.y,
-                self.spawnZone.y + self.spawnZone.height)
+        x = x or love.math.random(self.spawnZone.x, self.spawnZone.x + self.spawnZone.width)
+        y = y or love.math.random(self.spawnZone.y, self.spawnZone.y + self.spawnZone.height)
         util.entityAssembler.assemble(self.world, pawnType, x, y, true)
     end
 end
@@ -67,13 +63,11 @@ end
 -----------------------------
 function FriendlySpawnHandler:_createSubscriptions()
     self.subscriptions = {}
-    self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager
-                                                           :subscribe(
-            'interface_attemptSpawnPawn',
-            function (pawnType, x, y)
-                self:_attemptSpawnPawn(pawnType, x, y)
-            end
-        )
+    self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager:subscribe(
+        'interface_attemptSpawnPawn', function (pawnType, x, y)
+            self:_attemptSpawnPawn(pawnType, x, y)
+        end
+    )
 end
 function FriendlySpawnHandler:_destroySubscriptions()
     for eventName, uuid in pairs(self.subscriptions) do

@@ -8,14 +8,16 @@
 -- Interface behavior is currently hooked into the game-world in here via
 -- the EventManager.
 
-local util                = require('util')({ 'entityAssembler' })
-local levels              = require('lists.levels')
-local Camera              = require('Classes.Camera')
-local CameraControls      = require('Classes.Scenes.CombatScene.CameraControls')
-local LevelStartAnimation = require(
+local util                 = require('util')({ 'entityAssembler' })
+local levels               = require('lists.levels')
+local Camera               = require('Classes.Camera')
+local CameraControls       = require('Classes.Scenes.CombatScene.CameraControls')
+local FriendlySpawnHandler = require(
+'Classes.Scenes.CombatScene.FriendlySpawnHandler')
+local LevelStartAnimation  = require(
     'Classes.Scenes.CombatScene.LevelStartAnimation'
 )
-local CombatInterface     = require(
+local CombatInterface      = require(
     'Classes.Scenes.CombatScene.CombatInterface.CombatInterface'
 )
 
@@ -41,12 +43,14 @@ function CombatScene:init()
     self.camera    = Camera()
     self.interface = CombatInterface(self.eventManager)
     self:_initWorld()
+    self.friendlySpawnHandler = FriendlySpawnHandler(
+        self.eventManager, self.world
+    )
     self.cameraControls = CameraControls(self.camera, self.world)
     self:_loadComponents()
     self:_loadSystems()
     self:_initLevels()
     self:_generateLevel(1)
-    self:_createSubscriptions()
 
     -- Start the intro animation
     -- TODO: Dynamic level number
@@ -57,7 +61,7 @@ function CombatScene:init()
     console:launchOptions()
 end
 function CombatScene:destroy()
-    self:_destroySubscriptions()
+    self.friendlySpawnHandler:destroy()
 end
 function CombatScene:update(dt)
     self.world:emit('update', dt)
@@ -153,31 +157,6 @@ function CombatScene:_loadComponents()
     loadFilesInDir('/ECS/Components/')
 end
 
--- Subscribe to various events.
-function CombatScene:_createSubscriptions()
-    self.subscriptions = {}
-    self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager
-                                                           :subscribe(
-            'interface_attemptSpawnPawn',
-            function ()
-                local angle    = math.random() * math.pi * 2
-                local distance = math.random(10, 50)
-                local x,y      = self:_getRandomSpawnPoint()
-                local pawn = util.entityAssembler.assemble(self.world,
-                    'basicPawn', x, y, true
-                )
-                self.world:emit('event_pawnSpawned', pawn)
-            end
-        )
-end
-
--- Unsubscribe from all events.
-function CombatScene:_destroySubscriptions()
-    for eventName, uuid in pairs(self.subscriptions) do
-        self.eventManager:unsubscribe(eventName, uuid)
-    end
-end
-
 function CombatScene:_drawWorldBoundary()
     love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.setLineWidth(1)
@@ -216,6 +195,12 @@ function CombatScene:_generateLevel(index)
                 e.position.x, e.position.y,
                 true
             )
+        elseif e.className == 'SpawnZone' then
+            self.friendlySpawnHandler:setSpawnZone(
+                e.position.x - e.dimensions.width / 2,
+                e.position.y - e.dimensions.height / 2,
+                e.dimensions.width, e.dimensions.height
+            )
         end
     end
 
@@ -229,10 +214,6 @@ end
 
 ---@return number, number
 function CombatScene:_getRandomSpawnPoint()
-    local angle    = math.random() * math.pi * 2
-    local distance = math.random(10, 50)
-    return self.friendlyBase.position.x + math.cos(angle) * distance,
-           self.friendlyBase.position.y + math.sin(angle) * distance
 end
 
 return CombatScene

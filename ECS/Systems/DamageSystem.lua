@@ -47,6 +47,7 @@ return function (concord, onLevelComplete)
                 local entity = self.healthEntities[i]
                 if entity.health.value <= 0 then
                     world:emit('event_entityDied', entity)
+                    entity:give("isDead")
                     entity:destroy()
                 end
             end

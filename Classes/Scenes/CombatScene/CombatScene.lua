@@ -124,6 +124,7 @@ function CombatScene:_loadSystems()
             require(dir .. name)(self.concord, ...)
         )
     end
+    loadSystem('TargetClearingSystem')
     loadSystem('RenderSystem')
     loadSystem('PhysicsSystem')
     loadSystem('ClickHandlerSystem', self.camera)

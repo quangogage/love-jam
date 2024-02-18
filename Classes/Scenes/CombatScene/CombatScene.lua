@@ -8,10 +8,12 @@
 -- Interface behavior is currently hooked into the game-world in here via
 -- the EventManager.
 
-local util            = require("util")({ "entityAssembler" })
+local util            = require('util')({ 'entityAssembler' })
 local Vec2            = require('Classes.Types.Vec2')
 local Camera          = require('Classes.Camera')
-local CombatInterface = require('Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
+local CameraControls  = require('Classes.Scenes.CombatScene.CameraControls')
+local CombatInterface = require(
+'Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
 
 
 ---@class CombatScene
@@ -22,7 +24,7 @@ local CombatInterface = require('Classes.Scenes.CombatScene.CombatInterface.Comb
 ---@field eventManager EventManager
 ---@field friendlyBase Base The player's base.
 local CombatScene = Goop.Class({
-    arguments = {"eventManager"}
+    arguments = { 'eventManager' }
 })
 
 
@@ -30,9 +32,10 @@ local CombatScene = Goop.Class({
 -- [[ Core Functions ]] --
 --------------------------
 function CombatScene:init()
-    self.concord   = require('libs.Concord')
-    self.camera    = Camera()
-    self.interface = CombatInterface(self.eventManager)
+    self.concord        = require('libs.Concord')
+    self.camera         = Camera()
+    self.cameraControls = CameraControls(self.camera)
+    self.interface      = CombatInterface(self.eventManager)
     self:_initWorld()
     self:_loadComponents()
     self:_loadSystems()
@@ -48,6 +51,7 @@ end
 function CombatScene:update(dt)
     self.world:emit('update', dt)
     self.interface:update(dt)
+    self.cameraControls:update(dt)
 end
 function CombatScene:draw()
     self.camera:set()
@@ -57,31 +61,20 @@ function CombatScene:draw()
 end
 function CombatScene:keypressed(key)
     self.interface:keypressed(key)
-    if key == 'space' then
-        local x, y = self.camera:getTranslatedMousePosition()
-        local util = require('util')({ 'entityAssembler' })
-        self.testEntity = util.entityAssembler.assemble(
-            self.world,
-            'BasicPawn',
-            x, y,
-            true
-        )
-        self.world:emit('event_pawnSpawned', self.testEntity)
-    end
 end
 function CombatScene:mousepressed(x, y, button)
     local didClickInterface = self.interface:mousepressed(x, y, button)
 
     if not didClickInterface then
         self.world:emit('mousepressed', x, y, button)
+        self.cameraControls:mousepressed(x, y, button)
 
         -- Dev:
         if button == 2 then
-            local util = require('util')({ 'entityAssembler' })
             util.entityAssembler.assemble(self.world, 'basicTower', x, y)
         elseif button == 3 then
-            local util = require('util')({ 'entityAssembler' })
-            local pawn = util.entityAssembler.assemble(self.world, 'basicPawn', x, y)
+            local pawn = util.entityAssembler.assemble(self.world, 'basicPawn', x,
+                y)
             self.world:emit('event_pawnSpawned', pawn)
         end
     end
@@ -144,7 +137,7 @@ function CombatScene:_loadComponents()
 end
 
 function CombatScene:_generateLevel()
-    self.world.dimensions = Vec2(1280,720)
+    self.world.dimensions = Vec2(1280, 720)
     self.friendlyBase = util.entityAssembler.assemble(self.world, 'Base',
         self.world.dimensions.x / 2,
         self.world.dimensions.y - 100,
@@ -155,8 +148,9 @@ end
 -- Subscribe to various events.
 function CombatScene:_createSubscriptions()
     self.subscriptions = {}
-    self.subscriptions["interface_attemptSpawnPawn"] = self.eventManager:subscribe(
-        "interface_attemptSpawnPawn",
+    self.subscriptions['interface_attemptSpawnPawn'] = self.eventManager
+                                                           :subscribe(
+        'interface_attemptSpawnPawn',
         function ()
             local pawn = util.entityAssembler.assemble(self.world, 'basicPawn',
                 self.friendlyBase.position.x, self.friendlyBase.position.y,
@@ -165,6 +159,13 @@ function CombatScene:_createSubscriptions()
             self.world:emit('event_pawnSpawned', pawn)
         end
     )
+end
+
+-- Unsubscribe from all events.
+function CombatScene:_destroySubscriptions()
+    for eventName, uuid in pairs(self.subscriptions) do
+        self.eventManager:unsubscribe(eventName, uuid)
+    end
 end
 
 return CombatScene

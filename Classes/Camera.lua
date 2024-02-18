@@ -6,6 +6,7 @@
 local util = require('util')({ 'table' }) ---@type util
 
 ---@class Camera
+---@field position {x:number, y:number}
 ---@field followSpeed number
 ---@field scale {x:number, y:number}
 local Camera = Goop.Class({
@@ -14,8 +15,10 @@ local Camera = Goop.Class({
         followSpeed  = 7
     },
     dynamic = {
-        x = 0,
-        y = 0,
+        position = {
+            x = 0,
+            y = 0
+        },
         rotation = 0,
         scale = {
             x = 1,
@@ -38,11 +41,11 @@ local Camera = Goop.Class({
 ----------------------------
 function Camera:getTranslatedMousePosition()
     local x, y = love.mouse.getPosition()
-    return (x + self.x) * self.scale.x, (y + self.y) * self.scale.y
+    return (x + self.position.x) * self.scale.x, (y + self.position.y) * self.scale.y
 end
 function Camera:centerOn(x, y)
-    self.x = x - love.graphics.getWidth() / 2
-    self.y = y - love.graphics.getHeight() / 2
+    self.position.x = x - love.graphics.getWidth() / 2
+    self.position.y = y - love.graphics.getHeight() / 2
 end
 
 function Camera:shake(amount)
@@ -53,8 +56,8 @@ function Camera:set()
     love.graphics.push()
     love.graphics.rotate(-self.rotation)
     love.graphics.scale(1 / self.scale.x, 1 / self.scale.y)
-    love.graphics.translate(-self.x - self.shakeValues.x,
-        -self.y - self.shakeValues.y)
+    love.graphics.translate(-self.position.x - self.shakeValues.x,
+        -self.position.y - self.shakeValues.y)
 end
 
 function Camera:unset()
@@ -62,8 +65,8 @@ function Camera:unset()
 end
 
 function Camera:follow(x, y, dt)
-    self.x  = self.x + (x - self.x) * self.followSpeed * dt
-    self.y  = self.y + (y - self.y) * self.followSpeed * dt
+    self.position.x  = self.position.x + (x - self.position.x) * self.followSpeed * dt
+    self.position.y  = self.position.y + (y - self.position.y) * self.followSpeed * dt
 end
 
 

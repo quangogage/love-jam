@@ -55,7 +55,7 @@ function CombatScene:init()
     self.camera                 = Camera()
     self.interface              = CombatInterface(self.eventManager)
     self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager,
-        self.world)
+        self.world, self)
     self.cameraControls         = CameraControls(self.camera, self.world)
     self.levelTransitionHandler = LevelTransitionHandler()
     self:_loadComponents()
@@ -88,9 +88,9 @@ function CombatScene:draw()
     self.world:emit('draw')
     self:_drawWorldBoundary()
     self.camera:unset()
+    self.levelTransitionHandler:draw()
     self.interface:draw()
     self.levelStartAnimation:draw()
-    self.levelTransitionHandler:draw()
 end
 function CombatScene:keypressed(key)
     if not self.levelComplete then
@@ -236,9 +236,9 @@ function CombatScene:_generateLevel(index)
     end
 
     self.world.bounds = {
-        x = 0,
-        y = 0,
-        width = level.dimensions.width,
+        x      = 0,
+        y      = 0,
+        width  = level.dimensions.width,
         height = level.dimensions.height
     }
 end

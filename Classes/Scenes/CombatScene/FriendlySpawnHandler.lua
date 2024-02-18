@@ -9,10 +9,12 @@ local util = require('util')({ 'entityAssembler' })
 ---@field eventManager EventManager
 ---@field world World
 ---@field spawnZone { x: number, y: number, width: number, height: number }
+---@field combatScene CombatScene
 local FriendlySpawnHandler = Goop.Class({
     arguments = {
         { 'eventManager', 'table' },
         { 'world',        'table' },
+        { 'combatScene',  'table' }
     },
     static = {
         spawnZone = { x = 0, y = 0, width = 0, height = 0 }
@@ -28,13 +30,15 @@ local FriendlySpawnHandler = Goop.Class({
 ---@param x number
 ---@param y number
 function FriendlySpawnHandler:_attemptSpawnPawn(pawnType, x, y)
-    x = x or
-        love.math.random(self.spawnZone.x,
-            self.spawnZone.x + self.spawnZone.width)
-    y = y or
-        love.math.random(self.spawnZone.y,
-            self.spawnZone.y + self.spawnZone.height)
-    util.entityAssembler.assemble(self.world, pawnType, x, y, true)
+    if not self.combatScene.levelComplete then
+        x = x or
+            love.math.random(self.spawnZone.x,
+                self.spawnZone.x + self.spawnZone.width)
+        y = y or
+            love.math.random(self.spawnZone.y,
+                self.spawnZone.y + self.spawnZone.height)
+        util.entityAssembler.assemble(self.world, pawnType, x, y, true)
+    end
 end
 
 ---@param x number

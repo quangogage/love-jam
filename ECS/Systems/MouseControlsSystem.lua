@@ -39,13 +39,15 @@ return function (concord, camera)
 
             -- If you clicked on a pawn, select it.
             for _, e in ipairs(self.friendlyEntities) do
-                if x > e.position.x - e.dimensions.width / 2 and
-                x < e.position.x + e.dimensions.width / 2 and
-                y > e.position.y - e.dimensions.height / 2 and
-                y < e.position.y + e.dimensions.height / 2 then
-                    self:_unselectAll()
-                    e:give('selected')
-                    return
+                if not e.unselectable then
+                    if x > e.position.x - e.dimensions.width / 2 and
+                    x < e.position.x + e.dimensions.width / 2 and
+                    y > e.position.y - e.dimensions.height / 2 and
+                    y < e.position.y + e.dimensions.height / 2 then
+                        self:_unselectAll()
+                        e:give('selected')
+                        return
+                    end
                 end
             end
             self.mousepressOrigin = { x = x, y = y }

@@ -5,8 +5,8 @@
 local Element = require('Classes.Elements.Element')
 
 local CARD_CORNER_RADIUS = 10
-local NAME_FONT          = love.graphics.newFont("assets/fonts/BebasNeue-Regular.ttf", 34)
-local DESC_FONT          = love.graphics.newFont("assets/fonts/RobotoCondensed-Light.ttf", 18)
+local NAME_FONT          = love.graphics.newFont(fonts.title, 34)
+local DESC_FONT          = love.graphics.newFont(fonts.sub, 18)
 local TEXT_PADDING       = 10
 
 

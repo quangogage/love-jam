@@ -3,8 +3,9 @@
 -- Horrible name srry.
 --
 
-local Button = require("Classes.Elements.Button")
+local FONT = love.graphics.newFont(fonts.sub, 20)
 
+local Button = require("Classes.Elements.Button")
 
 ---@class PrimaryPauseMenu
 ---@field pauseMenu table
@@ -24,6 +25,7 @@ function PrimaryPauseMenu:init()
         text   = "RESUME",
         anchor = {x = 0.5, y = 0.5},
         offset = {x = 0, y = -100},
+        font   = FONT,
         onClick = function()
             self.pauseMenu:close()
         end
@@ -32,6 +34,7 @@ function PrimaryPauseMenu:init()
         text   = "SETTINGS",
         anchor = {x = 0.5, y = 0.5},
         offset = {x = 0, y = 0},
+        font   = FONT,
         onClick = function()
             console:log("open settings here........")
         end
@@ -40,6 +43,7 @@ function PrimaryPauseMenu:init()
         text   = "QUIT TO DESKTOP",
         anchor = {x = 0.5, y = 0.5},
         offset = {x = 0, y = 100},
+        font   = FONT,
         onClick = function()
             love.event.quit()
         end
@@ -48,6 +52,7 @@ function PrimaryPauseMenu:init()
         text   = "QUIT TO MAIN MENU",
         anchor = {x = 0.5, y = 0.5},
         offset = {x = 0, y = 200},
+        font   = FONT,
         onClick = function()
             self.eventManager:broadcast("openMainMenu")
         end

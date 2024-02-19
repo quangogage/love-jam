@@ -11,6 +11,7 @@
 -- Level completion is checked for in DamageSystem.
 
 local util                   = require('util')({ 'entityAssembler' })
+local Concord                = require('libs.Concord')
 local levels                 = require('lists.levels')
 local Camera                 = require('Classes.Camera')
 local CameraControls         = require('Classes.Scenes.CombatScene.CameraControls')
@@ -71,7 +72,6 @@ end
 -- [[ Core Functions ]] --
 --------------------------
 function CombatScene:init()
-    self.concord = require('libs.Concord')
     self:_createSubscriptions()
     self:_initWorld()
     self.camera                 = Camera()
@@ -159,7 +159,7 @@ end
 function CombatScene:_initWorld()
     ---@class World
     ---@field bounds { x: number, y: number, width: number, height: number }
-    self.world = self.concord.world()
+    self.world = Concord.world()
     self.world.bounds = { x = 0, y = 0, width = 1280, height = 720 }
 end
 -- Manually load all systems.
@@ -170,7 +170,7 @@ function CombatScene:_loadSystems()
     local loadSystem = function (name, ...)
         table.insert(
             systems,
-            require(dir .. name)(self.concord, ...)
+            require(dir .. name)(Concord, ...)
         )
     end
     loadSystem('TargetClearingSystem')

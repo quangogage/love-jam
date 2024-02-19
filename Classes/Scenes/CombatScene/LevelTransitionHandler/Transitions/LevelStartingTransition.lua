@@ -2,7 +2,7 @@
 --
 -- Brief animation when starting a new level.
 
-local FONT = love.graphics.newFont("assets/fonts/BebasNeue-Regular.ttf", 48)
+local FONT = love.graphics.newFont(fonts.title, 48)
 
 ---@class LevelStartingTransition
 ---@field timer number

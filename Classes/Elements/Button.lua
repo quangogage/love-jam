@@ -25,7 +25,7 @@ local Button = Goop.Class({
     dynamic = {
         color            = { 1, 1, 1, 1 },
         hoverColor       = { 0.2, 0.2, 0.2, 1 },
-        font             = love.graphics.newFont('assets/fonts/RobotoCondensed-Light.ttf', 30),
+        font             = love.graphics.newFont(fonts.sub, 30),
         dimensions       = Vec2(0, 0),
         colorChangeSpeed = 15,
     }

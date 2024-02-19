@@ -2,7 +2,7 @@
 --
 --
 
-local FONT = love.graphics.newFont("assets/fonts/BebasNeue-Regular.ttf", 48)
+local FONT = love.graphics.newFont(fonts.title, 48)
 
 ---@class LevelCompleteTransition
 ---@field transitionHandler LevelTransitionHandler

@@ -4,10 +4,10 @@ local Element           = require('Classes.Elements.Element')
 
 local TEXT_PADDING      = 10
 local BOTTOM_PADDING    = 10
-local NAME_FONT         = love.graphics.newFont('assets/fonts/BebasNeue-Regular.ttf', 24)
-local POWERUP_FONT         = love.graphics.newFont('assets/fonts/RobotoCondensed-Light.ttf', 16)
--- local DESC_FONT         = love.graphics.newFont('assets/fonts/RobotoCondensed-Light.ttf', 16)
--- local PRICE_FONT     = love.graphics.newFont("assets/fonts/BebasNeue-Regular.ttf", 24)
+local NAME_FONT         = love.graphics.newFont(fonts.title, 24)
+local POWERUP_FONT         = love.graphics.newFont(fonts.sub, 16)
+-- local DESC_FONT         = love.graphics.newFont(fonts.sub, 16)
+-- local PRICE_FONT     = love.graphics.newFont(fonts.title, 24)
 
 ---@class PawnSelectionCard : Element
 ---@field anchor table

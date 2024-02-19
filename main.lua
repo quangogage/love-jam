@@ -41,8 +41,10 @@ function love.keypressed(key)
     end
 
     -- Dev
-    if key == 'escape' then
-        love.event.quit()
+    if love.keyboard.isDown('ralt') or love.keyboard.isDown('lalt') then
+        if key == 'f4' then
+            love.event.quit()
+        end
     end
 end
 function love.mousepressed(x, y, button)

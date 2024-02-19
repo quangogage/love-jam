@@ -19,6 +19,7 @@ local PowerupStateManager    = require('Classes.Scenes.CombatScene.PowerupStateM
 local PawnSelectionMenu      = require('Classes.Scenes.CombatScene.Interface.PawnSelectionMenu')
 local PowerupSelectionMenu   = require('Classes.Scenes.CombatScene.Interface.PowerupSelectionMenu')
 local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
+local PauseMenu              = require("Classes.Scenes.CombatScene.Interface.PauseMenu.PauseMenu")
 
 ---@class CombatScene
 ---@field concord Concord
@@ -34,7 +35,9 @@ local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransiti
 ---@field cameraControls CameraControls
 ---@field currentLevelIndex integer
 ---@field levelTransitionHandler LevelTransitionHandler
+---@field pauseMenu PauseMenu
 ---@field disableWorldUpdate boolean
+---@field paused boolean - Set in PauseMenu
 local CombatScene            = Goop.Class({
     arguments = { 'eventManager' },
     static = {
@@ -78,6 +81,7 @@ function CombatScene:init()
     self.powerupSelectionMenu   = PowerupSelectionMenu(self.eventManager, self)
     self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self)
     self.cameraControls         = CameraControls(self.camera, self.world)
+    self.pauseMenu              = PauseMenu(self)
     self:_loadComponents()
     self:_loadSystems()
     self:_initLevels()
@@ -96,16 +100,19 @@ function CombatScene:destroy()
     self:_destroySubscriptions()
 end
 function CombatScene:update(dt)
-    if not self.disableWorldUpdate then
+    if not self.disableWorldUpdate and not self.paused then
         self.world:emit('update', dt)
         self.camera:update(dt)
         if not self.disableCameraControls then
             self.cameraControls:update(dt)
         end
     end
-    self.pawnSelectionMenu:update(dt)
-    self.powerupSelectionMenu:update(dt)
-    self.levelTransitionHandler:update(dt)
+    if not self.paused then
+        self.pawnSelectionMenu:update(dt)
+        self.powerupSelectionMenu:update(dt)
+        self.levelTransitionHandler:update(dt)
+    end
+    self.pauseMenu:update(dt)
 end
 function CombatScene:draw()
     self.camera:set()
@@ -115,25 +122,35 @@ function CombatScene:draw()
     self.powerupSelectionMenu:draw()
     self.pawnSelectionMenu:draw()
     self.levelTransitionHandler:draw()
+    self.pauseMenu:draw()
 end
 function CombatScene:keypressed(key)
-    self.world:emit('keypressed', key)
-    self.pawnSelectionMenu:keypressed(key)
-    self.levelTransitionHandler:keypressed(key)
+    if not self.paused then
+        self.world:emit('keypressed', key)
+        self.pawnSelectionMenu:keypressed(key)
+        self.levelTransitionHandler:keypressed(key)
+    end
+    self.pauseMenu:keypressed(key)
 end
 function CombatScene:mousepressed(x, y, button)
     local didClickInterface = self.pawnSelectionMenu:mousepressed(x, y, button)
     if not didClickInterface then
         self.world:emit('mousepressed', x, y, button)
     end
-    self.levelTransitionHandler:mousepressed()
-    self.powerupSelectionMenu:mousepressed(x, y, button)
+    if not self.paused then
+        self.levelTransitionHandler:mousepressed()
+        self.powerupSelectionMenu:mousepressed(x, y, button)
+    end
 end
 function CombatScene:mousereleased(x, y, button)
-    self.world:emit('mousereleased', x, y, button)
+    if not self.paused and not self.disableWorldUpdate then
+        self.world:emit('mousereleased', x, y, button)
+    end
 end
 function CombatScene:wheelmoved(x, y)
-    self.cameraControls:wheelmoved(x, y)
+    if not self.paused and not self.disableWorldUpdate then
+        self.cameraControls:wheelmoved(x, y)
+    end
 end
 
 

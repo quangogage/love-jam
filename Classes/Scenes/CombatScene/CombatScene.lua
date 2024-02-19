@@ -17,6 +17,7 @@ local CameraControls         = require('Classes.Scenes.CombatScene.CameraControl
 local FriendlySpawnHandler   = require('Classes.Scenes.CombatScene.FriendlySpawnHandler')
 local PowerupStateManager    = require('Classes.Scenes.CombatScene.PowerupStateManager')
 local PawnSelectionMenu      = require('Classes.Scenes.CombatScene.Interface.PawnSelectionMenu')
+local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
 
 ---@class CombatScene
 ---@field concord Concord
@@ -66,17 +67,20 @@ end
 --------------------------
 function CombatScene:init()
     self.concord = require('libs.Concord')
+    self:_createSubscriptions()
     self:_initWorld()
-    self.camera               = Camera()
-    self.powerupStateManager  = PowerupStateManager(self.eventManager)
-    self.pawnSelectionMenu    = PawnSelectionMenu(self.eventManager, self.powerupStateManager)
-    self.friendlySpawnHandler = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self)
-    self.cameraControls       = CameraControls(self.camera, self.world)
+    self.camera                 = Camera()
+    self.powerupStateManager    = PowerupStateManager(self.eventManager)
+    self.pawnSelectionMenu      = PawnSelectionMenu(self.eventManager, self.powerupStateManager)
+    self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self)
+    self.cameraControls         = CameraControls(self.camera, self.world)
     self:_loadComponents()
     self:_loadSystems()
     self:_initLevels()
     self.currentLevelIndex = 0
     self:loadNextLevel()
+    self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self)
+    self.levelTransitionHandler:setState('level-starting')
     -- DEV:
     console.world = self.world
     console:launchOptions()
@@ -84,12 +88,16 @@ end
 function CombatScene:destroy()
     self.friendlySpawnHandler:destroy()
     self.pawnSelectionMenu:destroy()
+    self:_destroySubscriptions()
 end
 function CombatScene:update(dt)
     self.world:emit('update', dt)
-    self.pawnSelectionMenu:update(dt)
+    self.pawnSelectionMenu:update()
     self.camera:update(dt)
-    self.cameraControls:update(dt)
+    if not self.disableCameraControls then
+        self.cameraControls:update(dt)
+    end
+    self.levelTransitionHandler:update(dt)
 end
 function CombatScene:draw()
     self.camera:set()
@@ -97,16 +105,19 @@ function CombatScene:draw()
     self:_drawWorldBoundary()
     self.camera:unset()
     self.pawnSelectionMenu:draw()
+    self.levelTransitionHandler:draw()
 end
 function CombatScene:keypressed(key)
     self.world:emit('keypressed', key)
     self.pawnSelectionMenu:keypressed(key)
+    self.levelTransitionHandler:keypressed()
 end
 function CombatScene:mousepressed(x, y, button)
     local didClickInterface = self.pawnSelectionMenu:mousepressed(x, y, button)
     if not didClickInterface then
         self.world:emit('mousepressed', x, y, button)
     end
+    self.levelTransitionHandler:mousepressed()
 end
 function CombatScene:mousereleased(x, y, button)
     self.world:emit('mousereleased', x, y, button)
@@ -225,4 +236,21 @@ function CombatScene:_generateLevel(index)
     }
 end
 
+function CombatScene:_createSubscriptions()
+    self.subscriptions = {}
+    self.subscriptions['disableCameraControls'] = self.eventManager:subscribe('disableCameraControls', function ()
+        self.disableCameraControls = true
+    end)
+    self.subscriptions['enableCameraControls'] = self.eventManager:subscribe('enableCameraControls', function ()
+        self.disableCameraControls = false
+    end)
+    self.subscriptions["centerCameraOnFriendlyBase"] = self.eventManager:subscribe("centerCameraOnFriendlyBase", function ()
+        self.camera:centerOnPosition(self.friendlyBase.position.x, self.friendlyBase.position.y)
+    end)
+end
+function CombatScene:_destroySubscriptions()
+    for event, uuid in pairs(self.subscriptions) do
+        self.eventManager:unsubscribe(event, uuid)
+    end
+end
 return CombatScene

@@ -73,8 +73,7 @@ end
 ---@param x number
 ---@param y number
 function Camera:centerOnPosition(x, y)
-    local scaledWidth = love.graphics.getWidth() * self.currentZoom
-    local scaledHeight = love.graphics.getHeight() * self.currentZoom
+    local scaledWidth, scaledHeight = self:getCameraDimensions()
     self.position.x = x - scaledWidth / 2
     self.position.y = y - scaledHeight / 2
 end

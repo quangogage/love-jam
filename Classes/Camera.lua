@@ -39,8 +39,12 @@ local Camera = Goop.Class({
 ----------------------------
 -- [[ Public Functions ]] --
 ----------------------------
+-- .......
+-- listen....
+-- .......
+-- It's a game jam ok?
 function Camera:setToMaxZoom()
-    self.zoom = ZOOM_MAX
+    self.zoom = ZOOM_MIN
 end
 function Camera:setZoom(zoom)
     self.zoom = zoom

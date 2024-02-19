@@ -33,7 +33,7 @@ local FriendlySpawnHandler = Goop.Class({
 ---@param x? number
 ---@param y? number
 function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, pawnName, x, y)
-    if not self.combatScene.levelComplete then
+    if not self.combatScene.disableWorldUpdate then
         local powerups = self.powerupStateManager:getPowerupsForPawnType(pawnName)
         x = x or love.math.random(self.spawnZone.x, self.spawnZone.x + self.spawnZone.width)
         y = y or love.math.random(self.spawnZone.y, self.spawnZone.y + self.spawnZone.height)

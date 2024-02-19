@@ -21,7 +21,11 @@ return function(concord)
     function PowerupSetupSystem:update()
         for _,e in ipairs(self.entities) do
             if not e.powerups.setup then
-                console:log("Setting up powerups for pawn...")
+                for _,powerup in pairs(e.powerups.value) do
+                    if powerup.onPawnCreation then
+                        powerup.onPawnCreation(powerup,e)
+                    end
+                end
                 e.powerups.setup = true
             end
         end

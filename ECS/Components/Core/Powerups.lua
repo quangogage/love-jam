@@ -4,7 +4,7 @@
 -- Stores information about what powerups this entity has.
 -- Should be defined upon creation, see FriendlySpawnHandler for 
 -- more info.
----@field value table<string, {name: string, count: integer}>
+---@field value table<string, table>
 ---@field setup boolean
 
 return function(concord)

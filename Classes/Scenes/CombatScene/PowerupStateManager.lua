@@ -4,6 +4,8 @@
 -- are associated with.
 --
 
+local util = require('util')({ 'table' })
+local powerups = require('lists.powerups')
 
 ---@class PowerupStateManager
 ---@field eventManager EventManager
@@ -38,7 +40,9 @@ function PowerupStateManager:addPowerup(pawnType, powerupName)
     end
 
     if not thisType[powerupName] then
-        self.pawnTypes[pawnType][powerupName] = {name = powerupName, count = 1}
+        local powerupSource = self:_getPowerupByName(powerupName)
+        self.pawnTypes[pawnType][powerupName] = { name = powerupName, count = 1 }
+        util.table.deepCopy(self.pawnTypes[pawnType][powerupName], powerupSource)
     else
         self.pawnTypes[pawnType][powerupName].count = thisType[powerupName].count + 1
     end
@@ -69,14 +73,22 @@ end
 function PowerupStateManager:_createSubscriptions()
     self.subscriptions = {}
     -- Called from PowerupSelectionMenu.
-    self.subscriptions["interface_addPowerupToType"] = self.eventManager:subscribe(
-        "interface_addPowerupToType", function(pawnType, powerupName)
+    self.subscriptions['interface_addPowerupToType'] = self.eventManager:subscribe(
+        'interface_addPowerupToType', function (pawnType, powerupName)
             self:addPowerup(pawnType, powerupName)
         end)
 end
 function PowerupStateManager:_destroySubscriptions()
     for eventName, uuid in pairs(self.subscriptions) do
         self.eventManager:unsubscribe(eventName, uuid)
+    end
+end
+
+function PowerupStateManager:_getPowerupByName(name)
+    for _,powerup in pairs(powerups) do
+        if powerup.name == name then
+            return powerup
+        end
     end
 end
 return PowerupStateManager

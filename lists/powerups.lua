@@ -7,7 +7,15 @@
 return {
     {
         name = "Fast Walker",
-        description = "Move 15% faster"
+        description = "Move 20% faster",
+        ---@param self table
+        ---@param pawn BasicPawn | Pawn | table
+        onPawnCreation = function(self, pawn)
+            for _=1, self.count do
+                pawn.movement.walkSpeed = pawn.movement.walkSpeed * 1.20
+            end
+            console:log("Increased speed")
+        end
     },
     {
         name = "Bloodlust",

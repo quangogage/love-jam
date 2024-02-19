@@ -16,13 +16,13 @@ local Camera                 = require('Classes.Camera')
 local CameraControls         = require('Classes.Scenes.CombatScene.CameraControls')
 local FriendlySpawnHandler   = require('Classes.Scenes.CombatScene.FriendlySpawnHandler')
 local PowerupStateManager    = require('Classes.Scenes.CombatScene.PowerupStateManager')
-local CombatInterface        = require('Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
+local PawnSelectionMenu      = require('Classes.Scenes.CombatScene.Interface.PawnSelectionMenu')
 
 ---@class CombatScene
 ---@field concord Concord
 ---@field camera Camera
 ---@field world World
----@field interface CombatInterface
+---@field pawnSelectionMenu PawnSelectionMenu
 ---@field eventManager EventManager
 ---@field friendlyBase Base The player's base.
 ---@field enemyBase Base The enemy's base.
@@ -67,11 +67,11 @@ end
 function CombatScene:init()
     self.concord = require('libs.Concord')
     self:_initWorld()
-    self.camera                 = Camera()
-    self.powerupStateManager    = PowerupStateManager(self.eventManager)
-    self.interface              = CombatInterface(self.eventManager, self.powerupStateManager)
-    self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self)
-    self.cameraControls         = CameraControls(self.camera, self.world)
+    self.camera               = Camera()
+    self.powerupStateManager  = PowerupStateManager(self.eventManager)
+    self.pawnSelectionMenu    = PawnSelectionMenu(self.eventManager, self.powerupStateManager)
+    self.friendlySpawnHandler = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self)
+    self.cameraControls       = CameraControls(self.camera, self.world)
     self:_loadComponents()
     self:_loadSystems()
     self:_initLevels()
@@ -83,11 +83,11 @@ function CombatScene:init()
 end
 function CombatScene:destroy()
     self.friendlySpawnHandler:destroy()
-    self.interface:destroy()
+    self.pawnSelectionMenu:destroy()
 end
 function CombatScene:update(dt)
     self.world:emit('update', dt)
-    self.interface:update(dt)
+    self.pawnSelectionMenu:update(dt)
     self.camera:update(dt)
     self.cameraControls:update(dt)
 end
@@ -96,14 +96,14 @@ function CombatScene:draw()
     self.world:emit('draw')
     self:_drawWorldBoundary()
     self.camera:unset()
-    self.interface:draw()
+    self.pawnSelectionMenu:draw()
 end
 function CombatScene:keypressed(key)
     self.world:emit('keypressed', key)
-    self.interface:keypressed(key)
+    self.pawnSelectionMenu:keypressed(key)
 end
 function CombatScene:mousepressed(x, y, button)
-    local didClickInterface = self.interface:mousepressed(x, y, button)
+    local didClickInterface = self.pawnSelectionMenu:mousepressed(x, y, button)
     if not didClickInterface then
         self.world:emit('mousepressed', x, y, button)
     end
@@ -172,7 +172,7 @@ end
 
 function CombatScene:_drawWorldBoundary()
     love.graphics.setColor(1, 1, 1, 0.5)
-    love.graphics.setLineWidth(2)
+    love.graphics.setLineWidth(4)
     love.graphics.rectangle('line', 0, 0, self.world.bounds.width, self.world.bounds.height)
 end
 

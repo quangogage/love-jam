@@ -10,18 +10,26 @@
 
 local palette               = require('lists.interfaceColorPalette')
 local pawnTypes             = require('lists.pawnTypes')
-local PawnSelectionCard     = require('Classes.Scenes.CombatScene.CombatInterface.PawnSelectionCard')
+local PawnSelectionCard     = require('Classes.Scenes.CombatScene.Interface.PawnSelectionCard')
 
 ---@class PawnSelectionMenu
 ---@field height number
+---@field cardWidth number
+---@field cardHeight number
 ---@field cards PawnSelectionCard[]
 ---@field eventManager EventManager
 ---@field powerupStateManager PowerupStateManager
+---@field cardScreenPadding number
+---@field cardSpacing number
 local PawnSelectionMenu     = Goop.Class({
     arguments = { 'eventManager', 'powerupStateManager' },
     static = {
         cards  = {},
-        height = 100
+        height = 100,
+        cardScreenPadding = 15,
+        cardSpacing = 7,
+        cardWidth = 245,
+        cardHeight = 90
     }
 })
 
@@ -37,6 +45,9 @@ function PawnSelectionMenu:destroy()
     self:_destroySubscriptions()
 end
 function PawnSelectionMenu:update()
+    for _, card in ipairs(self.cards) do
+        card:update()
+    end
 end
 function PawnSelectionMenu:draw()
     self:_drawBackground()
@@ -72,6 +83,23 @@ end
 -- [[ Private Functions ]] --
 -----------------------------
 function PawnSelectionMenu:_initCards()
+    local x = self.cardScreenPadding
+    self.cards = {}
+    for _, pawnType in ipairs(pawnTypes) do
+        local newCard = PawnSelectionCard({
+            anchor         = { x = 0, y = 1 },
+            offset         = { x = x, y = -self.height / 2 - self.cardHeight / 2}, 
+            width          = self.cardWidth,
+            height         = self.cardHeight,
+            name           = pawnType.name,
+            description    = pawnType.description,
+            price          = pawnType.price,
+            powerups       = self.powerupStateManager:getPowerupsForPawnType(pawnType.name),
+            assemblageName = pawnType.assemblageName
+        })
+        x = x + self.cardWidth + self.cardSpacing
+        table.insert(self.cards, newCard)
+    end
 end
 function PawnSelectionMenu:_drawBackground()
     love.graphics.setColor(palette.background)
@@ -97,7 +125,7 @@ function PawnSelectionMenu:_createSubscriptions()
         function (pawnTypePowerups)
             for _, card in pairs(self.cards) do
                 if pawnTypePowerups[card.name] then
-                    card:syncPowerups(pawnTypePowerups[card.name])
+                    -- card:syncPowerups(pawnTypePowerups[card.name])
                 end
             end
         end

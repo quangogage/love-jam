@@ -16,9 +16,7 @@ local Camera                 = require('Classes.Camera')
 local CameraControls         = require('Classes.Scenes.CombatScene.CameraControls')
 local FriendlySpawnHandler   = require('Classes.Scenes.CombatScene.FriendlySpawnHandler')
 local PowerupStateManager    = require('Classes.Scenes.CombatScene.PowerupStateManager')
-local LevelStartAnimation    = require('Classes.Scenes.CombatScene.LevelStartAnimation')
 local CombatInterface        = require('Classes.Scenes.CombatScene.CombatInterface.CombatInterface')
-local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
 
 ---@class CombatScene
 ---@field concord Concord
@@ -28,13 +26,11 @@ local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransiti
 ---@field eventManager EventManager
 ---@field friendlyBase Base The player's base.
 ---@field enemyBase Base The enemy's base.
----@field levelStartAnimation LevelStartAnimation
 ---@field levels table[]
 ---@field friendlySpawnHandler FriendlySpawnHandler
 ---@field powerupStateManager PowerupStateManager
 ---@field cameraControls CameraControls
 ---@field currentLevelIndex integer
----@field levelComplete boolean
 local CombatScene            = Goop.Class({
     arguments = { 'eventManager' },
     static = {
@@ -54,15 +50,15 @@ function CombatScene:loadNextLevel()
         self.currentLevelIndex = 1
     end
 
+    -- Clear out all current entities and generate new ones.
     self:_generateLevel(self.currentLevelIndex)
-    self.levelComplete = false
-    self.levelStartAnimation = LevelStartAnimation(self.camera, self, self.currentLevelIndex)
 
+    -- Disable pawn generation.
+    -- See PawnGenerationSystem.
     self.world:emit("event_newLevel")
 end
 function CombatScene:completeLevel()
-    self.levelComplete = true
-    self.levelTransitionHandler:onLevelComplete()
+    console:log("Uh...")
 end
 
 --------------------------
@@ -76,7 +72,6 @@ function CombatScene:init()
     self.interface              = CombatInterface(self.eventManager, self.powerupStateManager)
     self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self)
     self.cameraControls         = CameraControls(self.camera, self.world)
-    self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self)
     self:_loadComponents()
     self:_loadSystems()
     self:_initLevels()
@@ -88,59 +83,36 @@ function CombatScene:init()
 end
 function CombatScene:destroy()
     self.friendlySpawnHandler:destroy()
-    self.levelTransitionHandler:destroy()
     self.interface:destroy()
 end
 function CombatScene:update(dt)
-    if not self.levelComplete then
-        self.world:emit('update', dt)
-        self.interface:update(dt)
-        self.camera:update(dt)
-        if not self.levelStartAnimation.active then
-            self.cameraControls:update(dt)
-        end
-        self.levelStartAnimation:update(dt)
-    end
-    self.levelTransitionHandler:update(dt)
+    self.world:emit('update', dt)
+    self.interface:update(dt)
+    self.camera:update(dt)
+    self.cameraControls:update(dt)
 end
 function CombatScene:draw()
     self.camera:set()
     self.world:emit('draw')
     self:_drawWorldBoundary()
     self.camera:unset()
-    self.levelTransitionHandler:draw()
     self.interface:draw()
-    self.levelStartAnimation:draw()
 end
 function CombatScene:keypressed(key)
-    if not self.levelComplete then
-        self.world:emit('keypressed', key)
-        self.levelStartAnimation:endAnimation()
-    end
+    self.world:emit('keypressed', key)
     self.interface:keypressed(key)
 end
 function CombatScene:mousepressed(x, y, button)
     local didClickInterface = self.interface:mousepressed(x, y, button)
-    if not self.levelComplete then
-        if not didClickInterface then
-            self.world:emit('mousepressed', x, y, button)
-        end
-        self.levelStartAnimation:endAnimation()
+    if not didClickInterface then
+        self.world:emit('mousepressed', x, y, button)
     end
-    self.levelTransitionHandler:mousepressed(x, y, button)
 end
 function CombatScene:mousereleased(x, y, button)
-    if not self.levelComplete then
-        self.world:emit('mousereleased', x, y, button)
-    end
+    self.world:emit('mousereleased', x, y, button)
 end
 function CombatScene:wheelmoved(x, y)
-    if not self.levelComplete then
-        if not self.levelStartAnimation.active then
-            self.cameraControls:wheelmoved(x, y)
-        end
-        self.levelStartAnimation:endAnimation()
-    end
+    self.cameraControls:wheelmoved(x, y)
 end
 
 

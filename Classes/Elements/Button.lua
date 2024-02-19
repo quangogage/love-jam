@@ -1,6 +1,6 @@
 ---@author Gage Henderson 2024-02-18 03:47
 --
----@class Button
+---@class Button : Element
 ---@field position {x: number, y: number}
 ---@field dimensions {width: number, height: number}
 ---@field text string
@@ -10,12 +10,15 @@
 ---@field onClick function
 ---@field currentColor number[]
 
-local Vec2 = require('Classes.Types.Vec2')
 local util = require('util')({ 'table' })
+local Vec2 = require('Classes.Types.Vec2')
+local Element = require("Classes.Elements.Element")
 
 local Button = Goop.Class({
+    extends = Element,
     parameters = {
-        { 'position', 'table' },
+        { 'anchor', 'table' },
+        { 'offset', 'table' },
         { 'text',     'string' },
         { 'onClick',  'function' }
     },
@@ -41,7 +44,8 @@ function Button:init()
     self.currentColor = util.table.createDeepCopy(self.color)
 end
 function Button:update(dt)
-    local mouseX, mouseY = renderResolution:getMousePosition()
+    Element.update(self, dt)
+    local mouseX, mouseY = love.mouse.getPosition()
     if mouseX > self.position.x and mouseX < self.position.x + self.dimensions.x and
     mouseY > self.position.y and mouseY < self.position.y + self.dimensions.y then
         self.hovered = true

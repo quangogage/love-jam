@@ -4,8 +4,8 @@
 --
 
 local FRICTION = 9
-local ZOOM_MIN = 0.1
-local ZOOM_MAX = 2
+local ZOOM_MIN = 0.3
+local ZOOM_MAX = 1.7
 local ZOOM_SPEED = 5
 
 local Vec2 = require('Classes.Types.Vec2')
@@ -16,7 +16,6 @@ local Vec2 = require('Classes.Types.Vec2')
 ---@field zoom number More like 'targetZoom'
 ---@field currentZoom number Continously tries to reach 'zoom'
 ---@field zoomSpeed number How fast 'currentZoom' tries to reach 'zoom'
----@field zoomOffset Vec2
 ---@field velocity Vec2
 ---@field rotation number
 local Camera = Goop.Class({
@@ -31,8 +30,8 @@ local Camera = Goop.Class({
         rotation    = 0,
         zoom        = 1,
         currentZoom = 1,
-        zoomOffset  = Vec2(0, 0),
-        velocity    = Vec2(0, 0)
+        velocity    = Vec2(0, 0),
+        screenScaleMultiplier = 1
     }
 })
 
@@ -40,12 +39,8 @@ local Camera = Goop.Class({
 ----------------------------
 -- [[ Public Functions ]] --
 ----------------------------
--- Zoom the camera out all the way smoothly while staying centered using
--- zoomOffset.
 function Camera:setToMaxZoom()
     self.zoom = ZOOM_MAX
-    self.zoomOffset.x = (renderResolution.width / 2) * (1 - self.zoom)
-    self.zoomOffset.y = (renderResolution.height / 2) * (1 - self.zoom)
 end
 function Camera:setZoom(zoom)
     self.zoom = zoom
@@ -54,40 +49,41 @@ function Camera:getZoom()
     return self.currentZoom
 end
 function Camera:getTranslatedMousePosition()
-    local x, y = renderResolution:getMousePosition()
+    local x, y = love.mouse.getPosition()
     local cameraX, cameraY = self:getPosition()
     return x * self.currentZoom + cameraX, y * self.currentZoom + cameraY
 end
+function Camera:getCameraDimensions()
+    local scale = 1 / self.screenScaleMultiplier * self.currentZoom
+    return love.graphics.getWidth() / scale, love.graphics.getHeight() / scale
+end
+function Camera:getScale()
+    return 1 / self.screenScaleMultiplier * self.currentZoom
+end
 function Camera:set()
+    local scale = self:getScale()
     love.graphics.push()
     love.graphics.rotate(-self.rotation)
-    love.graphics.scale(1 / self.currentZoom, 1 / self.currentZoom)
-    love.graphics.translate(-self.position.x - self.zoomOffset.x, -self.position.y - self.zoomOffset.y)
+    love.graphics.scale(scale, scale)
+    love.graphics.translate(-self.position.x, -self.position.y)
 end
 function Camera:unset()
     love.graphics.pop()
 end
----@return number, number
-function Camera:getPosition()
-    return self.position.x + self.zoomOffset.x, self.position.y + self.zoomOffset.y
-end
----@param x number | nil
----@param y number | nil
-function Camera:setPosition(x,y)
-    if x then
-        self.position.x = x - self.zoomOffset.x
-    end
-    if y then
-        self.position.y = y - self.zoomOffset.y
-    end
-end
 ---@param x number
 ---@param y number
 function Camera:centerOnPosition(x, y)
-    local scaledWidth = renderResolution.width * self.currentZoom
-    local scaledHeight = renderResolution.height * self.currentZoom
-    self.position.x = x - scaledWidth / 2 - self.zoomOffset.x
-    self.position.y = y - scaledHeight / 2 - self.zoomOffset.y
+    local scaledWidth = love.graphics.getWidth() * self.currentZoom
+    local scaledHeight = love.graphics.getHeight() * self.currentZoom
+    self.position.x = x - scaledWidth / 2
+    self.position.y = y - scaledHeight / 2
+end
+function Camera:getPosition()
+    return self.position.x, self.position.y
+end
+function Camera:setPosition(x,y)
+    self.position.x = x or self.position.x
+    self.position.y = y or self.position.y
 end
 
 
@@ -97,6 +93,7 @@ end
 function Camera:update(dt)
     self:_applyFrictionAndVelocity(dt)
     self:_updateZoom(dt)
+    self:_getScreenScaleMultiplier()
 end
 
 
@@ -112,8 +109,13 @@ end
 function Camera:_updateZoom(dt)
     self.currentZoom = self.currentZoom + (self.zoom - self.currentZoom) * ZOOM_SPEED * dt
     self.currentZoom = math.max(ZOOM_MIN, math.min(ZOOM_MAX, self.currentZoom))
-    self.zoomOffset.x = (renderResolution.width / 2) * (1 - self.currentZoom)
-    self.zoomOffset.y = (renderResolution.height / 2) * (1 - self.currentZoom)
+end
+
+-- Make sure you can always see the same amount of the world no matter the
+-- screen size.
+-- assume the screen will always be 16:9
+function Camera:_getScreenScaleMultiplier()
+    self.screenScaleMultiplier = referenceResolution.width / love.graphics.getWidth()
 end
 
 return Camera

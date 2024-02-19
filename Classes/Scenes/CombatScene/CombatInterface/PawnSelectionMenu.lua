@@ -12,9 +12,6 @@ local palette               = require('lists.interfaceColorPalette')
 local pawnTypes             = require('lists.pawnTypes')
 local PawnSelectionCard     = require('Classes.Scenes.CombatScene.CombatInterface.PawnSelectionCard')
 
-local CARD_SPACING          = 15
-local VERTICAL_CARD_PADDING = 10
-
 ---@class PawnSelectionMenu
 ---@field height number
 ---@field cards PawnSelectionCard[]
@@ -24,7 +21,7 @@ local PawnSelectionMenu     = Goop.Class({
     arguments = { 'eventManager', 'powerupStateManager' },
     static = {
         cards  = {},
-        height = 230,
+        height = 100
     }
 })
 
@@ -54,8 +51,7 @@ function PawnSelectionMenu:keypressed(key)
         self.eventManager:broadcast('interface_selectPawnType', self.cards[tonumber(key)].name)
     end
 end
-function PawnSelectionMenu:mousepressed(_, _, button)
-    local x, y = renderResolution:getMousePosition()
+function PawnSelectionMenu:mousepressed(x, y, button)
     if button == 1 then
         for _, card in ipairs(self.cards) do
             if x > card.position.x and x < card.position.x + card.dimensions.width and
@@ -69,37 +65,19 @@ function PawnSelectionMenu:mousepressed(_, _, button)
             end
         end
     end
-    return y > renderResolution.height - self.height
+    return y > love.graphics.getHeight() - self.height
 end
 
 -----------------------------
 -- [[ Private Functions ]] --
 -----------------------------
 function PawnSelectionMenu:_initCards()
-    local x = CARD_SPACING
-    for _, pawnType in ipairs(pawnTypes) do
-        local card = PawnSelectionCard({
-            position       = {
-                x = x,
-                y = renderResolution.height - self.height + VERTICAL_CARD_PADDING / 2
-            },
-            name           = pawnType.name,
-            price          = pawnType.price,
-            assemblageName = pawnType.assemblageName,
-            description    = pawnType.description,
-            height         = self.height - VERTICAL_CARD_PADDING,
-            eventManager   = self.eventManager
-        })
-        table.insert(self.cards, card)
-        card:syncPowerups(self.powerupStateManager:getPowerupsForPawnType(pawnType.name))
-        x = x + card.dimensions.width + CARD_SPACING
-    end
 end
 function PawnSelectionMenu:_drawBackground()
     love.graphics.setColor(palette.background)
     love.graphics.rectangle('fill',
-        0, renderResolution.height - self.height,
-        renderResolution.width, self.height
+        0, love.graphics.getHeight() - self.height,
+        love.graphics.getWidth(), self.height
     )
 end
 

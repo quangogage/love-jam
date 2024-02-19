@@ -13,10 +13,7 @@ function love.update(dt)
     end
 end
 function love.draw()
-    renderResolution:startDrawing()
     game:draw()
-    renderResolution:stopDrawing()
-    renderResolution:draw()
 
     -- Dev:
     console:draw()
@@ -33,9 +30,6 @@ function love.keypressed(key)
     local toggleFull = function ()
         local _, _, flags = love.window.getMode()
         local width, height = 0, 0
-        if flags.fullscreen then
-            width, height = renderResolution.width - 50, renderResolution.height - 50
-        end
         love.window.setMode(width, height, { fullscreen = not flags.fullscreen })
     end
     if love.keyboard.isDown('lalt') or love.keyboard.isDown('ralt') then

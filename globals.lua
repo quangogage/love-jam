@@ -1,4 +1,4 @@
-Goop             = require("libs.GOOP")
-console          = require("libs.Console.Console")()
-settings         = require("settings")
-renderResolution = require("Classes.RenderResolution")()
+Goop                = require("libs.GOOP")
+console             = require("libs.Console.Console")()
+settings            = require("settings")
+referenceResolution = { width                           = 1920, height = 1080 }

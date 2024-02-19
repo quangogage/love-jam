@@ -1,7 +1,6 @@
 ---@author Gage Henderson 2024-02-17 19:20
 --
 
-local FRICTION              = 9
 local SCREEN_EDGE_THRESHOLD = 5
 local ZOOM_INCREMENT        = 0.1
 local ZOOM_MIN              = 0.1
@@ -15,7 +14,7 @@ local Vec2                  = require('Classes.Types.Vec2')
 ---@field lastMouseY number
 ---@field world World
 local CameraControls        = Goop.Class({
-    arguments = { 'camera' , 'world' },
+    arguments = { 'camera', 'world' },
     static = {
         velocity = Vec2(0, 0)
     }
@@ -42,7 +41,7 @@ end
 -----------------------------
 ---@param dt number
 function CameraControls:_keyboardMovement(dt)
-    local speed = settings.cameraWASDMoveSpeed * self.camera:getZoom()
+    local speed = settings.cameraWASDMoveSpeed * (1 / self.camera:getScale())
     if love.keyboard.isDown('w') then
         self.camera.velocity.y = self.camera.velocity.y - speed * dt
     elseif love.keyboard.isDown('s') then
@@ -58,22 +57,22 @@ end
 -- Move the camera by pushing your mouse to the edge of the screen.
 function CameraControls:_mousePushMovement(dt)
     local x, y = love.mouse.getPosition()
-    local speed = settings.cameraPushMoveSpeed * self.camera:getZoom()
+    local speed = settings.cameraPushMoveSpeed * (1 / self.camera:getScale())
 
     if x < SCREEN_EDGE_THRESHOLD then
         self.camera.velocity.x = self.camera.velocity.x - speed * dt
-    elseif x > renderResolution.width - SCREEN_EDGE_THRESHOLD then
+    elseif x > love.graphics.getWidth() - SCREEN_EDGE_THRESHOLD then
         self.camera.velocity.x = self.camera.velocity.x + speed * dt
     end
     if y < SCREEN_EDGE_THRESHOLD then
         self.camera.velocity.y = self.camera.velocity.y - speed * dt
-    elseif y > renderResolution.height - SCREEN_EDGE_THRESHOLD then
+    elseif y > love.graphics.getHeight() - SCREEN_EDGE_THRESHOLD then
         self.camera.velocity.y = self.camera.velocity.y + speed * dt
     end
 end
 
 function CameraControls:_updateDrag(dt)
-    local speed = settings.cameraPanSpeed * self.camera:getZoom()
+    local speed = settings.cameraPanSpeed * (1 / self.camera:getScale())
     if love.mouse.isDown(2) then
         if self.lastMouseX then
             local x, y = love.mouse.getPosition()
@@ -91,34 +90,29 @@ end
 
 function CameraControls:_cameraZoom(y)
     if y then
-        if y < 0 then
-            self.camera:setZoom(math.min(ZOOM_MAX,
-                self.camera.zoom + ZOOM_INCREMENT))
-        elseif y > 0 then
-            self.camera:setZoom(math.max(ZOOM_MIN,
-                self.camera.zoom - ZOOM_INCREMENT))
+        if y > 0 then
+            self.camera:setZoom(math.min(ZOOM_MAX, self.camera.zoom + ZOOM_INCREMENT))
+        elseif y < 0 then
+            self.camera:setZoom(math.max(ZOOM_MIN, self.camera.zoom - ZOOM_INCREMENT))
         end
     end
 end
-
 function CameraControls:_enforceWorldBounds()
-    local cameraZoom = self.camera:getZoom()
-    local scaledWidth = renderResolution.width * cameraZoom
-    local scaledHeight = renderResolution.height * cameraZoom
-    local cameraX, cameraY = self.camera:getPosition()
+    local cameraWidth, cameraHeight = self.camera:getCameraDimensions()
     local center = {
-        x = cameraX + scaledWidth / 2,
-        y = cameraY + scaledHeight / 2
+        x = self.camera.position.x + cameraWidth / 2,
+        y = self.camera.position.y + cameraHeight / 2
     }
+
     if center.x < self.world.bounds.x then
-        self.camera:setPosition(self.world.bounds.x - scaledWidth / 2)
+        self.camera.position.x = self.world.bounds.x - cameraWidth / 2
     elseif center.x > self.world.bounds.x + self.world.bounds.width then
-        self.camera:setPosition(self.world.bounds.x + self.world.bounds.width - scaledWidth / 2)
+        self.camera.position.x = self.world.bounds.x + self.world.bounds.width - cameraWidth / 2
     end
     if center.y < self.world.bounds.y then
-        self.camera:setPosition(nil,self.world.bounds.y - scaledHeight / 2)
+        self.camera.position.y = self.world.bounds.y - cameraHeight / 2
     elseif center.y > self.world.bounds.y + self.world.bounds.height then
-        self.camera:setPosition(nil, self.world.bounds.y + self.world.bounds.height - scaledHeight / 2)
+        self.camera.position.y = self.world.bounds.y + self.world.bounds.height - cameraHeight / 2
     end
 end
 

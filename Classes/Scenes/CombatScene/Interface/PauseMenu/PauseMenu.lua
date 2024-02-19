@@ -4,17 +4,23 @@
 
 local ACTIVE_BACKGROUND_ALPHA = 0.8
 
+local subMenus = {
+    primaryPauseMenu = require("Classes.Scenes.CombatScene.Interface.PauseMenu.PrimaryPauseMenu")
+}
+
 ---@class PauseMenu
 ---@field active boolean
 ---@field combatScene CombatScene
+---@field eventManager EventManager
 ---@field backgroundOverlay table
+---@field currentMenu table
 local PauseMenu = Goop.Class({
-    arguments = {"combatScene"},
-    static = {
+    arguments = {"combatScene", "eventManager"},
+    dynamic = {
         active = false,
         backgroundOverlay = {
             alpha = 0,
-            fadeSpeed = 5
+            fadeSpeed = 12
         }
     },
 })
@@ -24,10 +30,12 @@ local PauseMenu = Goop.Class({
 -- [[ Public Functions ]] --
 ----------------------------
 function PauseMenu:open()
+    self:_loadMenu("primaryPauseMenu")
     self.active = true
     self.combatScene.paused = true
 end
 function PauseMenu:close()
+    self.currentMenu = nil
     self.active = false
     self.combatScene.paused = false
 end
@@ -37,14 +45,26 @@ end
 --------------------------
 function PauseMenu:update(dt)
     self:_fadeBackgroundOverlay(dt)
+    if self.currentMenu then
+        self.currentMenu:update(dt)
+    end
 end
 function PauseMenu:draw()
     self:_drawBackgroundOverlay()
+    if self.currentMenu then
+        self.currentMenu:draw()
+    end
 end
 function PauseMenu:keypressed(key)
     self:_toggle(key)
+    if self.currentMenu then
+        self.currentMenu:keypressed(key)
+    end
 end
 function PauseMenu:mousepressed(x, y, button)
+    if self.currentMenu then
+        self.currentMenu:mousepressed(x, y, button)
+    end
 end
 
 
@@ -52,10 +72,12 @@ end
 -- [[ Private Functions ]] --
 -----------------------------
 function PauseMenu:_toggle(key)
-    if self.active then
-        self:close()
-    else
-       self:open()
+    if key == 'escape' then
+        if self.active then
+            self:close()
+        else
+           self:open()
+        end
     end
 end
 function PauseMenu:_fadeBackgroundOverlay(dt)
@@ -65,6 +87,9 @@ end
 function PauseMenu:_drawBackgroundOverlay()
     love.graphics.setColor(0, 0, 0, self.backgroundOverlay.alpha)
     love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+end
+function PauseMenu:_loadMenu(menuName)
+    self.currentMenu = subMenus[menuName](self, self.eventManager)
 end
 
 

@@ -1,5 +1,10 @@
 ---@author Gage Henderson 2024-02-18 03:47
 --
+
+local util = require('util')({ 'table' })
+local Vec2 = require('Classes.Types.Vec2')
+local Element = require("Classes.Elements.Element")
+
 ---@class Button : Element
 ---@field position {x: number, y: number}
 ---@field dimensions {width: number, height: number}
@@ -9,11 +14,6 @@
 ---@field hoverColor number[]
 ---@field onClick function
 ---@field currentColor number[]
-
-local util = require('util')({ 'table' })
-local Vec2 = require('Classes.Types.Vec2')
-local Element = require("Classes.Elements.Element")
-
 local Button = Goop.Class({
     extends = Element,
     parameters = {
@@ -25,13 +25,11 @@ local Button = Goop.Class({
     dynamic = {
         color            = { 1, 1, 1, 1 },
         hoverColor       = { 0.2, 0.2, 0.2, 1 },
-        font             = love.graphics.newFont(
-        'assets/fonts/RobotoCondensed-Light.ttf', 30),
+        font             = love.graphics.newFont('assets/fonts/RobotoCondensed-Light.ttf', 30),
         dimensions       = Vec2(0, 0),
         colorChangeSpeed = 15,
     }
 })
-
 
 --------------------------
 -- [[ Core Functions ]] --

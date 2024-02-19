@@ -22,7 +22,6 @@ local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransiti
 local PauseMenu              = require("Classes.Scenes.CombatScene.Interface.PauseMenu.PauseMenu")
 
 ---@class CombatScene
----@field concord Concord
 ---@field camera Camera
 ---@field world World
 ---@field pawnSelectionMenu PawnSelectionMenu
@@ -81,8 +80,7 @@ function CombatScene:init()
     self.powerupSelectionMenu   = PowerupSelectionMenu(self.eventManager, self)
     self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self)
     self.cameraControls         = CameraControls(self.camera, self.world)
-    self.pauseMenu              = PauseMenu(self)
-    self:_loadComponents()
+    self.pauseMenu              = PauseMenu(self, self.eventManager)
     self:_loadSystems()
     self:_initLevels()
     self.currentLevelIndex = 0
@@ -141,6 +139,7 @@ function CombatScene:mousepressed(x, y, button)
         self.levelTransitionHandler:mousepressed()
         self.powerupSelectionMenu:mousepressed(x, y, button)
     end
+    self.pauseMenu:mousepressed(x, y, button)
 end
 function CombatScene:mousereleased(x, y, button)
     if not self.paused and not self.disableWorldUpdate then
@@ -192,21 +191,6 @@ function CombatScene:_loadSystems()
     self.world:addSystems(unpack(systems))
 end
 
--- Auto-load all components.
-function CombatScene:_loadComponents()
-    local function loadFilesInDir(dir)
-        local files = love.filesystem.getDirectoryItems(dir)
-        for _, file in ipairs(files) do
-            if string.match(file, '%.lua') then
-                local filename = file:gsub('%.lua$', '')
-                require(dir .. filename)(self.concord)
-            elseif love.filesystem.getInfo(dir .. file).type == 'directory' then
-                loadFilesInDir(dir .. file .. '/')
-            end
-        end
-    end
-    loadFilesInDir('/ECS/Components/')
-end
 
 function CombatScene:_drawWorldBoundary()
     love.graphics.setColor(1, 1, 1, 0.5)

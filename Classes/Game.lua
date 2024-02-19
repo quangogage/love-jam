@@ -1,14 +1,15 @@
 ---@author Gage Henderson
 --
 
-local EventManager     = require('Classes.EventManager')
+local Concord = require('libs.Concord')
+local EventManager = require('Classes.EventManager')
 local sceneClasses = {
     CombatScene = require('Classes.Scenes.CombatScene.CombatScene'),
     MainMenuScene = require('Classes.Scenes.MainMenuScene.MainMenuScene'),
 }
 
 ---@class Game
-local Game         = Goop.Class({})
+local Game = Goop.Class({})
 
 ----------------------------
 -- [[ Public Functions ]] --
@@ -24,9 +25,11 @@ end
 -- [[ Core Functions ]] --
 --------------------------
 function Game:init()
-    self.eventManager     = EventManager()
-    self:setScene('MainMenuScene', function()
-        self:setScene('CombatScene',self.eventManager)
+    self.eventManager = EventManager()
+    self:_createSubscriptions()
+    self:_loadComponents()
+    self:setScene('MainMenuScene', function ()
+        self:setScene('CombatScene', self.eventManager)
     end)
 end
 function Game:update(dt)
@@ -58,6 +61,32 @@ function Game:keypressed(key)
     if self.currentScene then
         self.currentScene:keypressed(key)
     end
+end
+
+
+-----------------------------
+-- [[ Private Functions ]] --
+-----------------------------
+function Game:_createSubscriptions()
+    self.eventManager:subscribe('openMainMenu', function ()
+        self:setScene('MainMenuScene', function ()
+            self:setScene('CombatScene', self.eventManager)
+        end)
+    end)
+end
+function Game:_loadComponents()
+    local function loadFilesInDir(dir)
+        local files = love.filesystem.getDirectoryItems(dir)
+        for _, file in ipairs(files) do
+            if string.match(file, '%.lua') then
+                local filename = file:gsub('%.lua$', '')
+                require(dir .. filename)(Concord)
+            elseif love.filesystem.getInfo(dir .. file).type == 'directory' then
+                loadFilesInDir(dir .. file .. '/')
+            end
+        end
+    end
+    loadFilesInDir('/ECS/Components/')
 end
 
 return Game

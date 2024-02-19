@@ -9,7 +9,8 @@ local CharacterAssemblage = require('ECS.Assemblages.Pawns.Pawn')
 ---@param x number
 ---@param y number
 ---@param friendly boolean
-return function (e, x, y, friendly)
+---@param powerups table See PowerupStateManager / FriendlySpawnHandler...+more...
+return function (e, x, y, friendly, powerups)
     e
         :assemble(CharacterAssemblage, x, y)
         :give('health', 5)
@@ -27,5 +28,9 @@ return function (e, x, y, friendly)
     else
         e:give('hostile')
         e:give("color", 1, 0.1, 0.1)
+    end
+
+    if powerups then
+        e:give('powerups', powerups)
     end
 end

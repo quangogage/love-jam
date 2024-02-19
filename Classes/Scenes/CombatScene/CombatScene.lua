@@ -165,6 +165,7 @@ function CombatScene:_loadSystems()
         )
     end
     loadSystem('TargetClearingSystem')
+    loadSystem('PowerupSetupSystem')
     loadSystem('RenderSystem')
     loadSystem('PhysicsSystem')
     loadSystem('ClickHandlerSystem', self.camera)

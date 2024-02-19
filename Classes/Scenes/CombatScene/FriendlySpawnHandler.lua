@@ -29,13 +29,14 @@ local FriendlySpawnHandler = Goop.Class({
 ----------------------------
 -- Triggered by the `interface_attemptSpawnPawn` event.
 ---@param pawnTypeAssemblage string The name of the assemblage to spawn.
+---@param pawnName string
 ---@param x? number
 ---@param y? number
-function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, x, y)
+function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, pawnName, x, y)
     if not self.combatScene.levelComplete then
         x = x or love.math.random(self.spawnZone.x, self.spawnZone.x + self.spawnZone.width)
         y = y or love.math.random(self.spawnZone.y, self.spawnZone.y + self.spawnZone.height)
-        util.entityAssembler.assemble(self.world, pawnTypeAssemblage, x, y, true)
+        util.entityAssembler.assemble(self.world, pawnTypeAssemblage, x, y, true, self.powerupStateManager:getPowerupsForType(pawnName))
     end
 end
 

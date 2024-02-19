@@ -47,6 +47,10 @@ function PowerupStateManager:addPowerup(pawnType, powerupName)
     self.eventManager:broadcast('interface_syncPowerupState', self.pawnTypes)
 end
 
+function PowerupStateManager:getPowerupsForType(pawnType)
+    return self.pawnTypes[pawnType]
+end
+
 
 --------------------------
 -- [[ Core Functions ]] --

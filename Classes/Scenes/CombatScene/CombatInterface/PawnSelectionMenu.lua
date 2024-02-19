@@ -48,7 +48,7 @@ function PawnSelectionMenu:keypressed(key)
     if self.cards[tonumber(key)] then
         -- Resolved in `FriendlySpawnHandler`.
         self.eventManager:broadcast(
-            'interface_attemptSpawnPawn', self.cards[tonumber(key)].assemblageName
+            'interface_attemptSpawnPawn', self.cards[tonumber(key)].assemblageName, self.cards[tonumber(key)].name
         )
         self.eventManager:broadcast('interface_selectPawnType', self.cards[tonumber(key)].name)
     end

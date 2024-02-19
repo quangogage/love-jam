@@ -55,7 +55,7 @@ function PauseMenu:_toggle(key)
     if self.active then
         self:close()
     else
-        self:open()
+       self:open()
     end
 end
 function PauseMenu:_fadeBackgroundOverlay(dt)

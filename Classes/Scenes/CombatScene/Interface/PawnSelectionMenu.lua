@@ -24,12 +24,12 @@ local PawnSelectionCard     = require('Classes.Scenes.CombatScene.Interface.Pawn
 local PawnSelectionMenu     = Goop.Class({
     arguments = { 'eventManager', 'powerupStateManager' },
     static = {
-        cards  = {},
-        height = 100,
+        cards             = {},
+        height            = 100,
         cardScreenPadding = 15,
-        cardSpacing = 7,
-        cardWidth = 245,
-        cardHeight = 90
+        cardSpacing       = 7,
+        cardWidth         = 245,
+        cardHeight        = 90
     }
 })
 

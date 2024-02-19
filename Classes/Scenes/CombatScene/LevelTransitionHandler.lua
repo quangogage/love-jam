@@ -3,8 +3,9 @@
 --
 
 local transitions = {
-    ['level-starting'] = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.LevelStartingTransition"),
-    ['level-complete'] = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.LevelCompleteTransition")
+    ['level-starting']           = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.LevelStartingTransition"),
+    ['level-complete']           = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.LevelCompleteTransition"),
+    ['powerup-selection-ending'] = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.PowerupSelectionEndingTransition"),
 }
 
 ---@class LevelTransitionHandler

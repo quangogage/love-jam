@@ -3,7 +3,6 @@
 --
 
 local powerups = require('lists.powerups')
-local pawnTypes = require('lists.pawnTypes')
 local PowerupSelectionCard = require('Classes.Scenes.CombatScene.Interface.PowerupSelectionCard')
 
 local CARD_ANIMATION_OFFSET = 0.5
@@ -14,6 +13,8 @@ local CARD_ANIMATION_OFFSET = 0.5
 ---@field active boolean
 ---@field cards PowerupSelectionCard[]
 ---@field selectedPowerupName string - Set by clicking a card.
+---@field fadingOut boolean
+---@field hasSelected boolean
 local PowerupSelectionMenu = Goop.Class({
     arguments = { 'eventManager', 'combatScene' },
     dynamic = {
@@ -27,6 +28,7 @@ local PowerupSelectionMenu = Goop.Class({
 -- [[ Public Functions ]] --
 ----------------------------
 function PowerupSelectionMenu:open()
+    self.hasSelected = false
     self.active = true
     self.eventManager:broadcast('disableWorldUpdate')
     self:_generateCards()
@@ -35,7 +37,6 @@ function PowerupSelectionMenu:close()
     self.active = false
     self.selectedPowerupName = nil
     self.eventManager:broadcast('enableWorldUpdate')
-    self.eventManager:broadcast('startLevelTransition')
 end
 
 --------------------------
@@ -48,10 +49,8 @@ function PowerupSelectionMenu:destroy()
     self:_destroySubscriptions()
 end
 function PowerupSelectionMenu:update(dt)
-    if self.active then
-        for _, card in ipairs(self.cards) do
-            card:update(dt)
-        end
+    for _, card in ipairs(self.cards) do
+        card:update(dt)
     end
 end
 function PowerupSelectionMenu:draw()
@@ -117,9 +116,10 @@ end
 function PowerupSelectionMenu:_createSubscriptions()
     self.subscriptions = {}
     self.subscriptions["interface_selectPawnType"] = self.eventManager:subscribe("interface_selectPawnType", function(pawnType)
-        if self.active and self.selectedPowerupName then
+        if self.active and self.selectedPowerupName and not self.hasSelected then
             self.eventManager:broadcast("interface_addPowerupToType", pawnType, self.selectedPowerupName)
-            self:close()
+            self.hasSelected = true
+            self.eventManager:broadcast("endPowerupSelection")
         end
     end)
 end

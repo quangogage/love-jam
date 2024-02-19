@@ -50,8 +50,10 @@ function Camera:getZoom()
 end
 function Camera:getTranslatedMousePosition()
     local x, y = love.mouse.getPosition()
-    local cameraX, cameraY = self:getPosition()
-    return x * self.currentZoom + cameraX, y * self.currentZoom + cameraY
+    local scale = 1 / self.screenScaleMultiplier * self.currentZoom
+    x = x / scale + self.position.x
+    y = y / scale + self.position.y
+    return x, y
 end
 function Camera:getCameraDimensions()
     local scale = 1 / self.screenScaleMultiplier * self.currentZoom

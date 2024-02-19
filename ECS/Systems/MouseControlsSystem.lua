@@ -32,16 +32,18 @@ return function (concord, camera)
     -- Called from ClickHandlerSystem.
     -- Determine what to do if mutliples entities are clicked on, only one is,
     -- or none are.
-    ---@param x number
-    ---@param y number
     ---@param button number
     ---@param topEntity Pawn[] | table[]
     ---@param allEntities Pawn[] | table[]
-    function MouseControlsSystem:event_mousereleased(x, y, button, topEntity, allEntities)
-        if button == 1 then
+    function MouseControlsSystem:event_mousereleased(_, _, button, topEntity, allEntities)
+        local x, y = camera:getTranslatedMousePosition()
+        local world = self:getWorld()
+        if button == 1 and world then
             if self.mousepressOrigin then
                 -- If we have not moved the mouse enough to register as a drag.
-                if not self.selectionRectangle then
+                -- Register a target instead.
+                if not self.selectionRectangle and x > world.bounds.x and x < world.bounds.x + world.bounds.width and
+                y > world.bounds.y and y < world.bounds.y + world.bounds.height then
                     if #allEntities == 0 then
                         self:_setTarget({position = { x = x, y = y }})
                     else
@@ -92,8 +94,7 @@ return function (concord, camera)
         local world = self:getWorld()
         local x, y = camera:getTranslatedMousePosition()
         if not world then return end
-        if x > world.bounds.x and x < world.bounds.x + world.bounds.width and
-        y > world.bounds.y and y < world.bounds.y + world.bounds.height then
+        if button == 1 then
             self.mousepressOrigin = { x = x, y = y }
         end
     end

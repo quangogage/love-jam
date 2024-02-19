@@ -27,12 +27,6 @@ return function (concord)
                     self:_meleeAttack(e, dt)
                 end
             end
-            if e.powerups then
-                local str = ""
-                for k, v in pairs(e.powerups) do
-                    str = str .. k .. " "
-                end
-            end
         end
     end
 
@@ -61,8 +55,6 @@ return function (concord)
             if e.powerups then
                 damageAmount = e.powerups.list["Bloodlust"]:getMultipliedValue(damageAmount)
             end
-            console:log("Original damage: " .. e.combatProperties.damageAmount)
-            console:log("New damage: " .. damageAmount)
             world:emit('entity_attemptAttack',
                 e, targetEntity, damageAmount
             )

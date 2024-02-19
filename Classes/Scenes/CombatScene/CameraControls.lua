@@ -76,8 +76,8 @@ function CameraControls:_updateDrag(dt)
     if love.mouse.isDown(2) then
         if self.lastMouseX then
             local x, y = love.mouse.getPosition()
-            local dx = (x - self.lastMouseX) * dt
-            local dy = (y - self.lastMouseY) * dt
+            local dx = (x - self.lastMouseX) / dt
+            local dy = (y - self.lastMouseY) / dt
             self.camera.velocity.x = self.camera.velocity.x - dx * speed * dt
             self.camera.velocity.y = self.camera.velocity.y - dy * speed * dt
         end

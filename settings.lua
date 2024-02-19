@@ -5,5 +5,5 @@
 return {
     cameraWASDMoveSpeed = 6600,
     cameraPushMoveSpeed = 2000,
-    cameraPanSpeed      = 1800000
+    cameraPanSpeed      = 10
 }

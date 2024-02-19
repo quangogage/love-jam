@@ -2,7 +2,7 @@
 --
 --
 
-local Element = require('Classes.Elements.Element')
+local Element            = require('Classes.Elements.Element')
 
 local CARD_CORNER_RADIUS = 10
 local NAME_FONT          = love.graphics.newFont(fonts.title, 34)
@@ -81,22 +81,26 @@ function PowerupSelectionCard:_updateAnimation(dt)
 end
 function PowerupSelectionCard:_drawBackground()
     if self.selected then
-        love.graphics.setColor(0,1,0)
-        love.graphics.rectangle('fill', self.position.x, self.position.y, self.width, self.height, CARD_CORNER_RADIUS, CARD_CORNER_RADIUS)
+        love.graphics.setColor(0, 1, 0)
+        love.graphics.rectangle('fill', self.position.x, self.position.y, self.width, self.height, CARD_CORNER_RADIUS,
+            CARD_CORNER_RADIUS)
     end
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
     love.graphics.setLineWidth(2)
-    love.graphics.rectangle('line', self.position.x, self.position.y, self.width, self.height, CARD_CORNER_RADIUS, CARD_CORNER_RADIUS)
+    love.graphics.rectangle('line', self.position.x, self.position.y, self.width, self.height, CARD_CORNER_RADIUS,
+        CARD_CORNER_RADIUS)
 end
 function PowerupSelectionCard:_printName()
     love.graphics.setFont(NAME_FONT)
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
-    love.graphics.printf(self.name, self.position.x, self.position.y + 10, self.width - TEXT_PADDING, 'center')
+    love.graphics.printf(self.name, self.position.x + TEXT_PADDING / 2, self.position.y + 10, self.width - TEXT_PADDING,
+        'center')
 end
 function PowerupSelectionCard:_printDescription()
     love.graphics.setFont(DESC_FONT)
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
-    love.graphics.printf(self.description, self.position.x, self.position.y + 60, self.width - TEXT_PADDING, 'center')
+    love.graphics.printf(self.description, self.position.x + TEXT_PADDING / 2, self.position.y + 60,
+        self.width - TEXT_PADDING, 'center')
 end
 
 return PowerupSelectionCard

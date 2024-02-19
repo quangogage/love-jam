@@ -3,7 +3,7 @@
 -- Horrible name srry.
 --
 
-local FONT = love.graphics.newFont(fonts.sub, 20)
+local FONT = love.graphics.newFont(fonts.button, 20)
 
 local Button = require("Classes.Elements.Button")
 

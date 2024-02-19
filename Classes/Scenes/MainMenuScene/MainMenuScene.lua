@@ -74,7 +74,23 @@ function MainMenuScene:_setMenu(name)
                     love.mouse.setCursor()
                     self.startGame()
                 end
-            })
+            }),
+            Button({
+                text = 'Settings',
+                anchor = { x = 0, y = 0.5 },
+                offset = { x =  100, y = 100 },
+                onClick = function ()
+                    console:log('open settings here........')
+                end
+            }),
+            Button({
+                text = 'Quit',
+                anchor = { x = 0, y = 0.5 },
+                offset = { x =  100, y = 200 },
+                onClick = function ()
+                    love.event.quit()
+                end
+            }),
         }
     end
 end

@@ -107,8 +107,13 @@ function Camera:_applyFrictionAndVelocity(dt)
     self.velocity.y = self.velocity.y * (1 - FRICTION * dt)
 end
 function Camera:_updateZoom(dt)
+    local oldZoom = self.currentZoom
     self.currentZoom = self.currentZoom + (self.zoom - self.currentZoom) * ZOOM_SPEED * dt
     self.currentZoom = math.max(ZOOM_MIN, math.min(ZOOM_MAX, self.currentZoom))
+    local dx = (love.graphics.getWidth() / self.currentZoom - love.graphics.getWidth() / oldZoom) / 2
+    local dy = (love.graphics.getHeight() / self.currentZoom - love.graphics.getHeight() / oldZoom) / 2
+    self.position.x = self.position.x - dx
+    self.position.y = self.position.y - dy
 end
 
 -- Make sure you can always see the same amount of the world no matter the

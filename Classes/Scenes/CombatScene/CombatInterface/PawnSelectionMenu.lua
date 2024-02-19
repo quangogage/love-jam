@@ -19,8 +19,9 @@ local VERTICAL_CARD_PADDING = 10
 ---@field height number
 ---@field cards PawnSelectionCard[]
 ---@field eventManager EventManager
+---@field powerupStateManager PowerupStateManager
 local PawnSelectionMenu     = Goop.Class({
-    arguments = { 'eventManager' },
+    arguments = { 'eventManager', 'powerupStateManager' },
     static = {
         cards  = {},
         height = 230,
@@ -90,6 +91,7 @@ function PawnSelectionMenu:_initCards()
             eventManager   = self.eventManager
         })
         table.insert(self.cards, card)
+        card:syncPowerups(self.powerupStateManager:getPowerupsForPawnType(pawnType.name))
         x = x + card.dimensions.width + CARD_SPACING
     end
 end
@@ -112,9 +114,9 @@ function PawnSelectionMenu:_createSubscriptions()
 
     -- Broadcast from `PowerupStateManager`.
     -- Sync powerup information for each card.
-    self.subscriptions["interface_syncPowerupState"] = self.eventManager:subscribe(
-        "interface_syncPowerupState",
-        function(pawnTypePowerups)
+    self.subscriptions['interface_syncPowerupState'] = self.eventManager:subscribe(
+        'interface_syncPowerupState',
+        function (pawnTypePowerups)
             for _, card in pairs(self.cards) do
                 if pawnTypePowerups[card.name] then
                     card:syncPowerups(pawnTypePowerups[card.name])

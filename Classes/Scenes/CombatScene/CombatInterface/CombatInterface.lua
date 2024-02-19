@@ -3,17 +3,17 @@
 -- Gui for CombatScene.
 --
 
-local PawnSelectionMenu = require("Classes.Scenes.CombatScene.CombatInterface.PawnSelectionMenu")
+local PawnSelectionMenu = require('Classes.Scenes.CombatScene.CombatInterface.PawnSelectionMenu')
 
 ---@class CombatInterface
 ---@field eventManager EventManager
 ---@field pawnSelectionMenu PawnSelectionMenu
 local CombatInterface = Goop.Class({
-    arguments = {'eventManager'}
+    arguments = { 'eventManager', 'powerupStateManager' }
 })
 
 function CombatInterface:init()
-    self.pawnSelectionMenu = PawnSelectionMenu(self.eventManager)
+    self.pawnSelectionMenu = PawnSelectionMenu(self.eventManager, self.powerupStateManager)
 end
 function CombatInterface:destroy()
     self.pawnSelectionMenu:destroy()

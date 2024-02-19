@@ -48,11 +48,14 @@ local PawnSelectionCard = Goop.Class({
 -- [[ Public Functions ]] --
 ----------------------------
 -- Sync powerups with PowerupStateManager.
+-- Strictly cosmetic, PowerupStateManager is the source of truth.
 ---@param powerups table<string, {name: string, count: number}>
 function PawnSelectionCard:syncPowerups(powerups)
     self.powerups = {}
     for _, powerup in pairs(powerups) do
-        table.insert(self.powerups, powerup.name .. " x" .. powerup.count)
+        if powerup.count > 0 then
+            table.insert(self.powerups, powerup.name .. " x" .. powerup.count)
+        end
     end
 end
 

@@ -92,6 +92,7 @@ end
 function CombatScene:destroy()
     self.friendlySpawnHandler:destroy()
     self.pawnSelectionMenu:destroy()
+    self.powerupSelectionMenu:destroy()
     self:_destroySubscriptions()
 end
 function CombatScene:update(dt)
@@ -264,6 +265,9 @@ function CombatScene:_createSubscriptions()
     end)
     self.subscriptions["enableWorldUpdate"] = self.eventManager:subscribe("enableWorldUpdate", function ()
         self.disableWorldUpdate = false
+    end)
+    self.subscriptions["startLevelTransition"] = self.eventManager:subscribe("startLevelTransition", function ()
+        self.levelTransitionHandler:setState('level-starting')
     end)
 end
 function CombatScene:_destroySubscriptions()

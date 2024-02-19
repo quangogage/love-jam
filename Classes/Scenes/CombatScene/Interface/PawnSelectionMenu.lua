@@ -65,11 +65,11 @@ end
 function PawnSelectionMenu:mousepressed(x, y, button)
     if button == 1 then
         for _, card in ipairs(self.cards) do
-            if x > card.position.x and x < card.position.x + card.dimensions.width and
-            y > card.position.y and y < card.position.y + card.dimensions.height then
+            if x > card.position.x and x < card.position.x + card.width and
+            y > card.position.y and y < card.position.y + card.height then
                 -- Resolved in CombatScene.
                 self.eventManager:broadcast(
-                    'interface_attemptSpawnPawn', card.assemblageName
+                    'interface_attemptSpawnPawn', card.assemblageName, card.name
                 )
                 self.eventManager:broadcast('interface_selectPawnType', card.name)
                 break

@@ -14,6 +14,7 @@ local LevelStartingTransition = Goop.Class({
     arguments = { 'transitionHandler', 'eventManager' },
     dynamic = {
         timer = 0,
+        skipBuffer = 0.5,
         overlay = {
             alpha = 1,
             fadeSpeed = 1,
@@ -53,10 +54,14 @@ function LevelStartingTransition:draw()
     self:_printText()
 end
 function LevelStartingTransition:keypressed(key)
-    self:endTransition()
+    if self.timer >= self.skipBuffer then
+        self:endTransition()
+    end
 end
 function LevelStartingTransition:mousepressed()
-    self:endTransition()
+    if self.timer >= self.skipBuffer then
+        self:endTransition()
+    end
 end
 
 

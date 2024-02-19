@@ -1,6 +1,5 @@
 ---@author Gage Henderson 2024-02-19 09:24
 --
----@class PowerupSelectionCard : Element
 --
 
 local Element = require('Classes.Elements.Element')
@@ -11,6 +10,16 @@ local DESC_FONT          = love.graphics.newFont("assets/fonts/RobotoCondensed-L
 local TEXT_PADDING       = 10
 
 
+---@class PowerupSelectionCard : Element
+---@field anchor table
+---@field offset table
+---@field name string
+---@field description string
+---@field timer number
+---@field animationOffset number
+---@field width number
+---@field height number
+---@field animation table
 local PowerupSelectionCard = Goop.Class({
     extends = Element,
     parameters = {
@@ -32,6 +41,16 @@ local PowerupSelectionCard = Goop.Class({
     }
 })
 
+
+----------------------------
+-- [[ Public Functions ]] --
+----------------------------
+function PowerupSelectionCard:select()
+    self.selected = true
+end
+function PowerupSelectionCard:unselect()
+    self.selected = false
+end
 
 --------------------------
 -- [[ Core Functions ]] --
@@ -61,6 +80,10 @@ function PowerupSelectionCard:_updateAnimation(dt)
     self.position.y = self.position.y + self.animation.y
 end
 function PowerupSelectionCard:_drawBackground()
+    if self.selected then
+        love.graphics.setColor(0,1,0)
+        love.graphics.rectangle('fill', self.position.x, self.position.y, self.width, self.height, CARD_CORNER_RADIUS, CARD_CORNER_RADIUS)
+    end
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
     love.graphics.setLineWidth(2)
     love.graphics.rectangle('line', self.position.x, self.position.y, self.width, self.height, CARD_CORNER_RADIUS, CARD_CORNER_RADIUS)

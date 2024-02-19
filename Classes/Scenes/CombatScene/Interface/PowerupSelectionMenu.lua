@@ -3,6 +3,7 @@
 --
 
 local powerups = require('lists.powerups')
+local pawnTypes = require('lists.pawnTypes')
 local PowerupSelectionCard = require('Classes.Scenes.CombatScene.Interface.PowerupSelectionCard')
 
 local CARD_ANIMATION_OFFSET = 0.5
@@ -11,6 +12,8 @@ local CARD_ANIMATION_OFFSET = 0.5
 ---@field eventManager EventManager
 ---@field combatScene CombatScene
 ---@field active boolean
+---@field cards PowerupSelectionCard[]
+---@field selectedPowerupName string - Set by clicking a card.
 local PowerupSelectionMenu = Goop.Class({
     arguments = { 'eventManager', 'combatScene' },
     dynamic = {
@@ -30,13 +33,20 @@ function PowerupSelectionMenu:open()
 end
 function PowerupSelectionMenu:close()
     self.active = false
-    self.combatScene.disableWorldUpdate = false
+    self.selectedPowerupName = nil
     self.eventManager:broadcast('enableWorldUpdate')
+    self.eventManager:broadcast('startLevelTransition')
 end
 
 --------------------------
 -- [[ Core Functions ]] --
 --------------------------
+function PowerupSelectionMenu:init()
+    self:_createSubscriptions()
+end
+function PowerupSelectionMenu:destroy()
+    self:_destroySubscriptions()
+end
 function PowerupSelectionMenu:update(dt)
     if self.active then
         for _, card in ipairs(self.cards) do
@@ -53,6 +63,7 @@ function PowerupSelectionMenu:draw()
     end
 end
 function PowerupSelectionMenu:mousepressed(x, y, button)
+    self:_selectCard(x, y, button)
 end
 
 
@@ -84,4 +95,38 @@ function PowerupSelectionMenu:_generateCards()
         table.insert(self.cards, card)
     end
 end
+function PowerupSelectionMenu:_selectCard(x, y, button)
+    if self.active and button == 1 then
+        for _, card in ipairs(self.cards) do
+            if x > card.position.x and x < card.position.x + card.width and
+            y > card.position.y and y < card.position.y + card.height then
+                self:_unselectAllCards()
+                card:select()
+                self.selectedPowerupName = card.name
+            end
+        end
+    end
+end
+
+function PowerupSelectionMenu:_unselectAllCards()
+    for _, card in ipairs(self.cards) do
+        card:unselect()
+    end
+end
+
+function PowerupSelectionMenu:_createSubscriptions()
+    self.subscriptions = {}
+    self.subscriptions["interface_selectPawnType"] = self.eventManager:subscribe("interface_selectPawnType", function(pawnType)
+        if self.active and self.selectedPowerupName then
+            self.eventManager:broadcast("interface_addPowerupToType", pawnType, self.selectedPowerupName)
+            self:close()
+        end
+    end)
+end
+function PowerupSelectionMenu:_destroySubscriptions()
+    for event, uuid in pairs(self.subscriptions) do
+        self.eventManager:unsubscribe(event, uuid)
+    end
+end
+
 return PowerupSelectionMenu

@@ -11,11 +11,13 @@ local FONT = love.graphics.newFont("assets/fonts/BebasNeue-Regular.ttf", 48)
 ---@field overlay table
 ---@field text table
 ---@field fadeBackIn boolean
+---@field skipBuffer number
 local LevelCompleteTransition = Goop.Class({
     arguments = { 'transitionHandler', 'eventManager' },
     dynamic = {
-        timer = 0,
+        timer      = 0,
         fadeBackIn = false,
+        skipBuffer = 0.5,
         overlay = {
             alpha     = 0,
             fadeSpeed = 2,
@@ -45,11 +47,13 @@ function LevelCompleteTransition:draw()
     self:_printText()
 end
 function LevelCompleteTransition:mousepressed()
-    self.eventManager:broadcast("openPowerupSelectionMenu")
-    self.transitionHandler:setIdle()
+    if self.timer >= self.skipBuffer then
+        self.eventManager:broadcast("openPowerupSelectionMenu")
+        self.transitionHandler:setIdle()
+    end
 end
 function LevelCompleteTransition:keypressed(key)
-    if key == "space" then -- REMOVE THIS LATER
+    if self.timer >= self.skipBuffer then
         self.eventManager:broadcast("openPowerupSelectionMenu")
         self.transitionHandler:setIdle()
     end

@@ -3,7 +3,8 @@
 --
 
 local transitions = {
-    ['level-starting'] = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.LevelStartingTransition")
+    ['level-starting'] = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.LevelStartingTransition"),
+    ['level-complete'] = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.LevelCompleteTransition")
 }
 
 ---@class LevelTransitionHandler
@@ -51,10 +52,10 @@ function LevelTransitionHandler:mousepressed()
         end
     end
 end
-function LevelTransitionHandler:keypressed()
+function LevelTransitionHandler:keypressed(key)
     if self.currentTransition then
         if self.currentTransition.keypressed then
-            self.currentTransition:keypressed()
+            self.currentTransition:keypressed(key)
         end
     end
 end

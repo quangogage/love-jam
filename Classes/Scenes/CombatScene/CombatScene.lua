@@ -17,6 +17,7 @@ local CameraControls         = require('Classes.Scenes.CombatScene.CameraControl
 local FriendlySpawnHandler   = require('Classes.Scenes.CombatScene.FriendlySpawnHandler')
 local PowerupStateManager    = require('Classes.Scenes.CombatScene.PowerupStateManager')
 local PawnSelectionMenu      = require('Classes.Scenes.CombatScene.Interface.PawnSelectionMenu')
+local PowerupSelectionMenu   = require('Classes.Scenes.CombatScene.Interface.PowerupSelectionMenu')
 local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
 
 ---@class CombatScene
@@ -32,6 +33,8 @@ local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransiti
 ---@field powerupStateManager PowerupStateManager
 ---@field cameraControls CameraControls
 ---@field currentLevelIndex integer
+---@field levelTransitionHandler LevelTransitionHandler
+---@field disableWorldUpdate boolean
 local CombatScene            = Goop.Class({
     arguments = { 'eventManager' },
     static = {
@@ -59,7 +62,7 @@ function CombatScene:loadNextLevel()
     self.world:emit("event_newLevel")
 end
 function CombatScene:completeLevel()
-    console:log("Uh...")
+    self.levelTransitionHandler:setState('level-complete')
 end
 
 --------------------------
@@ -72,6 +75,7 @@ function CombatScene:init()
     self.camera                 = Camera()
     self.powerupStateManager    = PowerupStateManager(self.eventManager)
     self.pawnSelectionMenu      = PawnSelectionMenu(self.eventManager, self.powerupStateManager)
+    self.powerupSelectionMenu   = PowerupSelectionMenu(self.eventManager, self)
     self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self)
     self.cameraControls         = CameraControls(self.camera, self.world)
     self:_loadComponents()
@@ -91,12 +95,15 @@ function CombatScene:destroy()
     self:_destroySubscriptions()
 end
 function CombatScene:update(dt)
-    self.world:emit('update', dt)
-    self.pawnSelectionMenu:update()
-    self.camera:update(dt)
-    if not self.disableCameraControls then
-        self.cameraControls:update(dt)
+    if not self.disableWorldUpdate then
+        self.world:emit('update', dt)
+        self.camera:update(dt)
+        if not self.disableCameraControls then
+            self.cameraControls:update(dt)
+        end
     end
+    self.pawnSelectionMenu:update(dt)
+    self.powerupSelectionMenu:update(dt)
     self.levelTransitionHandler:update(dt)
 end
 function CombatScene:draw()
@@ -104,13 +111,14 @@ function CombatScene:draw()
     self.world:emit('draw')
     self:_drawWorldBoundary()
     self.camera:unset()
+    self.powerupSelectionMenu:draw()
     self.pawnSelectionMenu:draw()
     self.levelTransitionHandler:draw()
 end
 function CombatScene:keypressed(key)
     self.world:emit('keypressed', key)
     self.pawnSelectionMenu:keypressed(key)
-    self.levelTransitionHandler:keypressed()
+    self.levelTransitionHandler:keypressed(key)
 end
 function CombatScene:mousepressed(x, y, button)
     local didClickInterface = self.pawnSelectionMenu:mousepressed(x, y, button)
@@ -118,6 +126,7 @@ function CombatScene:mousepressed(x, y, button)
         self.world:emit('mousepressed', x, y, button)
     end
     self.levelTransitionHandler:mousepressed()
+    self.powerupSelectionMenu:mousepressed(x, y, button)
 end
 function CombatScene:mousereleased(x, y, button)
     self.world:emit('mousereleased', x, y, button)
@@ -246,6 +255,15 @@ function CombatScene:_createSubscriptions()
     end)
     self.subscriptions["centerCameraOnFriendlyBase"] = self.eventManager:subscribe("centerCameraOnFriendlyBase", function ()
         self.camera:centerOnPosition(self.friendlyBase.position.x, self.friendlyBase.position.y)
+    end)
+    self.subscriptions["openPowerupSelectionMenu"] = self.eventManager:subscribe("openPowerupSelectionMenu", function ()
+        self.powerupSelectionMenu:open()
+    end)
+    self.subscriptions["disableWorldUpdate"] = self.eventManager:subscribe("disableWorldUpdate", function ()
+        self.disableWorldUpdate = true
+    end)
+    self.subscriptions["enableWorldUpdate"] = self.eventManager:subscribe("enableWorldUpdate", function ()
+        self.disableWorldUpdate = false
     end)
 end
 function CombatScene:_destroySubscriptions()

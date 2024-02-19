@@ -16,6 +16,12 @@ local Powerup = Goop.Class({
     }
 })
 
+---@param pawn BasicPawn | Pawn | table
 function Powerup:onPawnCreation(pawn)
+end
+---@param value number
+---@return number
+function Powerup:getMultipliedValue(value)
+    return value
 end
 return Powerup

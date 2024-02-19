@@ -23,7 +23,7 @@ return {
     }),
     Powerup({
         name = 'Bloodlust',
-        description = 'Deal 15% more damage',
+        description = 'Deal 20% more damage',
 
         -- Keep this powerup behavior somewhat ambiguous so it can be applied
         -- to different things in the future...
@@ -31,7 +31,7 @@ return {
         ---@param value number
         getMultipliedValue = function (self, value)
             for i = 1, self.count do
-                value = value * 1.15
+                value = value * 1.20
             end
             return value
         end

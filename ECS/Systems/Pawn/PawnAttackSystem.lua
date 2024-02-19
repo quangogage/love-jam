@@ -27,6 +27,12 @@ return function (concord)
                     self:_meleeAttack(e, dt)
                 end
             end
+            if e.powerups then
+                local str = ""
+                for k, v in pairs(e.powerups) do
+                    str = str .. k .. " "
+                end
+            end
         end
     end
 
@@ -39,10 +45,9 @@ return function (concord)
     function PawnAttackSystem:_meleeAttack(e, dt)
         local world          = self:getWorld()
         local targetEntity   = e.target.entity
-        local bottomOfTarget = targetEntity.position.y +
-            targetEntity.dimensions.height
-        local bottomOfPawn = e.position.y + e.dimensions.height
-        local distance     = math.sqrt(
+        local bottomOfTarget = targetEntity.position.y + targetEntity.dimensions.height
+        local bottomOfPawn   = e.position.y + e.dimensions.height
+        local distance       = math.sqrt(
             (e.position.x - targetEntity.position.x) ^ 2 +
             (bottomOfPawn - bottomOfTarget) ^ 2
         )
@@ -52,8 +57,14 @@ return function (concord)
         -- Start attacking once we are in range.
         if distance >= e.combatProperties.range then return end -- Too far away.
         if e.combatProperties.attackTimer >= e.combatProperties.attackSpeed then
+            local damageAmount = e.combatProperties.damageAmount
+            if e.powerups then
+                damageAmount = e.powerups.list["Bloodlust"]:getMultipliedValue(damageAmount)
+            end
+            console:log("Original damage: " .. e.combatProperties.damageAmount)
+            console:log("New damage: " .. damageAmount)
             world:emit('entity_attemptAttack',
-                e, targetEntity, e.combatProperties.damageAmount
+                e, targetEntity, damageAmount
             )
             e.combatProperties.attackTimer = 0
         end

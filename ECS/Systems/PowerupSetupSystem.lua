@@ -21,10 +21,8 @@ return function(concord)
     function PowerupSetupSystem:update()
         for _,e in ipairs(self.entities) do
             if not e.powerups.setup then
-                for _,powerup in pairs(e.powerups.value) do
-                    if powerup.onPawnCreation then
-                        powerup.onPawnCreation(powerup,e)
-                    end
+                for _,powerup in pairs(e.powerups.list) do
+                    powerup:onPawnCreation(e)
                 end
                 e.powerups.setup = true
             end

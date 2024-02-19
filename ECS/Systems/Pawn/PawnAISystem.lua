@@ -47,11 +47,11 @@ return function (concord)
                 arrivalThreshold = DEFAULT_ARRIVAL_THRESHOLD
             elseif e.target.entity then
                 x, y = e.target.entity.position.x, e.target.entity.position.y
-                arrivalThreshold = e.combatProperties.range
+                arrivalThreshold = e.combatProperties.range * 0.85
             end
 
 
-            if distance > arrivalThreshold then
+            if distance >= arrivalThreshold then
                 local direction = math.atan2(
                     y - e.position.y,
                     x - e.position.x

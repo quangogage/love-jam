@@ -36,7 +36,11 @@ function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, pawnName, x, 
     if not self.combatScene.levelComplete then
         x = x or love.math.random(self.spawnZone.x, self.spawnZone.x + self.spawnZone.width)
         y = y or love.math.random(self.spawnZone.y, self.spawnZone.y + self.spawnZone.height)
-        util.entityAssembler.assemble(self.world, pawnTypeAssemblage, x, y, true, self.powerupStateManager:getPowerupsForType(pawnName))
+        util.entityAssembler.assemble(
+            self.world, pawnTypeAssemblage,
+            x, y, true,
+            self.powerupStateManager:getPowerupsForPawnType(pawnName)
+        )
     end
 end
 

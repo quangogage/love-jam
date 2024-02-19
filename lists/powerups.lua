@@ -14,7 +14,6 @@ return {
             for _=1, self.count do
                 pawn.movement.walkSpeed = pawn.movement.walkSpeed * 1.20
             end
-            console:log("Increased speed")
         end
     },
     {

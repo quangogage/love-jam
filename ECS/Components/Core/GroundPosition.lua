@@ -9,10 +9,12 @@
 --
 -- Continously updated to be set at the bottom middle of the entity,
 -- but can provide offset values to adjust.
--- 
+--
 
-return function(concord)
-    concord.component("groundPosition", function(c, x, y)
+return function (concord)
+    concord.component('groundPosition', function (c, x, y)
+        c.x = x or 0
+        c.y = y or 0
         c.offsetX = x or 0
         c.offsetY = y or 0
     end)

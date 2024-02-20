@@ -13,4 +13,5 @@ return function (e, x, y)
         :give('health')
         :give('hostile')
         :give("pawnGeneration")
+        :give("groundPosition", 0, 0)
 end

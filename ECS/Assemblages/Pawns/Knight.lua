@@ -23,6 +23,7 @@ return function (e, x, y, friendly, powerups)
         })
         :give('pawnAnimations', 'knight')
         :give('pushbackRadius', 35)
+        :give('groundPosition',0,30)
 
     if friendly then
         e:give('friendly')

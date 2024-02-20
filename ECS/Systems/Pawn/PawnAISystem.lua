@@ -81,8 +81,7 @@ return function (concord)
             targetX, targetY = e.target.position.x, e.target.position.y
         elseif e.target.entity then
             targetX = e.target.entity.groundPosition.x
-            targetY = e.target.entity.groundPosition.y +
-                e.target.entity.dimensions.height / 2
+            targetY = e.target.entity.groundPosition.y
         end
         return math.sqrt(
             (targetX - e.groundPosition.x) ^ 2 +

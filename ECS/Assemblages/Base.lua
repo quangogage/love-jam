@@ -18,7 +18,7 @@ return function (e, x, y, friendly)
     e
         :give('position', x, y)
         :give('dimensions', 60, 30)
-        :give('health', 20)
+        :give('health', 12)
         :give('renderRectangle', 60, 30)
         :give("unselectable")
         :give("isBase")

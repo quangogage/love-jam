@@ -9,8 +9,8 @@ local util = require("util")({ "entityAssembler" })
 
 return function (concord, camera, onLevelComplete)
     local DebugSystem = concord.system({
-        rangeEntities = { 'combatProperties', 'position' },
-        hitboxes = { 'position', 'dimensions' },
+        rangeEntities = { 'combatProperties', 'position', 'groundPosition' },
+        hitboxes = { 'position', 'dimensions', 'groundPosition' },
         hostileEntities = { 'hostile' }
     })
 
@@ -63,14 +63,14 @@ return function (concord, camera, onLevelComplete)
 
         for _, entity in ipairs(self.rangeEntities) do
             local combatProperties = entity:get('combatProperties')
-            local position = entity:get('position')
+            local position = entity:get('groundPosition')
             local dimensions = entity:get('dimensions')
             love.graphics.setLineWidth(2)
             love.graphics.setColor(1, 0, 0)
             love.graphics.circle(
                 'line',
                 position.x,
-                position.y + dimensions.height / 2,
+                position.y,
                 combatProperties.range
             )
         end
@@ -81,22 +81,22 @@ return function (concord, camera, onLevelComplete)
             love.graphics.setColor(1, 0, 1)
             love.graphics.rectangle(
                 'line',
-                hitbox.groundPosition.x - hitbox.dimensions.width / 2,
-                hitbox.groundPosition.y - hitbox.dimensions.height / 2,
+                hitbox.position.x - hitbox.dimensions.width / 2,
+                hitbox.position.y - hitbox.dimensions.height / 2,
                 hitbox.dimensions.width,
                 hitbox.dimensions.height
             )
         end
         for _, hitbox in ipairs(self.hitboxes) do
             drawHitbox({
-                position = hitbox.groundPosition,
+                position = hitbox.position,
                 dimensions = hitbox.dimensions
             })
             if hitbox.pushbackRadius then
                 love.graphics.circle(
                     'line',
                     hitbox.groundPosition.x,
-                    hitbox.groundPosition.y + hitbox.dimensions.height / 2,
+                    hitbox.groundPosition.y,
                     hitbox.pushbackRadius.value
                 )
             end

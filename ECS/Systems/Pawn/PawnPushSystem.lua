@@ -7,7 +7,7 @@
 -- Collision is considered to be the bottom of the pawn, and the depth of the
 -- pawn.
 
-local PUSH_FORCE = 500
+local PUSH_FORCE = 120
 
 return function (concord)
     local PawnPushSystem = concord.system({

@@ -22,6 +22,7 @@ return function (e, x, y, friendly)
         :give('renderRectangle', 60, 30)
         :give("unselectable")
         :give("isBase")
+        :give("groundPosition")
 
     if friendly then
         e:give('friendly')

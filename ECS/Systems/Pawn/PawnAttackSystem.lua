@@ -39,11 +39,9 @@ return function (concord)
     function PawnAttackSystem:_meleeAttack(e, dt)
         local world          = self:getWorld()
         local targetEntity   = e.target.entity
-        local bottomOfTarget = targetEntity.position.y + targetEntity.dimensions.height
-        local bottomOfPawn   = e.position.y + e.dimensions.height
         local distance       = math.sqrt(
             (e.position.x - targetEntity.position.x) ^ 2 +
-            (bottomOfPawn - bottomOfTarget) ^ 2
+            (e.groundPosition.y - targetEntity.groundPosition.y) ^ 2
         )
 
         e.combatProperties.attackTimer = e.combatProperties.attackTimer + dt

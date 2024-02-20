@@ -14,4 +14,5 @@ return function (e, x, y)
         :give('movement')
         :give('physics')
         :give('pushbackRadius')
+        :give('groundPosition')
 end

@@ -81,22 +81,22 @@ return function (concord, camera, onLevelComplete)
             love.graphics.setColor(1, 0, 1)
             love.graphics.rectangle(
                 'line',
-                hitbox.position.x - hitbox.dimensions.width / 2,
-                hitbox.position.y - hitbox.dimensions.height / 2,
+                hitbox.groundPosition.x - hitbox.dimensions.width / 2,
+                hitbox.groundPosition.y - hitbox.dimensions.height / 2,
                 hitbox.dimensions.width,
                 hitbox.dimensions.height
             )
         end
         for _, hitbox in ipairs(self.hitboxes) do
             drawHitbox({
-                position = hitbox.position,
+                position = hitbox.groundPosition,
                 dimensions = hitbox.dimensions
             })
             if hitbox.pushbackRadius then
                 love.graphics.circle(
                     'line',
-                    hitbox.position.x,
-                    hitbox.position.y + hitbox.dimensions.height / 2,
+                    hitbox.groundPosition.x,
+                    hitbox.groundPosition.y + hitbox.dimensions.height / 2,
                     hitbox.pushbackRadius.value
                 )
             end

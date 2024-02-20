@@ -47,7 +47,7 @@ return function (concord)
                 x, y = e.target.position.x, e.target.position.y
                 arrivalThreshold = DEFAULT_ARRIVAL_THRESHOLD
             elseif e.target.entity then
-                x, y = e.target.entity.position.x, e.target.entity.position.y
+                x, y = e.target.entity.groundPosition.x, e.target.entity.groundPosition.y
                 arrivalThreshold = e.combatProperties.range * 0.85 -- Get a little closer than the attack range.
             end
 
@@ -80,13 +80,13 @@ return function (concord)
         if e.target.position then
             targetX, targetY = e.target.position.x, e.target.position.y
         elseif e.target.entity then
-            targetX = e.target.entity.position.x
-            targetY = e.target.entity.position.y +
+            targetX = e.target.entity.groundPosition.x
+            targetY = e.target.entity.groundPosition.y +
                 e.target.entity.dimensions.height / 2
         end
         return math.sqrt(
-            (targetX - e.position.x) ^ 2 +
-            (targetY - e.position.y) ^ 2
+            (targetX - e.groundPosition.x) ^ 2 +
+            (targetY - e.groundPosition.y) ^ 2
         )
     end
 

@@ -35,19 +35,38 @@ return function (concord)
         if entity:get('renderRectangle') then
             self:_renderRectangle(entity)
         end
+        if entity:get('image') then
+            self:_renderImage(entity)
+        end
     end
 
     -- Render a rectangle at the entity position.
     ---@param entity table
     function RenderSystem:_renderRectangle(entity)
-        local color     = entity:get('color') or { r = 255, g = 255, b = 255 }
-        local alpha     = entity:get('alpha') or 255
+        local color     = entity:get('color') or { r = 1, g = 1, b = 1 }
+        local alpha     = entity:get('alpha') or 1
         local rectangle = entity:get('renderRectangle')
         love.graphics.setColor(color.r, color.g, color.b, alpha)
         love.graphics.rectangle('fill',
             entity.position.x - rectangle.width / 2,
             entity.position.y - entity.position.z - rectangle.height / 2,
             rectangle.width, rectangle.height
+        )
+    end
+
+    -- Render an image at the entity position.
+    ---@param entity table
+    function RenderSystem:_renderImage(entity)
+        local color     = entity:get('color') or { r = 1, g = 1, b = 1 }
+        local alpha     = entity:get('alpha') or 1
+        local image     = entity:get('image').value
+        local offset    = entity:get('offset') or { x = 0.5, y = 0.5 }
+        local scale     = entity:get('scale') or { x = 1, y = 1 }
+        love.graphics.setColor(color.r, color.g, color.b, alpha)
+        love.graphics.draw(image,
+            entity.position.x, entity.position.y - entity.position.z,
+            0, scale.x, scale.y,
+            image:getWidth() * offset.x, image:getHeight() * offset.y
         )
     end
 

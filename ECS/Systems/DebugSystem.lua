@@ -106,7 +106,7 @@ return function (concord, camera, onLevelComplete)
             elseif key == "r" then
                 util.entityAssembler.assemble(
                     self:getWorld(),
-                    'BasicPawn',
+                    'Knight',
                     x, y
                 )
             end

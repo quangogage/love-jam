@@ -36,7 +36,7 @@ function mth.shortestRotation(a, b)
   local diff = math.abs(a - b)
   if diff > math.pi then
     if a > b then
-      return b + (math.pi * 2 - a) 
+      return b + (math.pi * 2 - a)
     else
       return a + (math.pi * 2 - b)
     end

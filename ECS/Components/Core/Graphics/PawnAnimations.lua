@@ -1,6 +1,10 @@
 ---@author Gage Henderson 2024-02-20 04:47
 --
 ---@class pawnAnimations : Component
+---@field currentAnimation string
+---@field direction string
+---@field frame integer
+---@field timer number
 -- Load / store all animation data, for entities that can face different
 -- directions.
 -- 
@@ -26,15 +30,22 @@ local DEFAULT_FRAMERATE = 0.02
 
 return function(concord)
     concord.component("pawnAnimations", function(c, animationList)
+        c.timer = 0
+        c.direction = "down"
+        c.frame = 1
         for animationName, directionFilepaths in pairs(animationList) do
+            c.currentAnimation = animationName -- Ensure this value is set to *something*.
             c[animationName] = {
                 framerate = directionFilepaths.framerate or DEFAULT_FRAMERATE
             }
             for direction, filepath in pairs(directionFilepaths) do
-                local files = love.filesystem.getDirectoryItems(filepath)
-                c[animationName][direction] = {}
-                for i, file in ipairs(files) do
-                    c[animationName][direction][i] = love.graphics.newImage(filepath .. "/" .. file)
+                if direction ~= "framerate" then
+                    local files = love.filesystem.getDirectoryItems(filepath)
+                    c[animationName][direction] = {}
+                    for i, file in ipairs(files) do
+                        local filename, fileExtension = file:match("(.+)%.(.+)")
+                        c[animationName][direction][tonumber(filename)] = love.graphics.newImage(filepath .. "/" .. file)
+                    end
                 end
             end
         end

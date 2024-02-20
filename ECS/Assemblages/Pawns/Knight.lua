@@ -14,7 +14,6 @@ return function (e, x, y, friendly, powerups)
     e
         :assemble(CharacterAssemblage, x, y)
         :give('health', 5)
-        :give('renderRectangle', 25, 50)
         :give('dimensions', 25, 50)
         :give('combatProperties', 'melee', {
             damageAmount = 1,
@@ -48,10 +47,8 @@ return function (e, x, y, friendly, powerups)
 
     if friendly then
         e:give('friendly')
-        e:give('color', 1, 1, 1)
     else
         e:give('hostile')
-        e:give('color', 1, 0.1, 0.1)
     end
 
     if powerups then

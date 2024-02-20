@@ -51,6 +51,10 @@ return function (concord)
         -- Start attacking once we are in range.
         if distance >= e.combatProperties.range then return end -- Too far away.
         if e.combatProperties.attackTimer >= e.combatProperties.attackSpeed then
+            local direction = math.atan2(
+                targetEntity.position.y - e.position.y,
+                targetEntity.position.x - e.position.x
+            )
             local damageAmount = e.combatProperties.damageAmount
             if e.powerups then
                 damageAmount = e.powerups.list["Bloodlust"]:getMultipliedValue(damageAmount)
@@ -58,6 +62,7 @@ return function (concord)
             world:emit('entity_attemptAttack',
                 e, targetEntity, damageAmount
             )
+            world:emit("pawn_playAnimationOnce", e, "attack", direction)
             e.combatProperties.attackTimer = 0
         end
     end

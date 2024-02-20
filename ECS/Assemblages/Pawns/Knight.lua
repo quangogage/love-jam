@@ -43,6 +43,17 @@ return function (e, x, y, friendly, powerups)
                 upRight   = 'assets/images/knight/walk_up_right',
                 upLeft    = 'assets/images/knight/walk_up_left',
             },
+            idle = {
+                framerate = ANIMATION_FRAMERATE,
+                up        = 'assets/images/knight/idle_up',
+                down      = 'assets/images/knight/idle_down',
+                left      = 'assets/images/knight/idle_left',
+                right     = 'assets/images/knight/idle_right',
+                downRight = 'assets/images/knight/idle_down_right',
+                downLeft  = 'assets/images/knight/idle_down_left',
+                upRight   = 'assets/images/knight/idle_up_right',
+                upLeft    = 'assets/images/knight/idle_up_left',
+            }
         })
 
     if friendly then

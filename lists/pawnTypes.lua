@@ -1,8 +1,8 @@
 return {
     {
-        name           = "Basic Pawn",
-        assemblageName = "BasicPawn",
-        description    = "A basic pawn that punches things.",
+        name           = "Knight",
+        assemblageName = "Knight",
+        description    = "Here to save the day!",
         price          = 100,
     }
 }

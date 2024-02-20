@@ -12,16 +12,6 @@
 local DEFAULT_ARRIVAL_THRESHOLD = 50
 -- ──────────────────────────────────────────────────────────────────────
 
-local animationDirections = {
-    right     = 0,
-    down      = math.pi / 2,
-    downRight = math.pi / 4,
-    downLeft  = 3 * math.pi / 4,
-    left      = math.pi,
-    up        = 3 * math.pi / 2,
-    upRight   = 7 * math.pi / 4,
-    upLeft    = 5 * math.pi / 4
-}
 
 return function (concord)
     local PawnAISystem = concord.system({
@@ -79,7 +69,6 @@ return function (concord)
                     e.position.y = e.position.y +
                         math.sin(direction) * e.movement.walkSpeed * dt
                 end
-                world:emit('pawn_setAnimation', e, 'walk', self:_getAnimationDirection(e))
             end
         end
     end
@@ -102,29 +91,6 @@ return function (concord)
     end
 
 
-    -- Get the nearest animation direction based on the pawn's velocity.
-    function PawnAISystem:_getAnimationDirection(e)
-        local movingDirection = self:_getAbsoluteRotation(math.atan2(e.physics.velocity.y, e.physics.velocity.x))
-        local direction = 'down'
-        local minDistance = math.abs(movingDirection - animationDirections[direction])
-        for k, v in pairs(animationDirections) do
-            local distance = math.abs(movingDirection - v)
-            if distance < minDistance then
-                direction = k
-                minDistance = distance
-            end
-        end
-        return direction
-    end
-
-    -- Get the absolute rotation.
-    -- Don't get any negative values or values greater than 2 * pi.
-    function PawnAISystem:_getAbsoluteRotation(rotation)
-        if rotation < 0 then
-            rotation = 2 * math.pi + rotation
-        end
-        return rotation
-    end
 
     return PawnAISystem
 end

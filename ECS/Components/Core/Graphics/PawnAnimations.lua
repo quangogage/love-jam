@@ -30,28 +30,18 @@
 -- ──────────────────────────────────────────────────────────────────────
 
 local DEFAULT_FRAMERATE = 0.02
+local animationSets = require("lists.animationSets")
 
 return function(concord)
-    concord.component("pawnAnimations", function(c, animationList)
-        c.timer = 0
+    concord.component("pawnAnimations", function(c, animationSet)
+        assert(animationSets[animationSet], "Animation set " .. animationSet .. " does not exist. Make sure it is defined in `lists.animationSets`.")
+        c.timer     = 0
         c.direction = "down"
-        c.frame = 1
-        for animationName, directionFilepaths in pairs(animationList) do
-            c.currentAnimation = animationName -- Ensure this value is set to *something*.
-            c[animationName] = {
-                perFrameFramerateOffset = directionFilepaths.perFrameFramerateOffset or {},
-                framerate = directionFilepaths.framerate or DEFAULT_FRAMERATE
-            }
-            for direction, filepath in pairs(directionFilepaths) do
-                if direction ~= "framerate" and direction ~= "perFrameFramerateOffset" then
-                    local files = love.filesystem.getDirectoryItems(filepath)
-                    c[animationName][direction] = {}
-                    for i, file in ipairs(files) do
-                        local filename  = file:match("(.+)%.(.+)")
-                        c[animationName][direction][tonumber(filename)] = love.graphics.newImage(filepath .. "/" .. file)
-                    end
-                end
-            end
+        c.frame     = 1
+        for animationName, animation in pairs(animationSets[animationSet]) do
+            c.currentAnimation = animationName -- Just make sure this is set to a valid animation name
+            c[animationName]   = animation
+            c[animationName].framerate = animation.framerate or DEFAULT_FRAMERATE
         end
     end)
 end

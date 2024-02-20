@@ -110,7 +110,7 @@ return function (concord)
     -- ie up, down, left, right.
     ---@param radianDirection number
     function PawnAnimationSystem:_getAnimationDirection(radianDirection)
-        local radianDirection = self:_getAbsoluteRotation(radianDirection)
+        radianDirection = self:_getAbsoluteRotation(radianDirection)
         local direction = 'down'
         local minDistance = math.abs(radianDirection - animationDirections[direction])
         for k, v in pairs(animationDirections) do

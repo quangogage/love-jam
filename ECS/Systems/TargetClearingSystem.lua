@@ -6,14 +6,16 @@
 
 return function(concord)
     local TargetClearingSystem = concord.system({
-        entities = { 'target'}
+        entities = { 'target' }
     })
 
     function TargetClearingSystem:update()
+        local world = self:getWorld()
         for _,e in ipairs(self.entities) do
             if e.target.entity then
                 if e.target.entity.isDead then
                     e:remove('target')
+                    world:emit("entity_stoppedTargeting", e)
                 end
             end
         end

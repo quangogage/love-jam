@@ -21,7 +21,7 @@ return function (concord)
     ----------------------------
     ---@param successfulAttack SuccessfulAttack
     function HealthBarSystem:event_damageDealt(successfulAttack)
-        local target = successfulAttack.target
+        local target             = successfulAttack.target
         target.health.bar.hidden = false
         target.health.bar.timer  = 0
     end
@@ -46,9 +46,7 @@ return function (concord)
         for _, e in ipairs(self.entities) do
             if not e.health.bar.hidden then
                 local x = e.position.x - WIDTH / 2
-                local y =
-                    e.position.y - e.dimensions.height / 2 -
-                    HEIGHT - VERTICAL_OFFSET
+                local y = e.position.y - e.dimensions.height / 2 - HEIGHT - VERTICAL_OFFSET
                 local width = (e.health.value / e.health.max) * WIDTH
                 local height = HEIGHT
                 love.graphics.setColor(BACKGROUND_COLOR)

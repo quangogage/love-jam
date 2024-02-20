@@ -18,6 +18,9 @@ return function (concord)
     ----------------------------
     -- [[ Public Functions ]] --
     ----------------------------
+    --
+    -- When a new enemy pawn spawns, target the closest friendly pawn.
+    -- When a new friendly pawn spawns, retarget all enemy pawns.
     function EnemyPawnTargetSystem:event_pawnSpawned(pawn)
         if pawn.hostile then
             self:_targetClosestFriendlyPawn(pawn)
@@ -27,41 +30,53 @@ return function (concord)
             end
         end
     end
+    --
+    --- Retarget all enemy pawns if a friendly pawn dies.
+    ---@param pawn Pawn | table
     function EnemyPawnTargetSystem:event_entityDied(pawn)
         if pawn.friendly then
-            self._shouldRetarget = true
+            for _, e in ipairs(self.enemyEntities) do
+                -- Pass the dead pawn as an ignore entity.
+                -- This is because this event is triggered before the
+                -- pawn is destroyed.
+                --
+                -- See `DamageSystem`.
+                self:_targetClosestFriendlyPawn(e, { pawn })
+            end
         end
     end
 
-    --------------------------
-    -- [[ Core Functions ]] --
-    --------------------------
-    function EnemyPawnTargetSystem:update()
-        if self._shouldRetarget then
-            for _, e in ipairs(self.enemyEntities) do
-                self:_targetClosestFriendlyPawn(e)
-            end
-            self._shouldRetarget = false
-        end
-    end
 
     -----------------------------
     -- [[ Private Functions ]] --
     -----------------------------
     -- Target the closest friendly pawn.
     ---@param enemyPawn Pawn | table
-    function EnemyPawnTargetSystem:_targetClosestFriendlyPawn(enemyPawn)
+    ---@param ignoreEntities Pawn[] | table[]
+    function EnemyPawnTargetSystem:_targetClosestFriendlyPawn(enemyPawn, ignoreEntities)
         local closestFriendlyPawn = nil
         local closestDistance     = math.huge
+        ignoreEntities = ignoreEntities or {}
+
+        local shouldIgnore = function (entity)
+            for _, ignoreEntity in ipairs(ignoreEntities) do
+                if entity == ignoreEntity then
+                    return true
+                end
+            end
+            return false
+        end
 
         for _, friendlyEntity in ipairs(self.friendlyEntities) do
-            local distance = math.sqrt(
-                (enemyPawn.position.x - friendlyEntity.position.x) ^ 2 +
-                (enemyPawn.position.y - friendlyEntity.position.y) ^ 2
-            )
-            if distance < closestDistance then
-                closestDistance = distance
-                closestFriendlyPawn = friendlyEntity
+            if not shouldIgnore(friendlyEntity) then
+                local distance = math.sqrt(
+                    (enemyPawn.position.x - friendlyEntity.position.x) ^ 2 +
+                    (enemyPawn.position.y - friendlyEntity.position.y) ^ 2
+                )
+                if distance < closestDistance then
+                    closestDistance = distance
+                    closestFriendlyPawn = friendlyEntity
+                end
             end
         end
 

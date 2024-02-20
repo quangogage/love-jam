@@ -55,7 +55,7 @@ return function (concord, onLevelComplete)
             for i = 1, #self.healthEntities do
                 local entity = self.healthEntities[i]
                 if entity.health.value <= 0 then
-                    world:emit('event_entityDied', entity.health.mostRecentDamage)
+                    world:emit('event_entityDied', entity, entity.health.mostRecentDamage)
                     entity:give("isDead")
                     entity:destroy()
                 end

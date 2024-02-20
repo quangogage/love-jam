@@ -59,7 +59,7 @@ function Camera:getTranslatedMousePosition()
     y = y / scale + self.position.y
     return x, y
 end
-function Camera:getCameraDimensions()
+function Camera:getDimensions()
     local scale = 1 / self.screenScaleMultiplier * self.currentZoom
     return love.graphics.getWidth() / scale, love.graphics.getHeight() / scale
 end
@@ -79,7 +79,7 @@ end
 ---@param x number
 ---@param y number
 function Camera:centerOnPosition(x, y)
-    local scaledWidth, scaledHeight = self:getCameraDimensions()
+    local scaledWidth, scaledHeight = self:getDimensions()
     self.position.x = x - scaledWidth / 2
     self.position.y = y - scaledHeight / 2
 end

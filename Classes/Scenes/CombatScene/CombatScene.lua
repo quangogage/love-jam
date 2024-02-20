@@ -21,6 +21,7 @@ local PawnSelectionMenu      = require('Classes.Scenes.CombatScene.Interface.Paw
 local PowerupSelectionMenu   = require('Classes.Scenes.CombatScene.Interface.PowerupSelectionMenu')
 local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
 local PauseMenu              = require("Classes.Scenes.CombatScene.Interface.PauseMenu.PauseMenu")
+local BackgroundRenderer     = require('Classes.Scenes.CombatScene.BackgroundRenderer')
 
 ---@class CombatScene
 ---@field camera Camera
@@ -36,8 +37,10 @@ local PauseMenu              = require("Classes.Scenes.CombatScene.Interface.Pau
 ---@field currentLevelIndex integer
 ---@field levelTransitionHandler LevelTransitionHandler
 ---@field pauseMenu PauseMenu
+---@field backgroundRenderer BackgroundRenderer
 ---@field disableWorldUpdate boolean
 ---@field paused boolean - Set in PauseMenu
+---@field disableCameraControls boolean
 local CombatScene            = Goop.Class({
     arguments = { 'eventManager' },
     static = {
@@ -81,6 +84,7 @@ function CombatScene:init()
     self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self)
     self.cameraControls         = CameraControls(self.camera, self.world)
     self.pauseMenu              = PauseMenu(self, self.eventManager)
+    self.backgroundRenderer     = BackgroundRenderer()
     self:_loadSystems()
     self:_initLevels()
     self.currentLevelIndex = 0
@@ -114,6 +118,7 @@ function CombatScene:update(dt)
 end
 function CombatScene:draw()
     self.camera:set()
+    self.backgroundRenderer:draw()
     self.world:emit('draw')
     self:_drawWorldBoundary()
     self.camera:unset()

@@ -98,7 +98,7 @@ function CameraControls:_cameraZoom(y)
     end
 end
 function CameraControls:_enforceWorldBounds()
-    local cameraWidth, cameraHeight = self.camera:getCameraDimensions()
+    local cameraWidth, cameraHeight = self.camera:getDimensions()
     local center = {
         x = self.camera.position.x + cameraWidth / 2,
         y = self.camera.position.y + cameraHeight / 2

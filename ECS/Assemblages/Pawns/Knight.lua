@@ -2,7 +2,9 @@
 --
 ---@class Knight : Pawn
 
+local Vec2                = require("Classes.Types.Vec2")
 local CharacterAssemblage = require('ECS.Assemblages.Pawns.Pawn')
+local dimensions          = Vec2(40, 80)
 
 ---@param e Entity
 ---@param x number
@@ -13,7 +15,7 @@ return function (e, x, y, friendly, powerups)
     e
         :assemble(CharacterAssemblage, x, y)
         :give('health', 5)
-        :give('dimensions', 25, 50)
+        :give('dimensions', dimensions.width, dimensions.height)
         :give('combatProperties', 'melee', {
             damageAmount = 1,
             attackSpeed = 1,

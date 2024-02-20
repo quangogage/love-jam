@@ -5,7 +5,8 @@
 local ACTIVE_BACKGROUND_ALPHA = 0.8
 
 local subMenus = {
-    primaryPauseMenu = require("Classes.Scenes.CombatScene.Interface.PauseMenu.PrimaryPauseMenu")
+    primaryPauseMenu = require("Classes.Scenes.CombatScene.Interface.PauseMenu.PrimaryPauseMenu"),
+    optionsMenu      = require("Classes.OptionsMenuLayout")
 }
 
 ---@class PauseMenu

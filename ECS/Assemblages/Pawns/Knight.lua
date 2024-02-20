@@ -22,6 +22,9 @@ return function (e, x, y, friendly, powerups)
         })
         :give('pawnAnimations', {
             attack = {
+                perFrameFramerateOffset = {
+                    [2] = 0.5 -- Second frame will last 0.5 seconds longer.
+                },
                 framerate = ANIMATION_FRAMERATE,
                 up        = 'assets/images/knight/attack_up',
                 down      = 'assets/images/knight/attack_down',

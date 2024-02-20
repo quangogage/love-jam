@@ -14,6 +14,9 @@
 -- ──────────────────────────────────────────────────────────────────────
 -- animationList = {
 --     running = {
+--         perFrameFramerateOffset = {
+--             [2] = 0.5
+--         }
 --         framerate = 0.01,
 --
 --         up = "assets/animations/running/up",
@@ -36,14 +39,15 @@ return function(concord)
         for animationName, directionFilepaths in pairs(animationList) do
             c.currentAnimation = animationName -- Ensure this value is set to *something*.
             c[animationName] = {
+                perFrameFramerateOffset = directionFilepaths.perFrameFramerateOffset or {},
                 framerate = directionFilepaths.framerate or DEFAULT_FRAMERATE
             }
             for direction, filepath in pairs(directionFilepaths) do
-                if direction ~= "framerate" then
+                if direction ~= "framerate" and direction ~= "perFrameFramerateOffset" then
                     local files = love.filesystem.getDirectoryItems(filepath)
                     c[animationName][direction] = {}
                     for i, file in ipairs(files) do
-                        local filename, fileExtension = file:match("(.+)%.(.+)")
+                        local filename  = file:match("(.+)%.(.+)")
                         c[animationName][direction][tonumber(filename)] = love.graphics.newImage(filepath .. "/" .. file)
                     end
                 end

@@ -74,9 +74,10 @@ return function (concord)
     function PawnAnimationSystem:_runAnimation(e, dt)
         local c = e.pawnAnimations --- "c" is short for "component".
         local anim = self:_getAnimation(e)
+        local framerate = self:_getFramerate(e)
         c.timer = c.timer + dt
 
-        if c.timer >= c[c.currentAnimation].framerate then
+        if c.timer >= framerate then
 
             e:give('image', anim[c.frame])
 
@@ -147,6 +148,17 @@ return function (concord)
         return rotation
     end
 
+    -- Get the framerate of the current animation / frame.
+    ---@param e Pawn | table
+    ---@return number
+    function PawnAnimationSystem:_getFramerate(e)
+        local c = e.pawnAnimations
+        local anim = c[c.currentAnimation]
+        if c.oneShotAnimation then
+            anim = c[c.oneShotAnimation]
+        end
+        return anim.perFrameFramerateOffset[c.frame] or anim.framerate
+    end
 
     return PawnAnimationSystem
 end

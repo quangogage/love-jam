@@ -7,7 +7,7 @@
 -- Collision is considered to be the bottom of the pawn, and the depth of the
 -- pawn.
 
-local PUSH_FORCE = 1000
+local PUSH_FORCE = 500
 
 return function (concord)
     local PawnPushSystem = concord.system({
@@ -15,7 +15,7 @@ return function (concord)
         hostile = { 'position', 'dimensions', 'physics', 'hostile' }
     })
 
-    function PawnPushSystem:update(dt)
+    function PawnPushSystem:update()
         local world = self:getWorld()
         for i = 1, 2 do
             local entities = i == 1 and self.friendly or self.hostile

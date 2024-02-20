@@ -10,6 +10,6 @@ return function(concord)
     concord.component("physics", function(c, data)
         data = data or {}
         c.velocity = data.velocity or {x = 0, y = 0}
-        c.friction = data.friction or 5
+        c.friction = data.friction or 8
     end)
 end

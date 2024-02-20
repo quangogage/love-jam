@@ -19,10 +19,10 @@ return function (e, x, y, friendly, powerups)
         :give('combatProperties', 'melee', {
             damageAmount = 1,
             attackSpeed = 1,
-            range = 50
+            range = 75
         })
         :give('pawnAnimations', 'knight')
-        :give('pushbackRadius', 50)
+        :give('pushbackRadius', 35)
 
     if friendly then
         e:give('friendly')

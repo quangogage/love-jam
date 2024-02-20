@@ -23,12 +23,24 @@ return function (concord)
                 local e1 = entities[i]
                 for j = i + 1, #entities do
                     local e2 = entities[j]
-                    local e1Rect = self:_getCollisionRectangle(e1)
-                    local e2Rect = self:_getCollisionRectangle(e2)
-                    if self:_isColliding(e1Rect, e2Rect) then
+                    local e1Circle = {
+                        x = e1.position.x,
+                        y = e1.position.y + e1.dimensions.height / 2,
+                        radius = e1.pushbackRadius.value
+                    }
+                    local e2Circle = {
+                        x = e2.position.x,
+                        y = e2.position.y + e2.dimensions.height / 2,
+                        radius = e2.pushbackRadius.value
+                    }
+                    local distance = math.sqrt(
+                        (e1Circle.x - e2Circle.x) ^ 2 +
+                        (e1Circle.y - e2Circle.y) ^ 2
+                    )
+                    if distance <= e1Circle.radius + e2Circle.radius then
                         local angle = math.atan2(
-                            e2Rect.y - e1Rect.y,
-                            e2Rect.x - e1Rect.x
+                            e2.position.y - e1.position.y,
+                            e2.position.x - e1.position.x
                         )
                         world:emit('physics_applyForce', e1,
                             math.cos(angle) * -PUSH_FORCE,

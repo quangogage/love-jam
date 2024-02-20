@@ -13,4 +13,5 @@ return function (e, x, y)
         :give('health', 10)
         :give('movement')
         :give('physics')
+        :give('pushbackRadius')
 end

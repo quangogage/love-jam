@@ -92,6 +92,14 @@ return function (concord, camera, onLevelComplete)
                 position = hitbox.position,
                 dimensions = hitbox.dimensions
             })
+            if hitbox.pushbackRadius then
+                love.graphics.circle(
+                    'line',
+                    hitbox.position.x,
+                    hitbox.position.y + hitbox.dimensions.height / 2,
+                    hitbox.pushbackRadius.value
+                )
+            end
         end
     end
     function DebugSystem:_spawnPawnsInTestRoom(key)

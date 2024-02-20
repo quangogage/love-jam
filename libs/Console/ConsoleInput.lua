@@ -54,7 +54,7 @@ local ConsoleInput = Goop.Class({
 function ConsoleInput:draw()
     love.graphics.setColor(self.color)
     love.graphics.setFont(self.font)
-    love.graphics.print(self.command, 15, love.graphics.getHeight() - self.font:getHeight())
+    love.graphics.print(self.command, 15, love.graphics.getHeight() - 110 - self.font:getHeight())
 end
 function ConsoleInput:keypressed(key)
     if self.active then

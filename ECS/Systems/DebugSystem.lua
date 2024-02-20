@@ -105,13 +105,7 @@ return function (concord, camera, onLevelComplete)
     function DebugSystem:_spawnPawnsInTestRoom(key)
         if self.testRoom then
             local x,y = camera:getTranslatedMousePosition()
-            if key == 't' then
-                util.entityAssembler.assemble(
-                    self:getWorld(),
-                    'BasicTower',
-                    x, y
-                )
-            elseif key == "r" then
+            if key == "t" then
                 util.entityAssembler.assemble(
                     self:getWorld(),
                     'Knight',

@@ -34,7 +34,7 @@ return function (concord)
                 entity.pawnAnimations.timer            = 0
                 entity.pawnAnimations.frame            = 1
             end
-            if direction then
+            if direction and not entity.pawnAnimations.oneShotAnimationName then
                 entity.pawnAnimations.direction = self:_getAnimationDirection(direction)
             end
         end

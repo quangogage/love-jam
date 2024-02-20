@@ -5,7 +5,7 @@
 
 local FONT = love.graphics.newFont(fonts.button, 20)
 
-local Button = require("Classes.Elements.Button")
+local Button = require('Classes.Elements.Button')
 
 ---@class PrimaryPauseMenu
 ---@field pauseMenu table
@@ -13,7 +13,7 @@ local Button = require("Classes.Elements.Button")
 ---@field active boolean
 ---@field elements Button[]
 local PrimaryPauseMenu = Goop.Class({
-    arguments = {"pauseMenu", "eventManager"},
+    arguments = { 'pauseMenu', 'eventManager' },
     dynamic = {
         active = false,
         elements = {}
@@ -22,39 +22,39 @@ local PrimaryPauseMenu = Goop.Class({
 
 function PrimaryPauseMenu:init()
     table.insert(self.elements, Button({
-        text   = "RESUME",
-        anchor = {x = 0.5, y = 0.5},
-        offset = {x = 0, y = -100},
-        font   = FONT,
-        onClick = function()
+        text    = 'RESUME',
+        anchor  = { x = 0.5, y = 0.5 },
+        offset  = { x = 0, y = -100 },
+        font    = FONT,
+        onClick = function ()
             self.pauseMenu:close()
         end
     }))
     table.insert(self.elements, Button({
-        text   = "SETTINGS",
-        anchor = {x = 0.5, y = 0.5},
-        offset = {x = 0, y = 0},
-        font   = FONT,
-        onClick = function()
-            console:log("open settings here........")
+        text    = 'SETTINGS',
+        anchor  = { x = 0.5, y = 0.5 },
+        offset  = { x = 0, y = 0 },
+        font    = FONT,
+        onClick = function ()
+            self.pauseMenu:loadMenu('optionsMenu', function () self.pauseMenu:loadMenu('primaryPauseMenu') end)
         end
     }))
     table.insert(self.elements, Button({
-        text   = "QUIT TO DESKTOP",
-        anchor = {x = 0.5, y = 0.5},
-        offset = {x = 0, y = 100},
-        font   = FONT,
-        onClick = function()
+        text    = 'QUIT TO DESKTOP',
+        anchor  = { x = 0.5, y = 0.5 },
+        offset  = { x = 0, y = 100 },
+        font    = FONT,
+        onClick = function ()
             love.event.quit()
         end
     }))
     table.insert(self.elements, Button({
-        text   = "QUIT TO MAIN MENU",
-        anchor = {x = 0.5, y = 0.5},
-        offset = {x = 0, y = 200},
-        font   = FONT,
-        onClick = function()
-            self.eventManager:broadcast("openMainMenu")
+        text    = 'QUIT TO MAIN MENU',
+        anchor  = { x = 0.5, y = 0.5 },
+        offset  = { x = 0, y = 200 },
+        font    = FONT,
+        onClick = function ()
+            self.eventManager:broadcast('openMainMenu')
         end
     }))
     for _, el in ipairs(self.elements) do

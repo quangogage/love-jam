@@ -30,8 +30,12 @@ local PauseMenu = Goop.Class({
 ----------------------------
 -- [[ Public Functions ]] --
 ----------------------------
+
+function PauseMenu:loadMenu(menuName, ...)
+    self.currentMenu = subMenus[menuName](self, self.eventManager, ...)
+end
 function PauseMenu:open()
-    self:_loadMenu("primaryPauseMenu")
+    self:loadMenu("primaryPauseMenu")
     self.active = true
     self.combatScene.paused = true
 end
@@ -88,9 +92,6 @@ end
 function PauseMenu:_drawBackgroundOverlay()
     love.graphics.setColor(0, 0, 0, self.backgroundOverlay.alpha)
     love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-end
-function PauseMenu:_loadMenu(menuName)
-    self.currentMenu = subMenus[menuName](self, self.eventManager)
 end
 
 

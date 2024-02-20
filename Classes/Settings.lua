@@ -7,6 +7,7 @@
 ---@field cameraPanSpeed number
 ---@field resolution table[{number,number}]
 ---@field fullscreen boolean
+---@field vsync boolean
 ---@field resolutions table[{number,number}]
 local Settings = Goop.Class({
     static = {
@@ -15,6 +16,7 @@ local Settings = Goop.Class({
         cameraPanSpeed      = 10,
         resolution          = { 1280, 720 },
         fullscreen          = false,
+        vsync               = false,
         resolutions = {
             { 1280, 720 },
             { 1920, 1080 },
@@ -31,7 +33,7 @@ local Settings = Goop.Class({
 ---@param width number
 ---@param height number
 function Settings:setResolution(width,height)
-    love.window.setMode(width, height, { fullscreen = false })
+    love.window.setMode(width, height, { fullscreen = false, vsync = self.vsync})
     self.resolution = { width, height }
     self:_saveSettings()
 end
@@ -68,7 +70,7 @@ function Settings:_attemptLoadSettings()
         for key, value in pairs(savedSettings()) do
             self[key] = value
         end
-        love.window.setMode(self.resolution[1], self.resolution[2], { fullscreen = self.fullscreen })
+        love.window.setMode(self.resolution[1], self.resolution[2], { fullscreen = self.fullscreen, vsync = self.vsync })
     else
         -- Set to the highest available resolution.
         self:setResolution(self.resolutions[#self.resolutions][1], self.resolutions[#self.resolutions][2])
@@ -88,6 +90,7 @@ function Settings:_saveSettings()
         end
     end
     settings = settings .. "}"
+    console:log(settings)
     love.filesystem.write("settings.lua", settings)
 end
 

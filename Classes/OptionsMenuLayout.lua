@@ -8,7 +8,6 @@
 -- Intended to be created inside of another menu (ie, main menu > options).
 --
 
-local Text              = require('Classes.Elements.Text')
 local Button            = require('Classes.Elements.Button')
 
 ---@class OptionsMenuLayout

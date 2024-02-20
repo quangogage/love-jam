@@ -21,11 +21,30 @@ return function (concord)
     -- If the pawn is targeting an entity,
     -- start attackin'.
     function PawnAttackSystem:update(dt)
+        local world = self:getWorld()
+        if not world then return end
+
         for _, e in ipairs(self.entities) do
-            if e.target.entity then
-                if e.combatProperties.type == 'melee' then
-                    self:_meleeAttack(e, dt)
+            local targetEntity = e.target.entity
+            e.combatProperties.attackTimer = e.combatProperties.attackTimer + dt
+            if targetEntity then
+                local distance = math.sqrt(
+                    (e.position.x - targetEntity.position.x) ^ 2 +
+                    (e.groundPosition.y - targetEntity.groundPosition.y) ^ 2
+                )
+                local attackSpeed = e.combatProperties.attackSpeed
+                if e.powerups then
+                    attackSpeed = e.powerups.list['Quickening Quiver']:getValue(attackSpeed)
                 end
+
+                if distance >= e.combatProperties.range then return end -- Too far away.
+                if e.combatProperties.attackTimer >= attackSpeed then
+                    if e.combatProperties.type == 'melee' then
+                        self:_meleeAttack(e, dt)
+                    end
+                    e.combatProperties.attackTimer = 0
+                end
+
             end
         end
     end
@@ -37,28 +56,17 @@ return function (concord)
     ---@param e Pawn | table
     ---@param dt number
     function PawnAttackSystem:_meleeAttack(e, dt)
-        local world          = self:getWorld()
-        local targetEntity   = e.target.entity
-        local distance       = math.sqrt(
-            (e.position.x - targetEntity.position.x) ^ 2 +
-            (e.groundPosition.y - targetEntity.groundPosition.y) ^ 2
+        local world        = self:getWorld()
+        local targetEntity = e.target.entity
+
+        local direction    = math.atan2(
+            targetEntity.position.y - e.position.y,
+            targetEntity.position.x - e.position.x
         )
-
-        e.combatProperties.attackTimer = e.combatProperties.attackTimer + dt
-
-        -- Start attacking once we are in range.
-        if distance >= e.combatProperties.range then return end -- Too far away.
-        if e.combatProperties.attackTimer >= e.combatProperties.attackSpeed then
-            local direction = math.atan2(
-                targetEntity.position.y - e.position.y,
-                targetEntity.position.x - e.position.x
-            )
-            world:emit('entity_attemptAttack',
-                e, targetEntity, e.combatProperties.damageAmount
-            )
-            world:emit("pawn_playAnimationOnce", e, "attack", direction)
-            e.combatProperties.attackTimer = 0
-        end
+        world:emit('entity_attemptAttack',
+            e, targetEntity, e.combatProperties.damageAmount
+        )
+        world:emit('pawn_playAnimationOnce', e, 'attack', direction)
     end
 
     return PawnAttackSystem

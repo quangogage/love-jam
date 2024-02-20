@@ -46,10 +46,8 @@ return {
         ---@param self Powerup
         ---@param value number
         getValue = function (self, value)
-            for _ = 1, self.count do
-                value = value * 1.15
-            end
-            return value
+            local multiplier = 1 + (self.count * 0.15)
+            return value * multiplier
         end
     }),
     Powerup({
@@ -60,6 +58,14 @@ return {
             for _ = 1, self.count do
                 pawn.armor.value = pawn.armor.value + 0.15
             end
+        end
+    }),
+    Powerup({
+        name = "Quickening Quiver",
+        description = "Attack 15% faster",
+        getValue = function(self, value)
+            local stacks = 1 - (self.count * 0.15)
+            return value * stacks
         end
     })
 }

@@ -3,10 +3,9 @@
 -- Handles inflicting and receiving damage.
 --
 
-local SuccessfulAttack = require("Classes.Types.SuccessfulAttack")
+local SuccessfulAttack = require('Classes.Types.SuccessfulAttack')
 
 ---@param concord Concord | table
----@param powerupStateManager PowerupStateManager
 ---@param onLevelComplete function
 return function (concord, onLevelComplete)
 
@@ -31,26 +30,26 @@ return function (concord, onLevelComplete)
         local world = self:getWorld()
         if world then
             if target.health then
-                local direction = math.atan2(target.position.y - attacker.position.y, target.position.x - attacker.position.x)
+                local direction = math.atan2(target.position.y - attacker.position.y,
+                    target.position.x - attacker.position.x)
                 local successfulAttack = SuccessfulAttack({
                     attacker  = attacker,
                     target    = target,
                     damage    = damageAmount,
                     direction = direction
                 })
+
                 -- Powerups
                 if target:get('powerups') then
-                    damageAmount = target.powerups.list["Bloodlust"]:getValue(damageAmount)
+                    damageAmount = target.powerups.list['Bloodlust']:getValue(damageAmount)
                 end
 
                 -- Armor damage reduction
-                local armorAmount = target.armor and target.armor.value or 0
-                damageAmount = damageAmount * (1 - armorAmount)
+                local armorAmount              = target.armor and target.armor.value or 0
+                damageAmount                   = damageAmount * (1 - armorAmount)
 
-                target.health.value = target.health.value - damageAmount
-
+                target.health.value            = target.health.value - damageAmount
                 target.health.mostRecentDamage = successfulAttack
-
                 world:emit('event_damageDealt', successfulAttack)
             end
         end
@@ -74,7 +73,7 @@ return function (concord, onLevelComplete)
                 local entity = self.healthEntities[i]
                 if entity.health.value <= 0 then
                     world:emit('event_entityDied', entity, entity.health.mostRecentDamage)
-                    entity:give("isDead")
+                    entity:give('isDead')
                     entity:destroy()
                 end
             end

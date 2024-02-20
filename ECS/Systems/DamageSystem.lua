@@ -42,8 +42,15 @@ return function (concord, onLevelComplete)
                 if target:get('powerups') then
                     damageAmount = target.powerups.list["Bloodlust"]:getValue(damageAmount)
                 end
+
+                -- Armor damage reduction
+                local armorAmount = target.armor and target.armor.value or 0
+                damageAmount = damageAmount * (1 - armorAmount)
+
                 target.health.value = target.health.value - damageAmount
+
                 target.health.mostRecentDamage = successfulAttack
+
                 world:emit('event_damageDealt', successfulAttack)
             end
         end

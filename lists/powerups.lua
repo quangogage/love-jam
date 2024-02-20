@@ -31,6 +31,7 @@ return {
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
+            pawn:ensure('movement')
             for _ = 1, self.count do
                 pawn.movement.walkSpeed = pawn.movement.walkSpeed * 1.15
             end
@@ -45,14 +46,21 @@ return {
         ---@param self Powerup
         ---@param value number
         getValue = function (self, value)
-            for i = 1, self.count do
+            for _ = 1, self.count do
                 value = value * 1.15
             end
             return value
         end
     }),
     Powerup({
-        name = 'Tough Skin',
-        description = 'Take 15% less damage'
+        name = 'Shield of Fortitude',
+        description = 'Take 15% less damage',
+        count = 1,
+        onPawnCreation = function(self, pawn)
+            pawn:ensure('armor')
+            for _ = 1, self.count do
+                pawn.armor.value = pawn.armor.value + 0.15
+            end
+        end
     })
 }

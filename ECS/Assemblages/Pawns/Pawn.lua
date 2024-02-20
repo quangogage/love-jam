@@ -6,6 +6,7 @@
 ---@field movement Movement
 ---@field health Health
 ---@field physics Physics
+---@field armor Armor
 
 return function (e, x, y)
     e
@@ -16,4 +17,5 @@ return function (e, x, y)
         :give('pushbackRadius')
         :give('groundPosition')
         :give('isPawn')
+        :give('armor', 0)
 end

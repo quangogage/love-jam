@@ -53,12 +53,8 @@ return function (concord)
                 targetEntity.position.y - e.position.y,
                 targetEntity.position.x - e.position.x
             )
-            local damageAmount = e.combatProperties.damageAmount
-            if e.powerups then
-                damageAmount = e.powerups.list["Bloodlust"]:getMultipliedValue(damageAmount)
-            end
             world:emit('entity_attemptAttack',
-                e, targetEntity, damageAmount
+                e, targetEntity, e.combatProperties.damageAmount
             )
             world:emit("pawn_playAnimationOnce", e, "attack", direction)
             e.combatProperties.attackTimer = 0

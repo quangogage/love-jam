@@ -6,6 +6,7 @@
 local SuccessfulAttack = require("Classes.Types.SuccessfulAttack")
 
 ---@param concord Concord | table
+---@param powerupStateManager PowerupStateManager
 ---@param onLevelComplete function
 return function (concord, onLevelComplete)
 
@@ -37,6 +38,12 @@ return function (concord, onLevelComplete)
                     damage    = damageAmount,
                     direction = direction
                 })
+                -- Powerups
+                if target:get('powerups') then
+                    console:log("damage was " .. damageAmount)
+                    damageAmount = target.powerups.list["Bloodlust"]:getValue(damageAmount)
+                    console:log("damage is now " .. damageAmount)
+                end
                 target.health.value = target.health.value - damageAmount
                 target.health.mostRecentDamage = successfulAttack
                 world:emit('event_damageDealt', successfulAttack)
@@ -46,6 +53,7 @@ return function (concord, onLevelComplete)
 
     -- Debug function (see DebugSystem).
     -- Prevents continuing to the next level when all entities are dead.
+    -- See `DamageSystem._checkLevelComplete`.
     function DamageSystem:testRoom()
         self.__debug_testRoom = true
     end

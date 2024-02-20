@@ -6,32 +6,47 @@
 --
 -- Whenever a pawn is created, it is given a deep copy of that table stored in
 -- `pawn.powerups`.
+--
+-- ──────────────────────────────────────────────────────────────────────
+-- Powerups will continue to require some level of bespoke behavior no matter
+-- how hard you try to abstract things.
+--
+--
+-- One rule of thumb I'd like to follow for this project:
+--
+-- ╭─────────────────────────────────────────────────────────╮
+-- │ Apply the powerups as close to their actual effect as   │
+-- │ possible.                                               │
+-- ╰─────────────────────────────────────────────────────────╯
+-- For example, a permanent damage increase powerup should not be applied
+-- when attacking - But immediately before subtracting that damage amount
+-- from the target's health.
 
 local Powerup  = require("Classes.Types.Powerup")
 return {
     Powerup({
         name = 'Fast Walker',
-        description = 'Move 20% faster',
+        description = 'Move 15% faster',
 
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
             for _ = 1, self.count do
-                pawn.movement.walkSpeed = pawn.movement.walkSpeed * 1.20
+                pawn.movement.walkSpeed = pawn.movement.walkSpeed * 1.15
             end
         end
     }),
     Powerup({
         name = 'Bloodlust',
-        description = 'Deal 20% more damage',
+        description = 'Deal 15% more damage',
 
         -- Keep this powerup behavior somewhat ambiguous so it can be applied
         -- to different things in the future...
         ---@param self Powerup
         ---@param value number
-        getMultipliedValue = function (self, value)
+        getValue = function (self, value)
             for i = 1, self.count do
-                value = value * 1.20
+                value = value * 1.15
             end
             return value
         end

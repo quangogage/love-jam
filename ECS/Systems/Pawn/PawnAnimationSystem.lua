@@ -1,7 +1,8 @@
 ---@author Gage Henderson 2024-02-20 05:06
 --
 
-local WALKING_VELOCITY_THRESHOLD = 15
+local WALKING_VELOCITY_THRESHOLD = 15 -- Only play walking animation if the pawn is moving faster than this.
+local TURNING_VELOCITY_THRESHOLD = 15 -- Only change the pawn's direction if it's moving faster than this (while walking only).
 local animationDirections = {
     right     = 0,
     down      = math.pi / 2,
@@ -34,7 +35,9 @@ return function (concord)
                 entity.pawnAnimations.timer            = 0
                 entity.pawnAnimations.frame            = 1
             end
-            if direction and not entity.pawnAnimations.oneShotAnimationName then
+            if direction and not entity.pawnAnimations.oneShotAnimationName and
+            math.abs(entity.physics.velocity.x) > WALKING_VELOCITY_THRESHOLD and
+            math.abs(entity.physics.velocity.y) > WALKING_VELOCITY_THRESHOLD then
                 entity.pawnAnimations.direction = self:_getAnimationDirection(direction)
             end
         end

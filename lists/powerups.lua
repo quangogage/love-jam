@@ -55,7 +55,6 @@ return {
     Powerup({
         name = 'Shield of Fortitude',
         description = 'Take 15% less damage',
-        count = 1,
         onPawnCreation = function(self, pawn)
             pawn:ensure('armor')
             for _ = 1, self.count do

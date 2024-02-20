@@ -28,7 +28,7 @@ return function (concord, camera, onLevelComplete)
     end
     function DebugSystem:testRoom()
         for _, entity in ipairs(self.hostileEntities) do
-            self:getWorld():emit('event_pawnDied', entity)
+            -- self:getWorld():emit('event_pawnDied', entity)
             entity:destroy()
         end
         self.testRoom = true

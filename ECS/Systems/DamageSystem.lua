@@ -44,6 +44,11 @@ return function (concord, onLevelComplete)
         end
     end
 
+    -- Debug function (see DebugSystem).
+    -- Prevents continuing to the next level when all entities are dead.
+    function DamageSystem:testRoom()
+        self.__debug_testRoom = true
+    end
 
     --------------------------
     -- [[ Core Functions ]] --
@@ -71,7 +76,7 @@ return function (concord, onLevelComplete)
     -- Check, after killing something, if the level is complete.
     -- Right now this just means destroying the enemy base.
     function DamageSystem:_checkLevelComplete()
-        if #self.enemyBases == 0 then
+        if #self.enemyBases == 0 and not self.__debug_testRoom then
             onLevelComplete()
         end
     end

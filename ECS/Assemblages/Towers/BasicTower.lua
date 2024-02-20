@@ -16,7 +16,7 @@ return function (e, x, y)
         :give('renderRectangle', 50, 100)
         :give('dimensions', 50, 100)
         :give('pawnGeneration', {
-            pawnType = 'BasicPawn',
+            pawnType = 'Knight',
             spawnRate = 10,
         })
 end

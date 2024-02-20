@@ -19,7 +19,9 @@ return function (concord)
     ----------------------------
     -- [[ Public Functions ]] --
     ----------------------------
-    function HealthBarSystem:event_damageDealt(_, target)
+    ---@param successfulAttack SuccessfulAttack
+    function HealthBarSystem:event_damageDealt(successfulAttack)
+        local target = successfulAttack.target
         target.health.bar.hidden = false
         target.health.bar.timer  = 0
     end

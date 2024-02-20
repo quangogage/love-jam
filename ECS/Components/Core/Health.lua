@@ -4,6 +4,7 @@
 ---@field value number
 ---@field max number
 ---@field bar table Various information about displaying a health bar.
+---@field mostRecentDamage SuccessfulAttack Used in DamageSystem.
 
 return function (concord)
     concord.component('health', function (c, max)

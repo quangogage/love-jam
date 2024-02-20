@@ -82,8 +82,7 @@ end
 function PowerupSelectionCard:_drawBackground()
     if self.selected then
         love.graphics.setColor(0, 1, 0)
-        love.graphics.rectangle('fill', self.position.x, self.position.y, self.width, self.height, CARD_CORNER_RADIUS,
-            CARD_CORNER_RADIUS)
+        love.graphics.rectangle('fill', self.position.x, self.position.y, self.width, self.height, CARD_CORNER_RADIUS, CARD_CORNER_RADIUS)
     end
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
     love.graphics.setLineWidth(2)

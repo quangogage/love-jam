@@ -3,6 +3,8 @@
 -- Handles inflicting and receiving damage.
 --
 
+local SuccessfulAttack = require("Classes.Types.SuccessfulAttack")
+
 ---@param concord Concord | table
 ---@param onLevelComplete function
 return function (concord, onLevelComplete)
@@ -28,8 +30,16 @@ return function (concord, onLevelComplete)
         local world = self:getWorld()
         if world then
             if target.health then
+                local direction = math.atan2(target.position.y - attacker.position.y, target.position.x - attacker.position.x)
+                local successfulAttack = SuccessfulAttack({
+                    attacker  = attacker,
+                    target    = target,
+                    damage    = damageAmount,
+                    direction = direction
+                })
                 target.health.value = target.health.value - damageAmount
-                world:emit('event_damageDealt', attacker, target, damageAmount)
+                target.health.mostRecentDamage = successfulAttack
+                world:emit('event_damageDealt', successfulAttack)
             end
         end
     end
@@ -45,7 +55,7 @@ return function (concord, onLevelComplete)
             for i = 1, #self.healthEntities do
                 local entity = self.healthEntities[i]
                 if entity.health.value <= 0 then
-                    world:emit('event_entityDied', entity)
+                    world:emit('event_entityDied', entity.health.mostRecentDamage)
                     entity:give("isDead")
                     entity:destroy()
                 end

@@ -4,6 +4,7 @@ local game
 
 function love.load()
     if arg[#arg] == '-debug' then require('mobdebug').start() end -- Zerobrane studio debugging.
+    settings:load()
     game = Game()
 end
 function love.update(dt)

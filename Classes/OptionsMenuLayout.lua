@@ -11,15 +11,6 @@
 local Text              = require('Classes.Elements.Text')
 local Button            = require('Classes.Elements.Button')
 
--- This should be somewhere else....
--- 16:9 only for now.
-local resolutions       = {
-    { 3840, 2160 },
-    { 1920, 1080 },
-    { 1600, 900 },
-    { 1280, 720 },
-}
-
 ---@class OptionsMenuLayout
 ---@field eventManager table
 ---@field parent table
@@ -68,7 +59,7 @@ end
 -- [[ Private Functions ]] --
 -----------------------------
 function OptionsMenuLayout:_createElements()
-    local res = resolutions[self.currentResIndex]
+    local res = settings.resolutions[self.currentResIndex]
     self.elements = {
         -- Resolution changer
         Button({
@@ -76,10 +67,10 @@ function OptionsMenuLayout:_createElements()
             text = 'Resolution: ' .. res[1] .. 'x' .. res[2],
             onClick = function (button)
                 self.currentResIndex = self.currentResIndex + 1
-                if self.currentResIndex > #resolutions then
+                if self.currentResIndex > #settings.resolutions then
                     self.currentResIndex = 1
                 end
-                res = resolutions[self.currentResIndex]
+                res = settings.resolutions[self.currentResIndex]
                 button.text = 'Resolution: ' .. res[1] .. 'x' .. res[2]
                 self.didChangeRes = true
             end
@@ -91,7 +82,7 @@ function OptionsMenuLayout:_createElements()
             text = '< Back + Apply',
             onClick = function ()
                 if self.didChangeRes then
-                    love.window.setMode(res[1], res[2])
+                    settings:setResolution(res[1], res[2])
                 end
                 self.onExit()
             end
@@ -101,8 +92,8 @@ end
 function OptionsMenuLayout:_getCurrentResolution()
     local width, height = love.window.getMode()
     self.currentResIndex = 1
-    for i = 1, #resolutions do
-        local res = resolutions[i]
+    for i = 1, #settings.resolutions do
+        local res = settings.resolutions[i]
         if res[1] == width and res[2] == height then
             self.currentResIndex = i
             return

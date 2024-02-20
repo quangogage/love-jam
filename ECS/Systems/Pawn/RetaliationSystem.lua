@@ -1,5 +1,7 @@
 ---@author Gage Henderson 2024-02-20 12:29
 --
+-- As of right now pawns will retaliate when attacked so long as they are not
+-- already targeting something.
 
 return function (concord)
     ---@class RetaliationSystem : System
@@ -13,7 +15,9 @@ return function (concord)
         local attacker = successfulAttack.attacker
         local target = successfulAttack.target
         if target:get("isPawn") then
-            if not attacker:get("isDead") then
+            -- If the person who attacked is not dead, and the person who
+            -- was attacked is not already targeting something.
+            if not attacker:get("isDead") and not target.target then
                 target:give('target', { entity = attacker })
             end
         end

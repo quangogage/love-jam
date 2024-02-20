@@ -40,9 +40,7 @@ return function (concord, onLevelComplete)
                 })
                 -- Powerups
                 if target:get('powerups') then
-                    console:log("damage was " .. damageAmount)
                     damageAmount = target.powerups.list["Bloodlust"]:getValue(damageAmount)
-                    console:log("damage is now " .. damageAmount)
                 end
                 target.health.value = target.health.value - damageAmount
                 target.health.mostRecentDamage = successfulAttack

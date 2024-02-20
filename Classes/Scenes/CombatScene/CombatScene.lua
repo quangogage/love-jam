@@ -194,6 +194,7 @@ function CombatScene:_loadSystems()
     loadSystem('HealthBarSystem')
     loadSystem('SelectedHighlightSystem')
     loadSystem('Pawn.PawnAnimationSystem')
+    loadSystem('Pawn.RetaliationSystem')
     loadSystem('DebugSystem', self.camera, function () self:completeLevel() end)
     self.world:addSystems(unpack(systems))
 end

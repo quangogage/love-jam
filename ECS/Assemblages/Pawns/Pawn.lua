@@ -15,4 +15,5 @@ return function (e, x, y)
         :give('physics')
         :give('pushbackRadius')
         :give('groundPosition')
+        :give('isPawn')
 end

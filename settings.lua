@@ -5,5 +5,6 @@
 return {
     cameraWASDMoveSpeed = 6600,
     cameraPushMoveSpeed = 2000,
-    cameraPanSpeed      = 10
+    cameraPanSpeed      = 10,
+    resolution          = { 1280, 720 },
 }

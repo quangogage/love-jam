@@ -1,9 +1,9 @@
 ---@author Gage Henderson 2024-02-18 03:47
 --
 
-local util = require('util')({ 'table' })
-local Vec2 = require('Classes.Types.Vec2')
-local Element = require("Classes.Elements.Element")
+local util    = require('util')({ 'table' })
+local Vec2    = require('Classes.Types.Vec2')
+local Element = require('Classes.Elements.Element')
 
 ---@class Button : Element
 ---@field position {x: number, y: number}
@@ -14,18 +14,18 @@ local Element = require("Classes.Elements.Element")
 ---@field hoverColor number[]
 ---@field onClick function
 ---@field currentColor number[]
-local Button = Goop.Class({
+---@field colorChangeSpeed number
+local Button  = Goop.Class({
     extends = Element,
     parameters = {
-        { 'anchor', 'table' },
-        { 'offset', 'table' },
-        { 'text',     'string' },
-        { 'onClick',  'function' }
+        { 'anchor',  'table' },
+        { 'text',    'string' },
+        { 'onClick', 'function' }
     },
     dynamic = {
         color            = { 1, 1, 1, 1 },
         hoverColor       = { 0.2, 0.2, 0.2, 1 },
-        font             = love.graphics.newFont(fonts.button, 30),
+        font             = love.graphics.newFont(fonts.sub, 30),
         dimensions       = Vec2(0, 0),
         colorChangeSpeed = 15,
     }
@@ -59,7 +59,7 @@ function Button:draw()
 end
 function Button:mousepressed(_, _, button)
     if self.hovered and button == 1 then
-        self.onClick()
+        self:onClick()
     end
 end
 
@@ -75,7 +75,7 @@ function Button:_updateColor(dt)
 
     for i = 1, 4 do
         self.currentColor[i] = self.currentColor[i] +
-        (targetColor[i] - self.currentColor[i]) * self.colorChangeSpeed * dt
+            (targetColor[i] - self.currentColor[i]) * self.colorChangeSpeed * dt
     end
 end
 

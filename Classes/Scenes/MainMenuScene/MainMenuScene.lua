@@ -3,15 +3,18 @@
 -- Just like all other interface stuff in this project - This code and
 -- overall way of doing things is bad!
 
+local OptionsMenuLayout = require('Classes.OptionsMenuLayout')
 local Button = require('Classes.Elements.Button')
 
 ---@class MainMenuScene
 ---@field startGame function - Provided by creator.
 ---@field elements Button[] | table[]
 ---@field hoverCursor love.Cursor
+---@field eventManager table
 local MainMenuScene = Goop.Class({
     arguments = {
-        { 'startGame', 'function' }
+        { 'startGame', 'function' },
+        { 'eventManager', 'table' }
     },
     static = {
         elements    = {},
@@ -46,7 +49,7 @@ function MainMenuScene:draw()
     end
 end
 function MainMenuScene:mousepressed(_, _, button)
-    local x,y = love.mouse.getPosition()
+    local x, y = love.mouse.getPosition()
     for _, el in ipairs(self.elements) do
         el:mousepressed(x, y, button)
     end
@@ -69,28 +72,37 @@ function MainMenuScene:_setMenu(name)
             Button({
                 text = 'Start Game',
                 anchor = { x = 0, y = 0.5 },
-                offset = { x =  100, y = 0 },
+                offset = { x = 100, y = 0 },
                 onClick = function ()
                     love.mouse.setCursor()
                     self.startGame()
                 end
             }),
             Button({
-                text = 'Settings',
+                text = 'Options',
                 anchor = { x = 0, y = 0.5 },
-                offset = { x =  100, y = 100 },
+                offset = { x = 100, y = 100 },
                 onClick = function ()
-                    console:log('open settings here........')
+                    self:_setMenu('options')
                 end
             }),
             Button({
                 text = 'Quit',
                 anchor = { x = 0, y = 0.5 },
-                offset = { x =  100, y = 200 },
+                offset = { x = 100, y = 200 },
                 onClick = function ()
                     love.event.quit()
                 end
             }),
+        }
+    elseif name == 'options' then
+        self.elements = {
+            OptionsMenuLayout(
+                self.eventManager,self,
+                function()
+                    self:_setMenu('main')
+                end
+            )
         }
     end
 end

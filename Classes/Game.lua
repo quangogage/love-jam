@@ -30,7 +30,7 @@ function Game:init()
     self:_loadComponents()
     self:setScene('MainMenuScene', function ()
         self:setScene('CombatScene', self.eventManager)
-    end)
+    end, self.eventManager)
 end
 function Game:update(dt)
     if self.currentScene then
@@ -71,7 +71,7 @@ function Game:_createSubscriptions()
     self.eventManager:subscribe('openMainMenu', function ()
         self:setScene('MainMenuScene', function ()
             self:setScene('CombatScene', self.eventManager)
-        end)
+        end, self.eventManager)
     end)
 end
 function Game:_loadComponents()

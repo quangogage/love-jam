@@ -27,4 +27,7 @@ end
 ---@param pawn BasicPawn | Pawn | table
 function Powerup:onPawnDeath(pawn)
 end
+---@param successfulAttack SuccessfulAttack
+function Powerup:onSuccessfulAttack(successfulAttack)
+end
 return Powerup

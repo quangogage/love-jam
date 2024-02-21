@@ -28,9 +28,9 @@ local Powerup = require('Classes.Types.Powerup')
 
 return {
     Powerup({
+        -- Applied in PowerupSetupSystem.
         name = 'Fast Walker',
         description = 'Move 15% faster',
-
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
@@ -41,11 +41,9 @@ return {
         end
     }),
     Powerup({
+        -- Applied in DamageSystem.
         name = 'Bloodlust',
         description = 'Deal 15% more damage',
-
-        -- Keep this powerup behavior somewhat ambiguous so it can be applied
-        -- to different things in the future...
         ---@param self Powerup
         ---@param value number
         getValue = function (self, value)
@@ -54,8 +52,12 @@ return {
         end
     }),
     Powerup({
+        -- Applied in PowerupSetupSystem.
         name = 'Shield of Fortitude',
         description = 'Take 15% less damage',
+        count = 10,
+        ---@param self Powerup
+        ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
             pawn:ensure('armor')
             for _ = 1, self.count do
@@ -64,19 +66,40 @@ return {
         end
     }),
     Powerup({
+        -- Applied in PawnAttackSystem
         name = 'Quickening Quiver',
         description = 'Attack 15% faster',
+        ---@param self Powerup
+        ---@param value number
         getValue = function (self, value)
             local stacks = 1 - (self.count * 0.15)
             return value * stacks
         end
     }),
     Powerup({
+        -- Applied in DamageSystem (see DamageSystem.update).
         name = 'Soul Renewal',
         description = 'Chance to immediately respawn at your base upon death.',
+        ---@param self Powerup
         getValue = function (self)
             -- See DamageSystem.
             return 0.1 * self.count -- 10% chance per-stack.
         end,
+    }),
+    Powerup({
+        -- Applied in DamageSystem (see DamageSystem.update).
+        name = "Shattering Impact",
+        description = "Knockback enemies on hit",
+        ---@param self Powerup
+        ---@param successfulAttack SuccessfulAttack
+        onSuccessfulAttack = function (self, successfulAttack)
+            local force = 150 * self.count
+            local dir = successfulAttack.direction
+            local target = successfulAttack.target
+            if target:get("physics") then
+                target.physics.velocity.x = target.physics.velocity.x + math.cos(dir) * force
+                target.physics.velocity.y = target.physics.velocity.y + math.sin(dir) * force
+            end
+        end
     })
 }

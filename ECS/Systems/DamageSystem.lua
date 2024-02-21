@@ -39,14 +39,20 @@ return function (concord, onLevelComplete)
                     direction = direction
                 })
 
-                -- Powerups
-                if target:get('powerups') then
-                    damageAmount = target.powerups.list['Bloodlust']:getValue(damageAmount)
-                end
-
                 -- Armor damage reduction
+                -- (Armor reduction powerup applied in PowerupSetupSystem).
                 local armorAmount              = target.armor and target.armor.value or 0
                 damageAmount                   = damageAmount * (1 - armorAmount)
+
+                -- Powerups
+                if attacker:get('powerups') then
+                    -- Increase outgoing damage per attacker's bloodlust powerup.
+                    damageAmount = attacker.powerups.list['Bloodlust']:getValue(damageAmount)
+
+                    for _, powerup in pairs(attacker.powerups.list) do
+                        powerup:onSuccessfulAttack(successfulAttack)
+                    end
+                end
 
                 target.health.value            = target.health.value - damageAmount
                 target.health.mostRecentDamage = successfulAttack

@@ -83,10 +83,10 @@ function MainMenuScene:_setMenu(name)
                 anchor = { x = 0, y = 0.5 },
                 offset = { x = 100, y = 0 },
                 onClick = function ()
+                    startGameSound:play()
                     love.mouse.setCursor()
                     self.startGame()
                     self.song:stop()
-                    startGameSound:play()
                 end
             }),
             Button({

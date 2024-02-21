@@ -32,8 +32,11 @@ return function (concord)
         c.meleeHitboxSize     = data.meleeHitboxSize or 30
         -- Default to sword sounds.
         c.sounds              = data.sounds or sounds
-        for _, sound in pairs(c.sounds) do
-            sound:setVolume(settings:getVolume("sfx") * 0.7)
+
+        if not data.sounds then
+            for _, sound in pairs(c.sounds) do
+                sound:setVolume(settings:getVolume("sfx") * 0.2)
+            end
         end
     end)
 end

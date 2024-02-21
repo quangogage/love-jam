@@ -8,9 +8,9 @@
 -- `interface_attemptSpawnPawn` event.
 --
 
-local palette               = require('lists.interfaceColorPalette')
-local pawnTypes             = require('lists.pawnTypes')
-local PawnSelectionCard     = require('Classes.Scenes.CombatScene.Interface.PawnSelectionCard')
+local palette           = require('lists.interfaceColorPalette')
+local pawnTypes         = require('lists.pawnTypes')
+local PawnSelectionCard = require('Classes.Scenes.CombatScene.Interface.PawnSelectionCard')
 
 ---@class PawnSelectionMenu
 ---@field height number
@@ -19,10 +19,11 @@ local PawnSelectionCard     = require('Classes.Scenes.CombatScene.Interface.Pawn
 ---@field cards PawnSelectionCard[]
 ---@field eventManager EventManager
 ---@field powerupStateManager PowerupStateManager
+---@field coinManager CoinManager
 ---@field cardScreenPadding number
 ---@field cardSpacing number
-local PawnSelectionMenu     = Goop.Class({
-    arguments = { 'eventManager', 'powerupStateManager' },
+local PawnSelectionMenu = Goop.Class({
+    arguments = { 'eventManager', 'powerupStateManager', 'coinManager' },
     static = {
         cards             = {},
         height            = 100,
@@ -39,10 +40,6 @@ local PawnSelectionMenu     = Goop.Class({
 --------------------------
 function PawnSelectionMenu:init()
     self:_initCards()
-    self:_createSubscriptions()
-end
-function PawnSelectionMenu:destroy()
-    self:_destroySubscriptions()
 end
 function PawnSelectionMenu:update()
     for _, card in ipairs(self.cards) do
@@ -52,6 +49,7 @@ end
 function PawnSelectionMenu:draw()
     self:_drawBackground()
     self:_drawCards()
+    self:_printCoinCount()
 end
 function PawnSelectionMenu:keypressed(key)
     if self.cards[tonumber(key)] then
@@ -88,7 +86,7 @@ function PawnSelectionMenu:_initCards()
     for _, pawnType in ipairs(pawnTypes) do
         local newCard = PawnSelectionCard({
             anchor         = { x = 0, y = 1 },
-            offset         = { x = x, y = -self.height / 2 - self.cardHeight / 2}, 
+            offset         = { x = x, y = -self.height / 2 - self.cardHeight / 2 },
             width          = self.cardWidth,
             height         = self.cardHeight,
             name           = pawnType.name,
@@ -115,23 +113,8 @@ function PawnSelectionMenu:_drawCards()
     end
 end
 
-function PawnSelectionMenu:_createSubscriptions()
-    self.subscriptions = {}
-
-    -- Broadcast from `PowerupStateManager`.
-    -- Sync powerup information for each card.
-    self.subscriptions['interface_syncPowerupState'] = self.eventManager:subscribe(
-        'interface_syncPowerupState',
-        function (pawnTypePowerups)
-            for _, card in pairs(self.cards) do
-                if pawnTypePowerups[card.name] then
-                    -- card:syncPowerups(pawnTypePowerups[card.name])
-                end
-            end
-        end
-    )
+function PawnSelectionMenu:_printCoinCount()
+    love.graphics.setColor(1,1,1)
+    love.graphics.print("COINS: " .. self.coinManager.coins, 10, love.graphics.getHeight() - self.height - 20)
 end
-function PawnSelectionMenu:_destroySubscriptions()
-end
-
 return PawnSelectionMenu

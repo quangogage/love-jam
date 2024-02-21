@@ -74,6 +74,20 @@ function OptionsMenuLayout:_createElements()
                 self.didChangeRes = true
             end
         }),
+        -- Volume changer
+        Button({
+            anchor = {x = 0.1, y = 0.5},
+            text    = settings.muted and "Sound off" or "Sound on",
+            onClick = function (button)
+                if settings.muted then
+                    settings:unmute()
+                    button.text = "Sound on"
+                else
+                    settings:mute()
+                    button.text = "Sound off"
+                end
+            end
+        }),
         -- Back button
         Button({
             anchor = { x = 0.1, y = 0.9 },

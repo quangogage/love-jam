@@ -18,13 +18,13 @@ local Settings = Goop.Class({
         resolution          = { 1280, 720 },
         fullscreen          = false,
         vsync               = false,
-        resolutions = {
+        resolutions         = {
             { 1280, 720 },
             { 1920, 1080 },
             { 2560, 1440 },
             { 3840, 2160 }
         },
-        sound = {
+        sound               = {
             masterVolume = 1,
             sfxVolume    = 0.8,
             musicVolume  = 1
@@ -38,19 +38,31 @@ local Settings = Goop.Class({
 ---------------------------
 ---@param width number
 ---@param height number
-function Settings:setResolution(width,height)
-    love.window.setMode(width, height, { fullscreen = false, vsync = self.vsync})
+function Settings:setResolution(width, height)
+    love.window.setMode(width, height, { fullscreen = false, vsync = self.vsync })
     self.resolution = { width, height }
+    self:_saveSettings()
+end
+
+-- Worst code in the entire game.
+function Settings:mute()
+    self.muted = true
+    love.audio.setVolume(0)
+    self:_saveSettings()
+end
+function Settings:unmute()
+    self.muted = false
+    love.audio.setVolume(1)
     self:_saveSettings()
 end
 
 ---@param volumeType string
 ---@return number
 function Settings:getVolume(volumeType)
-    if volumeType == "master" then
+    if volumeType == 'master' then
         return self.sound.masterVolume
     else
-        return self.sound[volumeType .. "Volume"] * self.sound.masterVolume
+        return self.sound[volumeType .. 'Volume'] * self.sound.masterVolume
     end
 end
 
@@ -81,12 +93,17 @@ function Settings:_removeInvalidResolutions()
 end
 
 function Settings:_attemptLoadSettings()
-    local savedSettings = love.filesystem.load("settings.lua")
+    local savedSettings = love.filesystem.load('settings.lua')
     if savedSettings then
         for key, value in pairs(savedSettings()) do
             self[key] = value
         end
         love.window.setMode(self.resolution[1], self.resolution[2], { fullscreen = self.fullscreen, vsync = self.vsync })
+        if self.muted then
+            love.audio.setVolume(0)
+        else
+            love.audio.setVolume(1)
+        end
     else
         -- Set to the highest available resolution.
         self:setResolution(self.resolutions[#self.resolutions][1], self.resolutions[#self.resolutions][2])
@@ -95,18 +112,19 @@ function Settings:_attemptLoadSettings()
 end
 
 function Settings:_saveSettings()
-    local settings = "return {\n"
+    local settings = 'return {\n'
     for key, value in pairs(self) do
-        if type(value) == "number" then
-            settings = settings .. "    " .. key .. " = " .. value .. ",\n"
-        elseif type(value) == "table" then
-            settings = settings .. "    " .. key .. " = { " .. value[1] .. ", " .. value[2] .. " },\n"
-        elseif type(value) == "boolean" then
-            settings = settings .. "    " .. key .. " = " .. tostring(value) .. ",\n"
+        if type(value) == 'number' then
+            settings = settings .. '    ' .. key .. ' = ' .. value .. ',\n'
+        elseif type(value) == 'table' then
+            settings = settings .. '    ' .. key .. ' = { ' .. value[1] .. ', ' .. value[2] .. ' },\n'
+        elseif type(value) == 'boolean' then
+            settings = settings .. '    ' .. key .. ' = ' .. tostring(value) .. ',\n'
         end
     end
-    settings = settings .. "}"
-    love.filesystem.write("settings.lua", settings)
+    settings = settings .. '}'
+    love.filesystem.write('settings.lua', settings)
 end
+
 
 return Settings

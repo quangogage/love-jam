@@ -35,8 +35,8 @@ return function (e, x, y, friendly, powerups)
         :give('dimensions', dimensions.width, dimensions.height)
         :give('combatProperties', 'bow', {
             damageAmount = 1,
-            attackSpeed = 1,
-            range = 300
+            attackSpeed  = 1.2,
+            range        = 420 
         })
         :give('pawnAnimations', 'archer')
         :give('pushbackRadius', 35)

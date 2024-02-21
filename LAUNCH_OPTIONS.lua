@@ -5,5 +5,6 @@
 --
 
 return {
-    -- "toggleRanges"
+    "toggleRanges",
+    --"testRoom"
 }

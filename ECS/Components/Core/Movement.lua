@@ -12,7 +12,7 @@ return function (concord)
         c.walkSpeed      = data.walkSpeed or 1200
         c.targetLocation = Vec2(0, 0)
         c.direction      = data.direction or 0
-        c.moveSpeed      = data.moveSpeed or 300
-        c.movemenePreset = data.movementPreset
+        c.moveSpeed      = data.moveSpeed or 200
+        c.movementPreset = data.movementPreset
     end)
 end

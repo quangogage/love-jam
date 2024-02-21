@@ -36,7 +36,7 @@ return function (e, x, y, friendly, powerups)
         :give('combatProperties', 'bow', {
             damageAmount = 1,
             attackSpeed  = 1.2,
-            range        = 420 
+            range        = 420.69
         })
         :give('pawnAnimations', 'archer')
         :give('pushbackRadius', 35)

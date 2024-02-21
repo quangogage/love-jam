@@ -14,7 +14,7 @@ return function (concord)
     ---@class PawnAttackSystem : System
     ---@field entities table[] | Pawn[]
     local PawnAttackSystem = concord.system({
-        entities = { 'target', 'combatProperties' },
+        entities = { 'combatProperties' },
     })
 
     --------------------------
@@ -27,35 +27,36 @@ return function (concord)
         if not world then return end
 
         for _, e in ipairs(self.entities) do
-            local targetEntity = e.target.entity
             e.combatProperties.attackTimer = e.combatProperties.attackTimer + dt
-            if targetEntity then
-                local distance = math.sqrt(
-                    (e.position.x - targetEntity.position.x) ^ 2 +
-                    (e.groundPosition.y - targetEntity.groundPosition.y) ^ 2
-                )
-                local attackSpeed = e.combatProperties.attackSpeed
-                if e.powerups then
-                    attackSpeed = e.powerups.list['Quickening Quiver']:getValue(attackSpeed)
-                end
-
-                if distance >= e.combatProperties.range then return end -- Too far away.
-                if e.combatProperties.attackTimer >= attackSpeed then
-                    if e.combatProperties.type == 'melee' then
-                        self:_meleeAttack(e)
-                    elseif e.combatProperties.type == 'bow' then
-                        self:_bowAttack(e)
+            if e.target then
+                local targetEntity = e.target.entity
+                if targetEntity then
+                    local distance = math.sqrt(
+                        (e.position.x - targetEntity.position.x) ^ 2 +
+                        (e.groundPosition.y - targetEntity.groundPosition.y) ^ 2
+                    )
+                    local attackSpeed = e.combatProperties.attackSpeed
+                    if e.powerups then
+                        attackSpeed = e.powerups.list['Quickening Quiver']:getValue(attackSpeed)
                     end
 
-                    local sound = e.combatProperties.sounds[math.random(1, #e.combatProperties.sounds)]
-                    if sound:isPlaying() then
-                        sound = sound:clone()
+                    if distance >= e.combatProperties.range then return end -- Too far away.
+                    if e.combatProperties.attackTimer >= attackSpeed then
+                        if e.combatProperties.type == 'melee' then
+                            self:_meleeAttack(e)
+                        elseif e.combatProperties.type == 'bow' then
+                            self:_bowAttack(e)
+                        end
+
+                        local sound = e.combatProperties.sounds[math.random(1, #e.combatProperties.sounds)]
+                        if sound:isPlaying() then
+                            sound = sound:clone()
+                        end
+                        love.audio.play(sound)
+
+                        e.combatProperties.attackTimer = 0
                     end
-                    love.audio.play(sound)
-
-                    e.combatProperties.attackTimer = 0
                 end
-
             end
         end
     end

@@ -12,6 +12,8 @@ function love.update(dt)
     if not console.input.active then
         game:update(dt)
     end
+
+    love.audio.setVolume(0) -- Mute audio dev
 end
 function love.draw()
     game:draw()

@@ -18,9 +18,10 @@ return function (concord)
     ----------------------------
     -- [[ Public Functions ]] --
     ----------------------------
-    --
+
     -- When a new enemy pawn spawns, target the closest friendly pawn.
-    -- When a new friendly pawn spawns, retarget all enemy pawns.
+    -- When a new friendly pawn spawns, have all enemy pawns retarget to the
+    -- closest friendly pawn.
     function EnemyPawnTargetSystem:event_pawnSpawned(pawn)
         if pawn.hostile then
             self:_targetClosestFriendlyPawn(pawn)
@@ -30,8 +31,8 @@ return function (concord)
             end
         end
     end
-    --
-    --- Retarget all enemy pawns if a friendly pawn dies.
+
+    -- Retarget all enemy pawns if a friendly pawn dies.
     ---@param pawn Pawn | table
     function EnemyPawnTargetSystem:event_entityDied(pawn)
         if pawn.friendly then

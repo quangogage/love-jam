@@ -216,6 +216,7 @@ function CombatScene:_loadSystems()
     loadSystem('AnimationSystem')
     loadSystem('CoinGenerationSystem', self.coinManager)
     loadSystem('MovementSystem')
+    loadSystem('Pawn.FriendlyPawnTargetSystem')
     loadSystem('DebugSystem', self.camera, function () self:completeLevel() end, self.coinManager)
     self.world:addSystems(unpack(systems))
 end

@@ -40,27 +40,29 @@ function Console:executeCommand(input)
     local commandRef    = self:getCommand(inputCommand)
     local i = 1 ---Ignore the first arg (which is the command itself).
 
-    ---Get the arguments.
-    for arg in input:gmatch("%S+") do
-        if i ~= 1 then
-            table.insert(args, arg)
+    if inputCommand then
+        ---Get the arguments.
+        for arg in input:gmatch("%S+") do
+            if i ~= 1 then
+                table.insert(args, arg)
+            end
+            i = i + 1
         end
-        i = i + 1
-    end
 
-    if commandRef then -- If the command is registered in commandList
-        -- Execute custom function or emit world event.
-        if commandRef.customFunction and self.world then
-            commandRef.customFunction(self.world,unpack(args))
-        elseif self.world then
-            self.world:emit(inputCommand,unpack(args))
+        if commandRef then -- If the command is registered in commandList
+            -- Execute custom function or emit world event.
+            if commandRef.customFunction and self.world then
+                commandRef.customFunction(self.world,unpack(args))
+            elseif self.world then
+                self.world:emit(inputCommand,unpack(args))
+            end
+        elseif not commandRef then
+            -- Command isn't registered in commandList.
+            msg = "Command '" .. inputCommand .. "' does not exist."
         end
-    elseif not commandRef then
-        -- Command isn't registered in commandList.
-        msg = "Command '" .. inputCommand .. "' does not exist."
-    end
-    if msg then
-        self:log(msg)
+        if msg then
+            self:log(msg)
+        end
     end
 end
 

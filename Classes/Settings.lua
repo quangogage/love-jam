@@ -106,7 +106,6 @@ function Settings:_saveSettings()
         end
     end
     settings = settings .. "}"
-    console:log(settings)
     love.filesystem.write("settings.lua", settings)
 end
 

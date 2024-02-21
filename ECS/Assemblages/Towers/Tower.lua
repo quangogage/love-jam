@@ -14,4 +14,5 @@ return function (e, x, y)
         :give('hostile')
         :give("pawnGeneration")
         :give("groundPosition", 0, 0)
+        :give("isTower")
 end

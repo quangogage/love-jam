@@ -12,7 +12,7 @@ local hitSounds = {
 }
 local hitSoundVolume = 0.5
 for _, sound in pairs(hitSounds) do
-    sound:setVolume(settings:getVolume("sfx") * hitSoundVolume)
+    sound:setVolume(settings:getVolume('sfx') * hitSoundVolume)
 end
 
 
@@ -27,7 +27,9 @@ return function (concord, onLevelComplete)
     local DamageSystem = concord.system({
         healthEntities    = { 'health' },
         targetingEntities = { 'target' },
-        enemyBases        = { 'isBase', 'hostile' }
+        enemyBases        = { 'isBase', 'hostile' },
+        enemyTowers       = { 'isTower', 'hostile' },
+        enemies           = { 'hostile', 'isPawn' }
     })
 
 
@@ -42,7 +44,7 @@ return function (concord, onLevelComplete)
         local world = self:getWorld()
         if world then
             if target.health then
-                local direction = math.atan2(target.position.y - attacker.position.y,
+                local direction        = math.atan2(target.position.y - attacker.position.y,
                     target.position.x - attacker.position.x)
                 local successfulAttack = SuccessfulAttack({
                     attacker  = attacker,
@@ -53,8 +55,8 @@ return function (concord, onLevelComplete)
 
                 -- Armor damage reduction
                 -- (Armor reduction powerup applied in PowerupSetupSystem).
-                local armorAmount              = target.armor and target.armor.value or 0
-                damageAmount                   = damageAmount * (1 - armorAmount)
+                local armorAmount      = target.armor and target.armor.value or 0
+                damageAmount           = damageAmount * (1 - armorAmount)
 
                 -- Powerups
                 if attacker:get('powerups') then
@@ -141,8 +143,10 @@ return function (concord, onLevelComplete)
     -- Check, after killing something, if the level is complete.
     -- Right now this just means destroying the enemy base.
     function DamageSystem:_checkLevelComplete()
-        if #self.enemyBases == 0 and not self.__debug_testRoom then
-            onLevelComplete()
+        if not self.__debug_testRoom then
+            if #self.enemyBases == 0 or #self.enemies == 0 and #self.enemyTowers == 0 then
+                onLevelComplete()
+            end
         end
     end
 

@@ -20,10 +20,12 @@ local MainMenuScene = Goop.Class({
     dynamic = {
         elements    = {},
         hoverCursor = love.mouse.getSystemCursor('hand'),
-        song = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream')
+        song = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream'),
     }
 })
 
+local startGameSound = love.audio.newSource('assets/audio/sfx/start-game.mp3', 'static')
+startGameSound:setVolume(settings:getVolume('sfx'))
 
 --------------------------
 -- [[ Core Functions ]] --
@@ -82,6 +84,7 @@ function MainMenuScene:_setMenu(name)
                     love.mouse.setCursor()
                     self.startGame()
                     self.song:stop()
+                    startGameSound:play()
                 end
             }),
             Button({

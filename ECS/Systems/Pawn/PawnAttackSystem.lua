@@ -32,7 +32,7 @@ return function (concord)
                 local targetEntity = e.target.entity
                 if targetEntity then
                     local distance = math.sqrt(
-                        (e.position.x - targetEntity.position.x) ^ 2 +
+                        (e.groundPosition.x - targetEntity.groundPosition.x) ^ 2 +
                         (e.groundPosition.y - targetEntity.groundPosition.y) ^ 2
                     )
                     local attackSpeed = e.combatProperties.attackSpeed
@@ -40,8 +40,8 @@ return function (concord)
                         attackSpeed = e.powerups.list['Quickening Quiver']:getValue(attackSpeed)
                     end
 
-                    if distance >= e.combatProperties.range then return end -- Too far away.
-                    if e.combatProperties.attackTimer >= attackSpeed then
+                    if distance <= e.combatProperties.range and
+                    e.combatProperties.attackTimer >= attackSpeed then
                         if e.combatProperties.type == 'melee' then
                             self:_meleeAttack(e)
                         elseif e.combatProperties.type == 'bow' then

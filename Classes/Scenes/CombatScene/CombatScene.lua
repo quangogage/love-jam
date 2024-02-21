@@ -101,7 +101,6 @@ function CombatScene:init()
     self:_loadSystems()
     self:_initLevels()
     self.currentLevelIndex = 0
-    self.currentLevelIndex = 2 -- Dev
     self:loadNextLevel()
     self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self)
     self.levelTransitionHandler:setState('level-starting')

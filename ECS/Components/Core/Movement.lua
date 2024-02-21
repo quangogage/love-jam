@@ -9,7 +9,10 @@ local Vec2 = require("Classes.Types.Vec2")
 return function (concord)
     concord.component("movement", function(c, data)
         data = data or {}
-        c.walkSpeed = data.walkSpeed or 1200
+        c.walkSpeed      = data.walkSpeed or 1200
         c.targetLocation = Vec2(0, 0)
+        c.direction      = data.direction or 0
+        c.moveSpeed      = data.moveSpeed or 300
+        c.movemenePreset = data.movementPreset
     end)
 end

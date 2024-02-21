@@ -8,6 +8,8 @@
 --
 -- See `ECS.Systems.DamageSystem` for attack resolution.
 
+local util = require('util')({ 'entityAssembler' })
+
 return function (concord)
     ---@class PawnAttackSystem : System
     ---@field entities table[] | Pawn[]
@@ -40,7 +42,9 @@ return function (concord)
                 if distance >= e.combatProperties.range then return end -- Too far away.
                 if e.combatProperties.attackTimer >= attackSpeed then
                     if e.combatProperties.type == 'melee' then
-                        self:_meleeAttack(e, dt)
+                        self:_meleeAttack(e)
+                    elseif e.combatProperties.type == 'bow' then
+                        self:_bowAttack(e)
                     end
 
                     local sound = e.combatProperties.sounds[math.random(1, #e.combatProperties.sounds)]
@@ -61,8 +65,7 @@ return function (concord)
     -----------------------------
     -- Try melee attacking target entity.
     ---@param e Pawn | table
-    ---@param dt number
-    function PawnAttackSystem:_meleeAttack(e, dt)
+    function PawnAttackSystem:_meleeAttack(e)
         local world        = self:getWorld()
         local targetEntity = e.target.entity
 
@@ -73,6 +76,26 @@ return function (concord)
         world:emit('entity_attemptAttack',
             e, targetEntity, e.combatProperties.damageAmount, true
         )
+        world:emit('pawn_playAnimationOnce', e, 'attack', direction)
+    end
+
+    -- Try shooting an arrow.
+    ---@param e Pawn | table
+    function PawnAttackSystem:_bowAttack(e)
+        local world = self:getWorld()
+        local targetEntity = e.target.entity
+        local direction = math.atan2(
+            targetEntity.position.y - e.position.y,
+            targetEntity.position.x - e.position.x
+        )
+
+        util.entityAssembler.assemble(
+            self:getWorld(), 'arrow',
+            e.position.x, e.position.y, direction,
+            e.combatProperties.damageAmount,
+            e
+        )
+
         world:emit('pawn_playAnimationOnce', e, 'attack', direction)
     end
 

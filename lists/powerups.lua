@@ -27,8 +27,6 @@
 -- when attacking - But immediately before subtracting that damage amount
 -- from the target's health.
 
-local util    = require('util')({ 'entityAssembler', 'table' })
-local Concord = require('libs.concord')
 local Powerup = require('Classes.Types.Powerup')
 
 return {

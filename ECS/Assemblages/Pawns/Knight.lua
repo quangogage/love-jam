@@ -31,7 +31,7 @@ end
 return function (e, x, y, friendly, powerups)
     e
         :assemble(CharacterAssemblage, x, y)
-        :give('health', 5)
+        :give('health', 10)
         :give('dimensions', dimensions.width, dimensions.height)
         :give('combatProperties', 'melee', {
             damageAmount = 1,

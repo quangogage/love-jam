@@ -55,13 +55,11 @@ return {
         -- Applied in PowerupSetupSystem.
         name = 'Shield of Fortitude',
         description = 'Take 15% less damage',
-        count = 10,
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
-            pawn:ensure('armor')
             for _ = 1, self.count do
-                pawn.armor.value = pawn.armor.value + 0.15
+                pawn.armor.value = math.min(1, pawn.armor.value + 0.15)
             end
         end
     }),

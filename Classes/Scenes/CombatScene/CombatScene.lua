@@ -22,6 +22,7 @@ local PowerupSelectionMenu   = require('Classes.Scenes.CombatScene.Interface.Pow
 local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
 local PauseMenu              = require("Classes.Scenes.CombatScene.Interface.PauseMenu.PauseMenu")
 local BackgroundRenderer     = require('Classes.Scenes.CombatScene.BackgroundRenderer')
+local CoinManager            = require('Classes.Scenes.CombatScene.CoinManager')
 
 ---@class CombatScene
 ---@field camera Camera
@@ -38,6 +39,7 @@ local BackgroundRenderer     = require('Classes.Scenes.CombatScene.BackgroundRen
 ---@field levelTransitionHandler LevelTransitionHandler
 ---@field pauseMenu PauseMenu
 ---@field backgroundRenderer BackgroundRenderer
+---@field coinManager CoinManager
 ---@field disableWorldUpdate boolean
 ---@field paused boolean - Set in PauseMenu
 ---@field disableCameraControls boolean
@@ -55,13 +57,16 @@ local CombatScene            = Goop.Class({
 function CombatScene:loadNextLevel()
     self.currentLevelIndex = self.currentLevelIndex + 1
 
-    -- TODO: Win game if no more levels.
+    -- TODO: Loop properly if no more levels. (new game+ stuff...)
     if self.currentLevelIndex > #self.levels then
         self.currentLevelIndex = 1
     end
 
     -- Clear out all current entities and generate new ones.
     self:_generateLevel(self.currentLevelIndex)
+
+    -- Reset coins
+    self.coinManager:resetCoins()
 
     -- Disable pawn generation.
     -- See PawnGenerationSystem.
@@ -78,6 +83,7 @@ function CombatScene:init()
     self:_createSubscriptions()
     self:_initWorld()
     self.camera                 = Camera()
+    self.coinManager            = CoinManager()
     self.powerupStateManager    = PowerupStateManager(self.eventManager)
     self.pawnSelectionMenu      = PawnSelectionMenu(self.eventManager, self.powerupStateManager)
     self.powerupSelectionMenu   = PowerupSelectionMenu(self.eventManager, self)

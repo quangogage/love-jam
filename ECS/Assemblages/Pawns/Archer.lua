@@ -22,6 +22,12 @@ for _, sound in ipairs(onSpawnSounds) do
     sound:setPitch(pitch)
 end
 -- ──────────────────────────────────────────────────────────────────────
+local attackSounds = {
+    love.audio.newSource("assets/audio/sfx/attacks/archer/1.wav", "static"),
+}
+for _, sound in ipairs(attackSounds) do
+    sound:setVolume(settings:getVolume("sfx"))
+end
 
 ---@param e Archer
 ---@param x number
@@ -36,7 +42,8 @@ return function (e, x, y, friendly, powerups)
         :give('combatProperties', 'bow', {
             damageAmount = 1,
             attackSpeed  = 1.2,
-            range        = 420.69
+            range        = 420.69,
+            sounds       = attackSounds
         })
         :give('pawnAnimations', 'archer')
         :give('pushbackRadius', 35)

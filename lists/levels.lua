@@ -1,15 +1,15 @@
 return {
-  ['674238512-4118603449-1788449266-2002144051'] = {
+  ['3563759652-3441462438-1116251128-2811587606'] = {
     name = '1',
     dimensions = {
-      width = 910.4545454545453,
-      height = 1426.6666666666688,
+      width = 687.5000000000009,
+      height = 1179.2307692307693,
     },
     entities = {
       {
         position = {
-          x = 455.45454545454515,
-          y = 1209.1666666666677,
+          x = 346.2839366515839,
+          y = 1037.8846153846152,
         },
         className = 'FriendlyBase',
         color = 'white',
@@ -18,139 +18,14 @@ return {
           height = 35,
         },
         selected = false,
+        origin = {
+          x = 198.88009049773723,
+          y = 984.0384615384614,
+        },
       },
       {
         position = {
-          x = 455.45454545454515,
-          y = 217.50000000000114,
-        },
-        className = 'EnemyBase',
-        color = 'red',
-        dimensions = {
-          width = 70,
-          height = 35,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 457.5378787878783,
-          y = 17.5,
-        },
-        className = 'MapPadding',
-        color = 'Gray',
-        dimensions = {
-          width = 35,
-          height = 35,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 457.5378787878783,
-          y = 1409.1666666666688,
-        },
-        className = 'MapPadding',
-        color = 'Gray',
-        dimensions = {
-          width = 35,
-          height = 35,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 17.95454545454504,
-          y = 696.6666666666681,
-        },
-        className = 'MapPadding',
-        color = 'Gray',
-        dimensions = {
-          width = 35,
-          height = 35,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 892.9545454545453,
-          y = 696.6666666666681,
-        },
-        className = 'MapPadding',
-        color = 'Gray',
-        dimensions = {
-          width = 35,
-          height = 35,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 306.28787878787807,
-          y = 556.2500000000005,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        type = 'BasicTower',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 604.6212121212122,
-          y = 556.2500000000005,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        type = 'BasicTower',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 455,
-          y = 1284.0909090909104,
-        },
-        className = 'SpawnZone',
-        color = 'RGBA(0,255,0,0.5)',
-        dimensions = {
-          width = 910,
-          height = 280,
-        },
-      },
-    },
-    saveTime = 1708270284493,
-    uuid = '674238512-4118603449-1788449266-2002144051',
-  },
-  ['3563759652-3441462438-1116251128-2811587606'] = {
-    name = '2',
-    dimensions = {
-      width = 385,
-      height = 992.6923076923076,
-    },
-    entities = {
-      {
-        position = {
-          x = 193.1108597285065,
-          y = 851.3461538461536,
-        },
-        className = 'FriendlyBase',
-        color = 'white',
-        dimensions = {
-          width = 70,
-          height = 35,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 193.1108597285065,
+          x = 344.36085972850697,
           y = 141.34615384615404,
         },
         className = 'EnemyBase',
@@ -163,7 +38,7 @@ return {
       },
       {
         position = {
-          x = 193.3031674208139,
+          x = 344.55316742081436,
           y = 354.0384615384618,
         },
         className = 'EnemyTower',
@@ -177,8 +52,8 @@ return {
       },
       {
         position = {
-          x = 21.764705882352928,
-          y = 448.26923076923117,
+          x = 367.63009049773746,
+          y = 1161.7307692307693,
         },
         className = 'MapPadding',
         color = 'Gray',
@@ -187,36 +62,14 @@ return {
           height = 35,
         },
         selected = false,
+        origin = {
+          x = 220.2262443438908,
+          y = 1107.8846153846155,
+        },
       },
       {
         position = {
-          x = 364.4570135746601,
-          y = 448.26923076923117,
-        },
-        className = 'MapPadding',
-        color = 'Gray',
-        dimensions = {
-          width = 35,
-          height = 35,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 214.4570135746601,
-          y = 975.1923076923076,
-        },
-        className = 'MapPadding',
-        color = 'Gray',
-        dimensions = {
-          width = 35,
-          height = 35,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 214.4570135746601,
+          x = 365.70701357466055,
           y = 17.5,
         },
         className = 'MapPadding',
@@ -229,8 +82,8 @@ return {
       },
       {
         position = {
-          x = 192.5,
-          y = 904.4117647058827,
+          x = 345.67307692307736,
+          y = 1090.9502262443443,
         },
         className = 'SpawnZone',
         color = 'RGBA(0,255,0,0.5)',
@@ -238,48 +91,79 @@ return {
           width = 385,
           height = 175,
         },
+        selected = false,
+        origin = {
+          x = 198.26923076923072,
+          y = 1037.1040723981905,
+        },
+      },
+      {
+        position = {
+          x = 17.5,
+          y = 446.8750000000002,
+        },
+        className = 'MapPadding',
+        color = 'Gray',
+        dimensions = {
+          width = 35,
+          height = 35,
+        },
+        selected = false,
+      },
+      {
+        position = {
+          x = 670.0000000000009,
+          y = 446.8750000000002,
+        },
+        className = 'MapPadding',
+        color = 'Gray',
+        dimensions = {
+          width = 35,
+          height = 35,
+        },
+        selected = false,
       },
     },
-    saveTime = 1708270298307,
+    saveTime = 1708537777186,
     uuid = '3563759652-3441462438-1116251128-2811587606',
   },
-  ['424327829-4223287461-1802761397-720307100'] = {
-    name = '3',
+  ['241944548-180138983-2768908447-2561591739'] = {
+    name = '2',
     dimensions = {
-      width = 1399.1666666666674,
-      height = 490,
+      width = 610.7142857142858,
+      height = 1256.4285714285716,
     },
     entities = {
       {
         position = {
-          x = 1262.5000000000007,
-          y = 246.90476190476187,
+          x = 305.3571428571429,
+          y = 1238.9285714285716,
         },
         className = 'FriendlyBase',
         color = 'white',
         dimensions = {
-          width = 35,
-          height = 70,
+          width = 70,
+          height = 35,
         },
         selected = false,
       },
       {
         position = {
-          x = 57.499999999998806,
-          y = 246.90476190476187,
+          x = 305.3571428571429,
+          y = 17.5,
         },
         className = 'EnemyBase',
         color = 'red',
         dimensions = {
-          width = 35,
-          height = 70,
+          width = 70,
+          height = 35,
         },
         selected = false,
       },
       {
         position = {
-          x = 184.16666666666555,
-          y = 335.23809523809524,
+          x = 190,
+          y = 260.7142857142859,
         },
         className = 'EnemyTower',
         color = 'red',
@@ -292,22 +176,8 @@ return {
       },
       {
         position = {
-          x = 184.16666666666555,
-          y = 158.5714285714285,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        type = 'BasicTower',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 342.49999999999903,
-          y = 245.23809523809524,
+          x = 420.7142857142858,
+          y = 260.7142857142859,
         },
         className = 'EnemyTower',
         color = 'red',
@@ -321,7 +191,7 @@ return {
       {
         position = {
           x = 17.5,
-          y = 248.5714285714286,
+          y = 580.7142857142862,
         },
         className = 'MapPadding',
         color = 'Gray',
@@ -330,43 +200,113 @@ return {
           height = 35,
         },
         selected = false,
-        origin = {
-          x = -27.857142857141582,
-          y = 125.00000000000011,
-        },
       },
       {
         position = {
-          x = 1372.142857142857,
-          y = 239.64285714285705,
+          x = 593.2142857142858,
+          y = 580.7142857142862,
         },
         className = 'MapPadding',
         color = 'Gray',
         dimensions = {
           width = 35,
           height = 35,
-        },
-        selected = false,
-        origin = {
-          x = 1335.7142857142867,
-          y = 123.21428571428578,
-        },
-      },
-      {
-        position = {
-          x = 1311.6666666666674,
-          y = 245,
-        },
-        className = 'SpawnZone',
-        color = 'RGBA(0,255,0,0.5)',
-        dimensions = {
-          width = 175,
-          height = 490,
         },
         selected = false,
       },
     },
-    saveTime = 1708270333205,
-    uuid = '424327829-4223287461-1802761397-720307100',
+    saveTime = 1708537858716,
+    uuid = '241944548-180138983-2768908447-2561591739',
+  },
+  ['178538968-2056711469-2672008019-1930789345'] = {
+    name = '3',
+    dimensions = {
+      width = 2953.1818181818217,
+      height = 735.0000000000005,
+    },
+    entities = {
+      {
+        position = {
+          x = 17.5,
+          y = 367.5000000000002,
+        },
+        className = 'EnemyBase',
+        color = 'red',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+      },
+      {
+        position = {
+          x = 2935.6818181818217,
+          y = 367.5000000000002,
+        },
+        className = 'FriendlyBase',
+        color = 'white',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+      },
+      {
+        position = {
+          x = 358.40909090909213,
+          y = 542.5000000000003,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+      },
+      {
+        position = {
+          x = 358.40909090909213,
+          y = 192.5000000000001,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+      },
+      {
+        position = {
+          x = 1453.8636363636385,
+          y = 717.5000000000005,
+        },
+        className = 'MapPadding',
+        color = 'Gray',
+        dimensions = {
+          width = 35,
+          height = 35,
+        },
+        selected = false,
+      },
+      {
+        position = {
+          x = 1453.8636363636385,
+          y = 17.5,
+        },
+        className = 'MapPadding',
+        color = 'Gray',
+        dimensions = {
+          width = 35,
+          height = 35,
+        },
+        selected = false,
+      },
+    },
+    saveTime = 1708537946764,
+    uuid = '178538968-2056711469-2672008019-1930789345',
   },
 }

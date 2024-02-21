@@ -7,6 +7,10 @@
 -- Whenever a pawn is created, it is given a deep copy of that table stored in
 -- `pawn.powerups`.
 --
+-- That means even if the pawn has no powerups this table will still be present
+-- and the callback functions will still be called.
+-- (Although, as of right now only friendly pawns have powerups.)
+--
 -- ──────────────────────────────────────────────────────────────────────
 -- Powerups will continue to require some level of bespoke behavior no matter
 -- how hard you try to abstract things.

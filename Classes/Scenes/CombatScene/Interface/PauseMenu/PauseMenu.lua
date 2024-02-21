@@ -21,7 +21,7 @@ local PauseMenu = Goop.Class({
         active = false,
         backgroundOverlay = {
             alpha = 0,
-            fadeSpeed = 12
+            fadeSpeed = 35
         }
     },
 })

@@ -9,9 +9,13 @@ local STARTING_AMOUNT = 3
 
 ---@class CoinManager
 ---@field coins integer
+---@field genTimer number
+---@field genRate number
 local CoinManager = Goop.Class({
     dynamic = {
-        coins = STARTING_AMOUNT
+        coins    = STARTING_AMOUNT,
+        genTimer = 0,
+        genRate  = 5
     }
 })
 
@@ -28,6 +32,19 @@ function CoinManager:removeCoins(amount)
 end
 function CoinManager:resetCoins()
     self.coins = STARTING_AMOUNT
+end
+-- Get a number representing the amount of coins being generated per second.
+---@return number
+function CoinManager:getGenerationRate()
+    return 1 / self.genRate
+end
+-- Called from CoinGenerationSystem.... don't ask...
+function CoinManager:generateCoins(dt)
+    self.genTimer = self.genTimer + dt
+    if self.genTimer >= self.genRate then
+        self:addCoins(1)
+        self.genTimer = 0
+    end
 end
 
 

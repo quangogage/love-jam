@@ -7,7 +7,7 @@
 
 local util = require("util")({ "entityAssembler" })
 
-return function (concord, camera, onLevelComplete)
+return function (concord, camera, onLevelComplete, coinManager)
     local DebugSystem = concord.system({
         rangeEntities = { 'combatProperties', 'position', 'groundPosition' },
         hitboxes = { 'position', 'dimensions', 'groundPosition' },
@@ -36,6 +36,9 @@ return function (concord, camera, onLevelComplete)
     end
     function DebugSystem:completeLevel()
         onLevelComplete()
+    end
+    function DebugSystem:motherlode()
+        coinManager:addCoins(1000000)
     end
 
 

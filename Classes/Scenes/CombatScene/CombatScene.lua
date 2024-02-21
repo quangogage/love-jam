@@ -209,7 +209,8 @@ function CombatScene:_loadSystems()
     loadSystem('SelectedHighlightSystem')
     loadSystem('Pawn.PawnAnimationSystem')
     loadSystem('Pawn.RetaliationSystem')
-    loadSystem('DebugSystem', self.camera, function () self:completeLevel() end)
+    loadSystem('CoinGenerationSystem', self.coinManager)
+    loadSystem('DebugSystem', self.camera, function () self:completeLevel() end, self.coinManager)
     self.world:addSystems(unpack(systems))
 end
 

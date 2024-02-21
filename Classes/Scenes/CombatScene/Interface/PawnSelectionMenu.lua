@@ -114,7 +114,10 @@ function PawnSelectionMenu:_drawCards()
 end
 
 function PawnSelectionMenu:_printCoinCount()
+    -- Generation rate floored to the second decimal place.
+    local genRate = math.floor(self.coinManager:getGenerationRate() * 100) / 100
     love.graphics.setColor(1,1,1)
     love.graphics.print("COINS: " .. self.coinManager.coins, 10, love.graphics.getHeight() - self.height - 20)
+    love.graphics.print("Generation Rate: " .. genRate .. " / second", 100, love.graphics.getHeight() - self.height - 20)
 end
 return PawnSelectionMenu

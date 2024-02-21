@@ -5,6 +5,10 @@
 --
 -- Is a way to easily disable coin generation during prep phase.
 --
+-- Also rewards money when killing tings.
+
+local sound = love.audio.newSource("assets/audio/sfx/earn-coins.mp3", "static")
+sound:setVolume(settings:getVolume("sfx") * 0.7)
 
 ---@param concord Concord
 ---@param coinManager CoinManager
@@ -16,6 +20,16 @@ return function (concord, coinManager)
     end
     function CoinGenerationSystem:event_playerCommand()
         self.playerHasCommanded = true
+    end
+
+    function CoinGenerationSystem:event_entityDied(e)
+        if e:get("hostile") and e:get("coinValue") then
+            coinManager:addCoins(e:get("coinValue").value)
+            if sound:isPlaying() then 
+                sound = sound:clone()
+            end
+            sound:play()
+        end
     end
 
     function CoinGenerationSystem:update(dt)

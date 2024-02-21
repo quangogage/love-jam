@@ -4,6 +4,11 @@
 -- collected throughout a level.
 --
 -- Provides an interface for adding, removing, and resetting coins.
+--
+-- See Pawn & Tower assemblages respectively to change how much gold they
+-- are worth when killed.
+--
+-- See CoinGenerationSystem for where those coins actually get added.
 
 local STARTING_AMOUNT = 3
 

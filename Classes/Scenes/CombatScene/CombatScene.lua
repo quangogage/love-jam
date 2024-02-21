@@ -227,6 +227,7 @@ function CombatScene:_generateLevel(index)
                 self.world, 'Base',
                 e.position.x, e.position.y
             )
+            self.world.enemyBase = self.enemyBase
         elseif e.className == 'EnemyTower' then
             util.entityAssembler.assemble(
                 self.world, e.type,
@@ -238,6 +239,7 @@ function CombatScene:_generateLevel(index)
                 e.position.x, e.position.y,
                 true
             )
+            self.world.friendlyBase = self.friendlyBase
         elseif e.className == 'SpawnZone' then
             self.friendlySpawnHandler:setSpawnZone(
                 e.position.x - e.dimensions.width / 2,

@@ -22,7 +22,10 @@
 -- when attacking - But immediately before subtracting that damage amount
 -- from the target's health.
 
-local Powerup  = require("Classes.Types.Powerup")
+local util    = require('util')({ 'entityAssembler', 'table' })
+local Concord = require('libs.concord')
+local Powerup = require('Classes.Types.Powerup')
+
 return {
     Powerup({
         name = 'Fast Walker',
@@ -53,7 +56,7 @@ return {
     Powerup({
         name = 'Shield of Fortitude',
         description = 'Take 15% less damage',
-        onPawnCreation = function(self, pawn)
+        onPawnCreation = function (self, pawn)
             pawn:ensure('armor')
             for _ = 1, self.count do
                 pawn.armor.value = pawn.armor.value + 0.15
@@ -61,11 +64,19 @@ return {
         end
     }),
     Powerup({
-        name = "Quickening Quiver",
-        description = "Attack 15% faster",
-        getValue = function(self, value)
+        name = 'Quickening Quiver',
+        description = 'Attack 15% faster',
+        getValue = function (self, value)
             local stacks = 1 - (self.count * 0.15)
             return value * stacks
         end
+    }),
+    Powerup({
+        name = 'Soul Renewal',
+        description = 'Chance to immediately respawn at your base upon death.',
+        getValue = function (self)
+            -- See DamageSystem.
+            return 0.1 * self.count -- 10% chance per-stack.
+        end,
     })
 }

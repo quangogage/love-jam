@@ -24,4 +24,7 @@ end
 function Powerup:getMultipliedValue(value)
     return value
 end
+---@param pawn BasicPawn | Pawn | table
+function Powerup:onPawnDeath(pawn)
+end
 return Powerup

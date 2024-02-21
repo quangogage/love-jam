@@ -72,9 +72,35 @@ return function (concord, onLevelComplete)
             for i = 1, #self.healthEntities do
                 local entity = self.healthEntities[i]
                 if entity.health.value <= 0 then
+                    local shouldStillDie = true
                     world:emit('event_entityDied', entity, entity.health.mostRecentDamage)
                     entity:give('isDead')
-                    entity:destroy()
+
+                    -- Powerups
+                    if entity:get('powerups') then
+                        for _, powerup in pairs(entity.powerups.list) do
+                            powerup:onPawnDeath(entity)
+                        end
+
+                        -- Prevent death via powerup:
+                        -- name = 'Soul Renewal',
+                        -- description = 'Immediately respawn at your base upon death.',
+                        if love.math.random() <= entity.powerups.list['Soul Renewal']:getValue() then
+                            local x, y = world.friendlyBase.position.x, world.friendlyBase.position.y
+                            shouldStillDie = false
+                            entity:remove('isDead')
+                            entity.health.value = entity.health.max
+                            if entity:get('hostile') then
+                                x, y = world.enemyBase.position.x, world.enemyBase.position.y
+                            end
+                            entity.position.x = x
+                            entity.position.y = y
+                        end
+                    end
+
+                    if shouldStillDie then -- The powerup did not prevent death... (see above).
+                        entity:destroy()
+                    end
                 end
             end
         end

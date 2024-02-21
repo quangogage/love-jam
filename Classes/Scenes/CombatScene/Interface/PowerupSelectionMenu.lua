@@ -77,6 +77,7 @@ function PowerupSelectionMenu:_generateCards()
     self.cards = {}
     for i = 1, 3 do
         local anchor = { x = 0.5, y = 0.5 }
+        local powerupDef = powerups[love.math.random(1, #powerups)]
         if i == 1 then
             anchor.x = 0.25
         elseif i == 3 then
@@ -85,8 +86,8 @@ function PowerupSelectionMenu:_generateCards()
         local card = PowerupSelectionCard({
             anchor          = anchor,
             offset          = { x = 0, y = 0 },
-            name            = powerups[i].name,
-            description     = powerups[i].description,
+            name            = powerupDef.name,
+            description     = powerupDef.description,
             animationOffset = CARD_ANIMATION_OFFSET * i
         })
         card.offset.x = -card.width / 2

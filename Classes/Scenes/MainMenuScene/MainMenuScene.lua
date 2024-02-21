@@ -36,6 +36,8 @@ function MainMenuScene:init()
     self.song:setVolume(settings:getVolume("music"))
     self.song:play()
 end
+function MainMenuScene:destroy()
+end
 function MainMenuScene:update(dt)
     local isHovered = false
     for _, el in ipairs(self.elements) do

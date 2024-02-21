@@ -17,6 +17,9 @@ local Game = Goop.Class({})
 ---@param sceneName string
 ---@vararg any
 function Game:setScene(sceneName, ...)
+    if self.currentScene then
+        self.currentScene:destroy()
+    end
     self.currentScene = sceneClasses[sceneName](...)
 end
 

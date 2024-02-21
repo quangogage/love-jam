@@ -112,6 +112,8 @@ function CombatScene:destroy()
     self.friendlySpawnHandler:destroy()
     self.pawnSelectionMenu:destroy()
     self.powerupSelectionMenu:destroy()
+    self.song:stop()
+    self.ambienceTrack:stop()
     self:_destroySubscriptions()
 end
 function CombatScene:update(dt)

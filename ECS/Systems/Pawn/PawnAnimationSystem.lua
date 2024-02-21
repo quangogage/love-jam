@@ -35,10 +35,11 @@ return function (concord)
                 entity.pawnAnimations.timer            = 0
                 entity.pawnAnimations.frame            = 1
             end
-            if direction and not entity.pawnAnimations.oneShotAnimationName and
-            math.abs(entity.physics.velocity.x) > WALKING_VELOCITY_THRESHOLD and
-            math.abs(entity.physics.velocity.y) > WALKING_VELOCITY_THRESHOLD then
-                entity.pawnAnimations.direction = self:_getAnimationDirection(direction)
+            if direction and not entity.pawnAnimations.oneShotAnimationName then
+                if math.abs(entity.physics.velocity.x) > WALKING_VELOCITY_THRESHOLD or
+                math.abs(entity.physics.velocity.y) > WALKING_VELOCITY_THRESHOLD then
+                    entity.pawnAnimations.direction = self:_getAnimationDirection(direction)
+                end
             end
         end
     end

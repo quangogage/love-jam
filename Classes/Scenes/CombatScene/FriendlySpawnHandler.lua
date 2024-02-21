@@ -4,12 +4,14 @@
 --
 
 local util = require('util')({ 'entityAssembler' })
+local pawnTypes = require('lists.pawnTypes')
 
 ---@class FriendlySpawnHandler
 ---@field eventManager EventManager
 ---@field world World
 ---@field powerupStateManager PowerupStateManager
 ---@field combatScene CombatScene
+---@field coinManager CoinManager
 ---@field spawnZone table
 local FriendlySpawnHandler = Goop.Class({
     arguments = {
@@ -17,6 +19,7 @@ local FriendlySpawnHandler = Goop.Class({
         { 'world',               'table' },
         { 'powerupStateManager', 'table' },
         { 'combatScene',         'table' },
+        { 'coinManager',         'table' }
     },
     static = {
         spawnZone = { x = 0, y = 0, width = 0, height = 0 }
@@ -45,15 +48,23 @@ function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, pawnName, x, 
         local powerups = self.powerupStateManager:getPowerupsForPawnType(pawnName)
         x = self.combatScene.friendlyBase.position.x or self.spawnZone.x or 0
         y = self.combatScene.friendlyBase.position.y or self.spawnZone.y or 0
-        util.entityAssembler.assemble(
-            self.world, pawnTypeAssemblage, x, y, true, powerups
-        )
-        local sound = coinSounds[math.random(1, #coinSounds)]
-        if sound:isPlaying() then
-            sound = sound:clone()
-            -- HIT SOUNDS
+
+        local price = self:_getPawnPrice(pawnTypeAssemblage)
+
+        if self.coinManager.coins >= price then
+            util.entityAssembler.assemble(
+                self.world, pawnTypeAssemblage, x, y, true, powerups
+            )
+            
+            local sound = coinSounds[math.random(1, #coinSounds)]
+            if sound:isPlaying() then
+                sound = sound:clone()
+            end
+            sound:play()
+
+            self.coinManager:removeCoins(price)
         end
-        sound:play()
+
     end
 end
 
@@ -93,6 +104,18 @@ function FriendlySpawnHandler:_destroySubscriptions()
     for eventName, uuid in pairs(self.subscriptions) do
         self.eventManager:unsubscribe(eventName, uuid)
     end
+end
+
+---@param pawnTypeAssemblage string
+---@return number
+function FriendlySpawnHandler:_getPawnPrice(pawnTypeAssemblage)
+    for _, pawn in ipairs(pawnTypes) do
+        if pawn.assemblageName == pawnTypeAssemblage then
+            return pawn.price
+        end
+    end
+    console:log("WARN: didnt find pawn price for " .. pawnTypeAssemblage)
+    return 0
 end
 
 return FriendlySpawnHandler

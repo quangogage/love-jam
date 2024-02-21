@@ -80,6 +80,14 @@ return function (concord, onLevelComplete)
                 target.health.value            = target.health.value - damageAmount
                 target.health.mostRecentDamage = successfulAttack
                 world:emit('event_damageDealt', successfulAttack)
+
+                -- Shadow's touch powerup
+                -- Chance to insta-kill.
+                if attacker:get('powerups') then
+                    if love.math.random() <= attacker.powerups.list["Shadow's Touch"]:getValue() then
+                        target.health.value = 0
+                    end
+                end
             end
         end
     end

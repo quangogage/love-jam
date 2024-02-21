@@ -104,5 +104,16 @@ return {
                 target.physics.velocity.y = target.physics.velocity.y + math.sin(dir) * force
             end
         end
+    }),
+    Powerup({
+        -- Applied in DamageSystem
+        name = "Shadow's Touch",
+        description = "+1% chance to instantly kill a target when you attack them.",
+        ---@param self Powerup
+        ---@param value number
+        ---@return number
+        getValue = function (self, value)
+            return self.count * 0.01
+        end
     })
 }

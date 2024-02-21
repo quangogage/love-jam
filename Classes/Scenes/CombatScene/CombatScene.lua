@@ -43,13 +43,19 @@ local CoinManager            = require('Classes.Scenes.CombatScene.CoinManager')
 ---@field disableWorldUpdate boolean
 ---@field paused boolean - Set in PauseMenu
 ---@field disableCameraControls boolean
+---@field songs love.Source[]
+---@field ambienceTrack love.Source
 local CombatScene            = Goop.Class({
     arguments = { 'eventManager' },
     static = {
-        currentLevelIndex = 1
+        currentLevelIndex = 1,
+        songs = {
+            love.audio.newSource("assets/audio/songs/warfare-1.mp3", "stream"),
+            love.audio.newSource("assets/audio/songs/warfare-2.mp3", "stream"),
+        },
+        ambienceTrack = love.audio.newSource("assets/audio/sfx/battle-ambience.mp3", "stream"),
     }
 })
-
 
 ----------------------------
 -- [[ Public Functions ]] --
@@ -97,6 +103,7 @@ function CombatScene:init()
     self:loadNextLevel()
     self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self)
     self.levelTransitionHandler:setState('level-starting')
+    self:_initSound()
     -- DEV:
     console.world = self.world
     console:launchOptions()
@@ -301,5 +308,16 @@ function CombatScene:_destroySubscriptions()
     for event, uuid in pairs(self.subscriptions) do
         self.eventManager:unsubscribe(event, uuid)
     end
+end
+function CombatScene:_initSound()
+    for _, song in ipairs(self.songs) do
+        song:setVolume(settings:getVolume("music"))
+        song:setLooping(true)
+    end
+    self.song = self.songs[love.math.random(1, #self.songs)]
+    self.song:play()
+    self.ambienceTrack:setLooping(true)
+    self.ambienceTrack:setVolume(settings:getVolume("sfx") * 0.2)
+    self.ambienceTrack:play()
 end
 return CombatScene

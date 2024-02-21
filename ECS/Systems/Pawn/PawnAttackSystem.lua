@@ -42,6 +42,10 @@ return function (concord)
                     if e.combatProperties.type == 'melee' then
                         self:_meleeAttack(e, dt)
                     end
+
+                    local sound = e.combatProperties.sounds[math.random(1, #e.combatProperties.sounds)]
+                    love.audio.play(sound)
+
                     e.combatProperties.attackTimer = 0
                 end
 
@@ -64,7 +68,7 @@ return function (concord)
             targetEntity.position.x - e.position.x
         )
         world:emit('entity_attemptAttack',
-            e, targetEntity, e.combatProperties.damageAmount
+            e, targetEntity, e.combatProperties.damageAmount, true
         )
         world:emit('pawn_playAnimationOnce', e, 'attack', direction)
     end

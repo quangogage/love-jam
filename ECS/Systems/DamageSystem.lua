@@ -5,6 +5,17 @@
 
 local SuccessfulAttack = require('Classes.Types.SuccessfulAttack')
 
+local hitSounds = {
+    love.audio.newSource('assets/audio/sfx/hits/generic-hit-1.wav', 'static'),
+    love.audio.newSource('assets/audio/sfx/hits/generic-hit-2.wav', 'static'),
+    love.audio.newSource('assets/audio/sfx/hits/generic-hit-3.wav', 'static')
+}
+local hitSoundVolume = 0.5
+for _, sound in pairs(hitSounds) do
+    sound:setVolume(settings:getVolume("sfx") * hitSoundVolume)
+end
+
+
 ---@param concord Concord | table
 ---@param onLevelComplete function
 return function (concord, onLevelComplete)
@@ -26,7 +37,8 @@ return function (concord, onLevelComplete)
     ---@param attacker Pawn | table
     ---@param target Pawn | table
     ---@param damageAmount number
-    function DamageSystem:entity_attemptAttack(attacker, target, damageAmount)
+    ---@param disableSoundEffect boolean - Used for melee attacks.
+    function DamageSystem:entity_attemptAttack(attacker, target, damageAmount, disableSoundEffect)
         local world = self:getWorld()
         if world then
             if target.health then
@@ -52,6 +64,12 @@ return function (concord, onLevelComplete)
                     for _, powerup in pairs(attacker.powerups.list) do
                         powerup:onSuccessfulAttack(successfulAttack)
                     end
+                end
+
+                -- Play ouchie sound.
+                if not disableSoundEffect then
+                    local hitSound = hitSounds[love.math.random(1, #hitSounds)]
+                    love.audio.play(hitSound)
                 end
 
                 target.health.value            = target.health.value - damageAmount

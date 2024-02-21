@@ -9,6 +9,7 @@
 ---@field fullscreen boolean
 ---@field vsync boolean
 ---@field resolutions table[{number,number}]
+---@field sound table
 local Settings = Goop.Class({
     static = {
         cameraWASDMoveSpeed = 6600,
@@ -23,6 +24,11 @@ local Settings = Goop.Class({
             { 2560, 1440 },
             { 3840, 2160 }
         },
+        sound = {
+            masterVolume = 1,
+            sfxVolume    = 0.8,
+            musicVolume  = 1
+        }
     }
 })
 
@@ -36,6 +42,16 @@ function Settings:setResolution(width,height)
     love.window.setMode(width, height, { fullscreen = false, vsync = self.vsync})
     self.resolution = { width, height }
     self:_saveSettings()
+end
+
+---@param volumeType string
+---@return number
+function Settings:getVolume(volumeType)
+    if volumeType == "master" then
+        return self.sound.masterVolume
+    else
+        return self.sound[volumeType .. "Volume"] * self.sound.masterVolume
+    end
 end
 
 

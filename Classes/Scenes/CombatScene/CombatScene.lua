@@ -20,7 +20,7 @@ local PowerupStateManager    = require('Classes.Scenes.CombatScene.PowerupStateM
 local PawnSelectionMenu      = require('Classes.Scenes.CombatScene.Interface.PawnSelectionMenu')
 local PowerupSelectionMenu   = require('Classes.Scenes.CombatScene.Interface.PowerupSelectionMenu')
 local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
-local PauseMenu              = require("Classes.Scenes.CombatScene.Interface.PauseMenu.PauseMenu")
+local PauseMenu              = require('Classes.Scenes.CombatScene.Interface.PauseMenu.PauseMenu')
 local BackgroundRenderer     = require('Classes.Scenes.CombatScene.BackgroundRenderer')
 local CoinManager            = require('Classes.Scenes.CombatScene.CoinManager')
 
@@ -50,10 +50,10 @@ local CombatScene            = Goop.Class({
     static = {
         currentLevelIndex = 1,
         songs = {
-            love.audio.newSource("assets/audio/songs/warfare-1.mp3", "stream"),
-            love.audio.newSource("assets/audio/songs/warfare-2.mp3", "stream"),
+            love.audio.newSource('assets/audio/songs/warfare-1.mp3', 'stream'),
+            love.audio.newSource('assets/audio/songs/warfare-2.mp3', 'stream'),
         },
-        ambienceTrack = love.audio.newSource("assets/audio/sfx/battle-ambience.mp3", "stream"),
+        ambienceTrack = love.audio.newSource('assets/audio/sfx/battle-ambience.mp3', 'stream'),
     }
 })
 
@@ -76,7 +76,7 @@ function CombatScene:loadNextLevel()
 
     -- Disable pawn generation.
     -- See PawnGenerationSystem.
-    self.world:emit("event_newLevel")
+    self.world:emit('event_newLevel')
 end
 function CombatScene:completeLevel()
     self.levelTransitionHandler:setState('level-complete')
@@ -88,15 +88,16 @@ end
 function CombatScene:init()
     self:_createSubscriptions()
     self:_initWorld()
-    self.camera                 = Camera()
-    self.coinManager            = CoinManager()
-    self.powerupStateManager    = PowerupStateManager(self.eventManager)
-    self.pawnSelectionMenu      = PawnSelectionMenu(self.eventManager, self.powerupStateManager, self.coinManager)
-    self.powerupSelectionMenu   = PowerupSelectionMenu(self.eventManager, self)
-    self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self, self.coinManager)
-    self.cameraControls         = CameraControls(self.camera, self.world)
-    self.pauseMenu              = PauseMenu(self, self.eventManager)
-    self.backgroundRenderer     = BackgroundRenderer()
+    self.camera               = Camera()
+    self.coinManager          = CoinManager()
+    self.powerupStateManager  = PowerupStateManager(self.eventManager)
+    self.pawnSelectionMenu    = PawnSelectionMenu(self.eventManager, self.powerupStateManager, self.coinManager)
+    self.powerupSelectionMenu = PowerupSelectionMenu(self.eventManager, self)
+    self.friendlySpawnHandler = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self,
+        self.coinManager)
+    self.cameraControls       = CameraControls(self.camera, self.world)
+    self.pauseMenu            = PauseMenu(self, self.eventManager)
+    self.backgroundRenderer   = BackgroundRenderer()
     self:_loadSystems()
     self:_initLevels()
     self.currentLevelIndex = 0
@@ -133,6 +134,7 @@ end
 function CombatScene:draw()
     self.camera:set()
     self.backgroundRenderer:draw()
+    self.world:emit('drawCorpses')
     self.world:emit('draw')
     self:_drawWorldBoundary()
     self.camera:unset()
@@ -200,7 +202,8 @@ function CombatScene:_loadSystems()
     loadSystem('MouseControlsSystem', self.camera)
     loadSystem('GroundPositionSystem')
     loadSystem('Pawn.EnemyPawnTargetSystem')
-    loadSystem('DamageSystem', function() self:completeLevel() end)
+    loadSystem('CorpseSystem')
+    loadSystem('DamageSystem', function () self:completeLevel() end)
     loadSystem('Pawn.PawnAISystem')
     loadSystem('Pawn.PawnAttackSystem')
     loadSystem('Pawn.PawnPushSystem')
@@ -209,6 +212,7 @@ function CombatScene:_loadSystems()
     loadSystem('SelectedHighlightSystem')
     loadSystem('Pawn.PawnAnimationSystem')
     loadSystem('Pawn.RetaliationSystem')
+    loadSystem('AnimationSystem')
     loadSystem('CoinGenerationSystem', self.coinManager)
     loadSystem('DebugSystem', self.camera, function () self:completeLevel() end, self.coinManager)
     self.world:addSystems(unpack(systems))
@@ -280,29 +284,31 @@ function CombatScene:_createSubscriptions()
     self.subscriptions['enableCameraControls'] = self.eventManager:subscribe('enableCameraControls', function ()
         self.disableCameraControls = false
     end)
-    self.subscriptions["centerCameraOnFriendlyBase"] = self.eventManager:subscribe("centerCameraOnFriendlyBase", function ()
-        self.camera:centerOnPosition(self.friendlyBase.position.x, self.friendlyBase.position.y)
-        self.camera:setToMaxZoom()
-    end)
-    self.subscriptions["openPowerupSelectionMenu"] = self.eventManager:subscribe("openPowerupSelectionMenu", function ()
+    self.subscriptions['centerCameraOnFriendlyBase'] = self.eventManager:subscribe('centerCameraOnFriendlyBase',
+        function ()
+            self.camera:centerOnPosition(self.friendlyBase.position.x, self.friendlyBase.position.y)
+            self.camera:setToMaxZoom()
+        end)
+    self.subscriptions['openPowerupSelectionMenu'] = self.eventManager:subscribe('openPowerupSelectionMenu', function ()
         self.powerupSelectionMenu:open()
     end)
-    self.subscriptions["disableWorldUpdate"] = self.eventManager:subscribe("disableWorldUpdate", function ()
+    self.subscriptions['disableWorldUpdate'] = self.eventManager:subscribe('disableWorldUpdate', function ()
         self.disableWorldUpdate = true
     end)
-    self.subscriptions["enableWorldUpdate"] = self.eventManager:subscribe("enableWorldUpdate", function ()
+    self.subscriptions['enableWorldUpdate'] = self.eventManager:subscribe('enableWorldUpdate', function ()
         self.disableWorldUpdate = false
     end)
-    self.subscriptions["startLevelTransition"] = self.eventManager:subscribe("startLevelTransition", function ()
+    self.subscriptions['startLevelTransition'] = self.eventManager:subscribe('startLevelTransition', function ()
         self.levelTransitionHandler:setState('level-starting')
     end)
-    self.subscriptions["endPowerupSelection"] = self.eventManager:subscribe("endPowerupSelection", function ()
+    self.subscriptions['endPowerupSelection'] = self.eventManager:subscribe('endPowerupSelection', function ()
         self.levelTransitionHandler:setState('powerup-selection-ending')
     end)
-    self.subscriptions["closePowerupSelectionMenu"] = self.eventManager:subscribe("closePowerupSelectionMenu", function ()
-        self.powerupSelectionMenu:close()
-    end)
-    self.subscriptions["loadNextLevel"] = self.eventManager:subscribe("loadNextLevel", function ()
+    self.subscriptions['closePowerupSelectionMenu'] = self.eventManager:subscribe('closePowerupSelectionMenu',
+        function ()
+            self.powerupSelectionMenu:close()
+        end)
+    self.subscriptions['loadNextLevel'] = self.eventManager:subscribe('loadNextLevel', function ()
         self:loadNextLevel()
     end)
 end
@@ -313,13 +319,13 @@ function CombatScene:_destroySubscriptions()
 end
 function CombatScene:_initSound()
     for _, song in ipairs(self.songs) do
-        song:setVolume(settings:getVolume("music"))
+        song:setVolume(settings:getVolume('music'))
         song:setLooping(true)
     end
     self.song = self.songs[love.math.random(1, #self.songs)]
     self.song:play()
     self.ambienceTrack:setLooping(true)
-    self.ambienceTrack:setVolume(settings:getVolume("sfx") * 0.2)
+    self.ambienceTrack:setVolume(settings:getVolume('sfx') * 0.2)
     self.ambienceTrack:play()
 end
 return CombatScene

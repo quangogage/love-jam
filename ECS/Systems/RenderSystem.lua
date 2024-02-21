@@ -13,6 +13,15 @@ return function (concord)
     })
 
 
+    ----------------------------
+    -- [[ Public Functions ]] --
+    ----------------------------
+    -- Render an entity from somewhere else.
+    ---@param e table
+    function RenderSystem:entity_render(e)
+        self:_renderEntity(e)
+    end
+
     --------------------------
     -- [[ Core Functions ]] --
     --------------------------

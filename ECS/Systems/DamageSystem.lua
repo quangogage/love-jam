@@ -107,6 +107,8 @@ return function (concord, onLevelComplete)
 
                     -- Powerups
                     if entity:get('powerups') then
+
+                        -- On death powerup callbacks.
                         for _, powerup in pairs(entity.powerups.list) do
                             powerup:onPawnDeath(entity)
                         end
@@ -128,6 +130,7 @@ return function (concord, onLevelComplete)
                     end
 
                     if shouldStillDie then -- The powerup did not prevent death... (see above).
+                        world:emit("entity_createCorpse", entity)
                         entity:destroy()
                     end
                 end

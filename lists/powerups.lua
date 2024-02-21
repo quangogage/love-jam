@@ -22,6 +22,7 @@
 -- │ Apply the powerups as close to their actual effect as   │
 -- │ possible.                                               │
 -- ╰─────────────────────────────────────────────────────────╯
+--
 -- For example, a permanent damage increase powerup should not be applied
 -- when attacking - But immediately before subtracting that damage amount
 -- from the target's health.

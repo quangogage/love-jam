@@ -38,8 +38,18 @@ local animationSets = {
             downLeft  = 'assets/images/knight/idle_down_left',
             upRight   = 'assets/images/knight/idle_up_right',
             upLeft    = 'assets/images/knight/idle_up_left',
+        },
+        dead = {
+            framerate = 0.1,
+            up        = 'assets/images/knight/dead_up',
+            down      = 'assets/images/knight/dead_down',
+            left      = 'assets/images/knight/dead_left',
+            right     = 'assets/images/knight/dead_right',
+            downRight = 'assets/images/knight/dead_down_right',
+            downLeft  = 'assets/images/knight/dead_down_left',
+            upRight   = 'assets/images/knight/dead_up_right',
+            upLeft    = 'assets/images/knight/dead_up_left'
         }
-
     }
 }
 

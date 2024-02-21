@@ -2,9 +2,10 @@
 -- Define console commands here.
 -- Commands with no `customFunction` will be emitted as world events.
 return {
-    toggleRanges   = {},
-    toggleHitboxes = {},
-    testRoom       = {},
-    completeLevel  = {},
-    motherlode     = {},
+    toggleRanges          = {},
+    toggleHitboxes        = {},
+    testRoom              = {},
+    completeLevel         = {},
+    motherlode            = {},
+    toggleFriendlyTargets = {},
 }

@@ -11,7 +11,8 @@ return function (concord, camera, onLevelComplete, coinManager)
     local DebugSystem = concord.system({
         rangeEntities = { 'combatProperties', 'position', 'groundPosition' },
         hitboxes = { 'position', 'dimensions', 'groundPosition' },
-        hostileEntities = { 'hostile' }
+        hostileEntities = { 'hostile' },
+        targetingEntities = { 'target' }
     })
 
 
@@ -40,18 +41,23 @@ return function (concord, camera, onLevelComplete, coinManager)
     function DebugSystem:motherlode()
         coinManager:addCoins(1000000)
     end
+    function DebugSystem:toggleFriendlyTargets()
+        self.showFriendlyTargets = not self.showFriendlyTargets
+    end
 
 
     --------------------------
     -- [[ Core Functions ]] --
     --------------------------
     function DebugSystem:init()
-        self.showRanges = false
-        self.showHitboxes = false
+        self.showRanges          = false
+        self.showHitboxes        = false
+        self.showFriendlyTargets = false
     end
     function DebugSystem:draw()
         self:_drawRanges()
         self:_drawHitboxes()
+        self:_drawFriendlyTargets()
     end
     function DebugSystem:keypressed(key)
         self:_spawnPawnsInTestRoom(key)
@@ -114,6 +120,26 @@ return function (concord, camera, onLevelComplete, coinManager)
                     'Knight',
                     x, y
                 )
+            end
+        end
+    end
+
+    function DebugSystem:_drawFriendlyTargets()
+        if self.showFriendlyTargets then
+            for _,e in ipairs(self.targetingEntities) do
+                if e.target and e.friendly then
+                    if e.target.entity then
+                        love.graphics.setColor(0,0,1,0.5)
+                        love.graphics.circle("fill",
+                            e.position.x, e.position.y, 75
+                        )
+                        love.graphics.setColor(1,0,1)
+                        love.graphics.line(
+                            e.position.x, e.position.y,
+                            e.target.entity.position.x, e.target.entity.position.y
+                        )
+                    end
+                end
             end
         end
     end

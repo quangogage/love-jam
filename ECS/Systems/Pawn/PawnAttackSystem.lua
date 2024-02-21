@@ -60,7 +60,6 @@ return function (concord)
             end
         end
     end
-
     -----------------------------
     -- [[ Private Functions ]] --
     -----------------------------

@@ -8,12 +8,12 @@ local dimensions          = Vec2(40, 80)
 
 -- ──────────────────────────────────────────────────────────────────────
 local onSpawnSounds = {
-    love.audio.newSource("assets/audio/sfx/knight-vox/1.wav", "static"),
-    love.audio.newSource("assets/audio/sfx/knight-vox/2.wav", "static"),
-    love.audio.newSource("assets/audio/sfx/knight-vox/3.wav", "static"),
-    love.audio.newSource("assets/audio/sfx/knight-vox/4.wav", "static"),
-    love.audio.newSource("assets/audio/sfx/knight-vox/5.wav", "static"),
-    love.audio.newSource("assets/audio/sfx/knight-vox/6.wav", "static")
+    love.audio.newSource("assets/audio/sfx/knight-vox/1.mp3", "static"),
+    love.audio.newSource("assets/audio/sfx/knight-vox/2.mp3", "static"),
+    love.audio.newSource("assets/audio/sfx/knight-vox/3.mp3", "static"),
+    love.audio.newSource("assets/audio/sfx/knight-vox/4.mp3", "static"),
+    love.audio.newSource("assets/audio/sfx/knight-vox/5.mp3", "static"),
+    love.audio.newSource("assets/audio/sfx/knight-vox/6.mp3", "static")
 }
 local pitch = 1.5
 for _, sound in ipairs(onSpawnSounds) do
@@ -53,5 +53,8 @@ return function (e, x, y, friendly, powerups)
     end
 
     local sound = onSpawnSounds[math.random(1, #onSpawnSounds)]
+    if sound:isPlaying() then
+        sound = sound:clone()
+    end
     sound:play()
 end

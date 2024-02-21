@@ -44,6 +44,9 @@ return function (concord)
                     end
 
                     local sound = e.combatProperties.sounds[math.random(1, #e.combatProperties.sounds)]
+                    if sound:isPlaying() then
+                        sound = sound:clone()
+                    end
                     love.audio.play(sound)
 
                     e.combatProperties.attackTimer = 0

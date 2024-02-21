@@ -6,9 +6,9 @@
 local SuccessfulAttack = require('Classes.Types.SuccessfulAttack')
 
 local hitSounds = {
-    love.audio.newSource('assets/audio/sfx/hits/generic-hit-1.wav', 'static'),
-    love.audio.newSource('assets/audio/sfx/hits/generic-hit-2.wav', 'static'),
-    love.audio.newSource('assets/audio/sfx/hits/generic-hit-3.wav', 'static')
+    love.audio.newSource('assets/audio/sfx/hits/1.mp3', 'static'),
+    love.audio.newSource('assets/audio/sfx/hits/2.mp3', 'static'),
+    love.audio.newSource('assets/audio/sfx/hits/3.mp3', 'static')
 }
 local hitSoundVolume = 0.5
 for _, sound in pairs(hitSounds) do
@@ -69,6 +69,9 @@ return function (concord, onLevelComplete)
                 -- Play ouchie sound.
                 if not disableSoundEffect then
                     local hitSound = hitSounds[love.math.random(1, #hitSounds)]
+                    if hitSound:isPlaying() then
+                        hitSound = hitSound:clone()
+                    end
                     love.audio.play(hitSound)
                 end
 

@@ -23,6 +23,14 @@ local FriendlySpawnHandler = Goop.Class({
     }
 })
 
+local coinSounds = {
+    love.audio.newSource("assets/audio/sfx/coins/1.mp3", "static"),
+    love.audio.newSource("assets/audio/sfx/coins/2.mp3", "static"),
+    love.audio.newSource("assets/audio/sfx/coins/3.mp3", "static"),
+}
+for _, sound in ipairs(coinSounds) do
+    sound:setVolume(settings:getVolume("sfx"))
+end
 
 ----------------------------
 -- [[ Public Functions ]] --
@@ -40,6 +48,12 @@ function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, pawnName, x, 
         util.entityAssembler.assemble(
             self.world, pawnTypeAssemblage, x, y, true, powerups
         )
+        local sound = coinSounds[math.random(1, #coinSounds)]
+        if sound:isPlaying() then
+            sound = sound:clone()
+            -- HIT SOUNDS
+        end
+        sound:play()
     end
 end
 

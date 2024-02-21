@@ -11,6 +11,13 @@
 ---@field meleeHitboxSize number
 ---@field sounds love.Source[]
 
+local sounds = {
+    love.audio.newSource("assets/audio/sfx/attacks/knight/1.mp3", "static"),
+    love.audio.newSource("assets/audio/sfx/attacks/knight/2.mp3", "static"),
+    love.audio.newSource("assets/audio/sfx/attacks/knight/3.mp3", "static"),
+    love.audio.newSource("assets/audio/sfx/attacks/knight/4.mp3", "static")
+}
+
 return function (concord)
     ---@param c CombatProperties
     ---@param type "melee" | "bullet" | "missile" etc.
@@ -24,12 +31,7 @@ return function (concord)
         c.attackSpawnDistance = data.attackSpawnDistance or 30
         c.meleeHitboxSize     = data.meleeHitboxSize or 30
         -- Default to sword sounds.
-        c.sounds              = data.sounds or {
-            love.audio.newSource('assets/audio/sfx/attacks/sword-slash-1.wav', 'static'),
-            love.audio.newSource('assets/audio/sfx/attacks/sword-slash-2.wav', 'static'),
-            love.audio.newSource('assets/audio/sfx/attacks/sword-slash-3.wav', 'static'),
-            love.audio.newSource('assets/audio/sfx/attacks/sword-slash-4.wav', 'static')
-        }
+        c.sounds              = data.sounds or sounds
         for _, sound in pairs(c.sounds) do
             sound:setVolume(settings:getVolume("sfx") * 0.7)
         end

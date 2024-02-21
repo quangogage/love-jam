@@ -7,7 +7,7 @@
 return function (concord)
     local FriendlyPawnTargetSystem = concord.system({
         friendlyEntities = { 'friendly', 'combatProperties' },
-        enemyEntities    = { 'hostile' }
+        enemyEntities    = { 'hostile', 'health' }
     })
 
 
@@ -51,7 +51,7 @@ return function (concord)
         end
 
         for _, enemyTarget in ipairs(self.enemyEntities) do
-            if not shouldIgnore(enemyTarget) then
+            if not shouldIgnore(enemyTarget) and not enemyTarget:get("isDead") then
                 local distance = math.sqrt(
                     (friendlyPawn.position.x - enemyTarget.position.x) ^ 2 +
                     (friendlyPawn.position.y - enemyTarget.position.y) ^ 2

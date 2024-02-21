@@ -10,14 +10,22 @@ return function (concord)
     ---@field enemyEntities Pawn[] | table[]
     ---@field friendlyEntities Pawn[] | table[]
     local EnemyPawnTargetSystem = concord.system({
-        enemyEntities    = { 'hostile', 'combatProperties' },
-        friendlyEntities = { 'friendly' }
+        enemyEntities    = { 'hostile', 'combatProperties', 'health' },
+        friendlyEntities = { 'friendly', 'health' },
+        friendlyPawns       = { 'friendly', "isPawn" },
     })
 
 
     ----------------------------
     -- [[ Public Functions ]] --
     ----------------------------
+    function EnemyPawnTargetSystem:event_newLevel()
+        self.playerHasCommanded = false
+    end
+    function EnemyPawnTargetSystem:event_playerCommand()
+        self:_initialTargeting()
+        self.playerHasCommanded = true
+    end
 
     -- When a new enemy pawn spawns, target the closest friendly pawn.
     -- When a new friendly pawn spawns, have all enemy pawns retarget to the
@@ -53,8 +61,11 @@ return function (concord)
     -----------------------------
     -- Target the closest friendly pawn.
     ---@param enemyPawn Pawn | table
-    ---@param ignoreEntities Pawn[] | table[]
+    ---@param ignoreEntities? Pawn[] | table[]
     function EnemyPawnTargetSystem:_targetClosestFriendlyPawn(enemyPawn, ignoreEntities)
+        if not self.playerHasCommanded then
+            return
+        end
         local closestFriendlyPawn = nil
         local closestDistance     = math.huge
         ignoreEntities = ignoreEntities or {}
@@ -69,7 +80,7 @@ return function (concord)
         end
 
         for _, friendlyEntity in ipairs(self.friendlyEntities) do
-            if not shouldIgnore(friendlyEntity) then
+            if not shouldIgnore(friendlyEntity) and not friendlyEntity:get("isDead") then
                 local distance = math.sqrt(
                     (enemyPawn.position.x - friendlyEntity.position.x) ^ 2 +
                     (enemyPawn.position.y - friendlyEntity.position.y) ^ 2
@@ -85,6 +96,28 @@ return function (concord)
             enemyPawn:give('target', { entity = closestFriendlyPawn })
         else
             enemyPawn:remove('target')
+        end
+    end
+
+
+    -- Targeting behavior when the player makes their first move in the level.
+    function EnemyPawnTargetSystem:_initialTargeting()
+        for _, e in ipairs(self.enemyEntities) do
+            if #self.friendlyPawns > 0 then
+                local nearestPawn = self.friendlyPawns[1]
+                local nearestPawnDistance = math.huge
+                for _,friendlyPawn in ipairs(self.friendlyPawns) do
+                    local thisDistance = math.sqrt(
+                        (e.groundPosition.x - friendlyPawn.groundPosition.x) ^ 2 +
+                        (e.groundPosition.y - friendlyPawn.groundPosition.y) ^ 2
+                    )
+                    if thisDistance < nearestPawnDistance then
+                        nearestPawn = friendlyPawn
+                        nearestPawnDistance = thisDistance
+                    end
+                end
+                e:give('target', { entity = nearestPawn })
+            end
         end
     end
 

@@ -12,6 +12,6 @@ return function (concord)
         data         = data or {}
         c.pawnType   = data.pawnType or 'BasicPawn'
         c.spawnRate  = data.spawnRate or 3
-        c.spawnTimer = 100
+        c.spawnTimer = 0
     end)
 end

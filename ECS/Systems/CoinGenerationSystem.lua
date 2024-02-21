@@ -25,7 +25,7 @@ return function (concord, coinManager)
     function CoinGenerationSystem:event_entityDied(e)
         if e:get("hostile") and e:get("coinValue") then
             coinManager:addCoins(e:get("coinValue").value)
-            if sound:isPlaying() then 
+            if sound:isPlaying() then
                 sound = sound:clone()
             end
             sound:play()

@@ -24,6 +24,7 @@ return function (concord)
     -- [[ Public Functions ]] --
     ----------------------------
     function PawnGenerationSystem:event_newLevel()
+        self:_spawnInitialPawns()
         self.playerHasCommanded = false
     end
     function PawnGenerationSystem:event_playerCommand()
@@ -55,12 +56,23 @@ return function (concord)
     function PawnGenerationSystem:_spawnPawn(e)
         local world = self:getWorld()
         if world then
+            local friendlyBase = world.friendlyBase
+            local angle = math.atan2(friendlyBase.position.y - e.position.y, friendlyBase.position.x - e.position.x)
+            local distance = 150
             local newPawn = util.entityAssembler.assemble(world,
                 e.pawnGeneration.pawnType,
-                e.position.x, e.position.y,
+                e.position.x + math.cos(angle) * distance,
+                e.position.y + math.sin(angle) * distance,
                 e.friendly
             )
             world:emit("event_pawnSpawned", newPawn)
+        end
+    end
+
+    -- Spawn the initial pawns.
+    function PawnGenerationSystem:_spawnInitialPawns()
+        for _, e in ipairs(self.entities) do
+            self:_spawnPawn(e)
         end
     end
 

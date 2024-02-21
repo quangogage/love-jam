@@ -66,6 +66,9 @@ return function (concord)
         for _, e in ipairs(self.entities) do
             self:_setLoopingAnimationState(e)
             self:_runAnimation(e, dt)
+            if e.target and e.combatProperties then
+                self:_faceTarget(e)
+            end
         end
     end
 
@@ -162,6 +165,25 @@ return function (concord)
             anim = c[c.oneShotAnimation]
         end
         return anim.perFrameFramerateOffset[c.frame] or anim.framerate
+    end
+
+    -- Face your target - Assumes you have a combatProperties and target
+    -- component.
+    ---@param e Pawn | table
+    function PawnAnimationSystem:_faceTarget(e)
+        if e.target.entity then
+            if e.groundPosition and e.target.groundPosition then
+                local range = e.combatProperties.range
+
+                if math.sqrt((e.groundPosition.x - e.target.groundPosition.x)^2 +
+                (e.groundPosition.y - e.target.groundPosition.y)^2) < range then
+                    e.pawnAnimations.direction = math.atan2(
+                        e.target.groundPosition.y - e.groundPosition.y,
+                        e.target.groundPosition.x - e.groundPosition.x
+                    )
+                end
+            end
+        end
     end
 
     return PawnAnimationSystem

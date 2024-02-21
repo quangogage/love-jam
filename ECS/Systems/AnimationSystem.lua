@@ -8,7 +8,7 @@
 
 return function (concord)
     local AnimationSystem = concord.system({
-        entities = { 'animations', 'position' }
+        entities = { 'animations', 'position' },
     })
 
 

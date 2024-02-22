@@ -37,10 +37,13 @@ end
 return function (e, x, y, friendly, powerups)
     e
         :assemble(CharacterAssemblage, x, y)
-        :give('health', 15)
+        :give('health', 18)
         :give('dimensions', dimensions.x, dimensions.y)
         :give('combatProperties', 'fireball', {
-            ---zzz..
+            ---zzz.
+            damageAmount = 2.2,
+            attackSpeed = 1.5,
+            range = 370,
         })
         :give('pawnAnimations', 'mage')
         :give('pushbackRadius', 35)

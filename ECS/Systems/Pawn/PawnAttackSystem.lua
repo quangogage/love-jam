@@ -46,6 +46,8 @@ return function (concord)
                             self:_meleeAttack(e)
                         elseif e.combatProperties.type == 'bow' then
                             self:_bowAttack(e)
+                        elseif e.combatProperties.type == 'fireball' then
+                            self:_fireballAttack(e)
                         end
 
                         local sound = e.combatProperties.sounds[math.random(1, #e.combatProperties.sounds)]
@@ -97,6 +99,26 @@ return function (concord)
         )
 
         world:emit('pawn_playAnimationOnce', e, 'attack', direction)
+    end
+
+    -- Try shooting a fireball
+    ---@param e Pawn | table
+    function PawnAttackSystem:_fireballAttack(e)
+        local world = self:getWorld()
+        local targetEntity = e.target.entity
+        local direction = math.atan2(
+            targetEntity.position.y - e.position.y,
+            targetEntity.position.x - e.position.x
+        )
+
+        util.entityAssembler.assemble(
+            self:getWorld(), 'fireball',
+            e.position.x, e.position.y, direction,
+            e.combatProperties.damageAmount,
+            e
+        )
+
+        world:emit("pawn_playAnimationOnce", e, "attack", direction)
     end
 
     return PawnAttackSystem

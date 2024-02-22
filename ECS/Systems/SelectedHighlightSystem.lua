@@ -5,21 +5,26 @@
 -- entities.
 --
 
-local FONT = love.graphics.newFont(12)
-local COLOR = { 1, 0, 1 }
+local COLOR = { 0, 1, 0 }
 
 
 return function (concord)
     local SelectedHighlightSystem = concord.system({
-        entities = { 'selected' }
+        entities = { 'selected', 'friendly' }
     })
 
     function SelectedHighlightSystem:draw()
         love.graphics.setColor(COLOR)
-        love.graphics.setFont(FONT)
         for _, e in ipairs(self.entities) do
-            love.graphics.print('v', e.position.x - FONT:getWidth('v') / 2,
-                e.position.y - e.dimensions.height / 2 - FONT:getHeight()
+            local image     = e:get('image').value
+            local offset    = e:get('offset') or { x = 0.5, y = 0.5 }
+            local scale     = e:get('scale') or { x = 1, y = 1 }
+            local increase = 1.2
+            love.graphics.setColor(0,1,0,1)
+            love.graphics.draw(image,
+                e.position.x, e.position.y - e.position.z,
+                0, scale.x*increase, scale.y*increase,
+                image:getWidth() * offset.x, image:getHeight() * offset.y
             )
         end
     end

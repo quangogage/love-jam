@@ -4,6 +4,10 @@
 -- Render behavior / what is rendered will depend on what other components the
 -- entity may have.
 
+local outlineShader = love.graphics.newShader(require('shaders.outlineShader'))
+outlineShader:send('outlineWidth', 20)
+outlineShader:send('outlineColor', { 0, 1, 0, 1 })
+
 return function (concord)
     ---@class RenderSystem : System
     ---@field entities table[]
@@ -99,6 +103,7 @@ return function (concord)
         end
         return 0
     end
+
 
     return RenderSystem
 end

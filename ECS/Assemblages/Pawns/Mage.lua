@@ -6,7 +6,7 @@
 local Vec2                = require('Classes.Types.Vec2')
 local CharacterAssemblage = require('ECS.Assemblages.Pawns.Pawn')
 local dimensions          = Vec2(50, 90)
-local scale               = Vec2(1.1,1.1)
+local scale               = Vec2(1.1, 1.1)
 
 -- ──────────────────────────────────────────────────────────────────────
 local onSpawnSounds       = {
@@ -25,6 +25,7 @@ end
 -- ──────────────────────────────────────────────────────────────────────
 local attackSounds = {
     -- Casting sound...
+    love.audio.newSource('assets/audio/sfx/attacks/mage/1.mp3', 'static'),
 }
 for _, sound in ipairs(attackSounds) do
     sound:setVolume(settings:getVolume('sfx'))
@@ -42,8 +43,9 @@ return function (e, x, y, friendly, powerups)
         :give('dimensions', dimensions.x, dimensions.y)
         :give('combatProperties', 'fireball', {
             damageAmount = 2.8,
-            attackSpeed = 1,
-            range = 370,
+            attackSpeed  = 1,
+            range        = 370,
+            sounds       = attackSounds
         })
         :give('pawnAnimations', 'mage')
         :give('pushbackRadius', 35)

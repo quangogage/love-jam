@@ -41,7 +41,6 @@ return function (e, x, y, friendly, powerups)
         :give('health', 22)
         :give('dimensions', dimensions.x, dimensions.y)
         :give('combatProperties', 'fireball', {
-            ---zzz.
             damageAmount = 2.8,
             attackSpeed = 1,
             range = 370,

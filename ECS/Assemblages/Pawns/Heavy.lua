@@ -17,18 +17,12 @@ local onSpawnSounds       = {
     love.audio.newSource('assets/audio/sfx/knight-vox/5.mp3', 'static'),
     love.audio.newSource('assets/audio/sfx/knight-vox/6.mp3', 'static')
 }
-local pitch               = 1.5
+local pitch               = 0.7
 for _, sound in ipairs(onSpawnSounds) do
     sound:setVolume(settings:getVolume('sfx'))
     sound:setPitch(pitch)
 end
 -- ──────────────────────────────────────────────────────────────────────
-local attackSounds = {
-    -- Casting sound...
-}
-for _, sound in ipairs(attackSounds) do
-    sound:setVolume(settings:getVolume('sfx'))
-end
 
 ---@param e Heavy
 ---@param x number

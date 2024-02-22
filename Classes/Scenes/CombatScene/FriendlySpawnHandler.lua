@@ -66,7 +66,6 @@ function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, pawnName, x, 
 
             self.world:emit("event_spawnedFriendlyPawn", newPawn)
         end
-
     end
 end
 

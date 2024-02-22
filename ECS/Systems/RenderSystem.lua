@@ -71,10 +71,11 @@ return function (concord)
         local image     = entity:get('image').value
         local offset    = entity:get('offset') or { x = 0.5, y = 0.5 }
         local scale     = entity:get('scale') or { x = 1, y = 1 }
+        local rotation  = self:_getRotation(entity)
         love.graphics.setColor(color.r, color.g, color.b, alpha)
         love.graphics.draw(image,
             entity.position.x, entity.position.y - entity.position.z,
-            0, scale.x, scale.y,
+            rotation, scale.x, scale.y,
             image:getWidth() * offset.x, image:getHeight() * offset.y
         )
     end
@@ -90,6 +91,15 @@ return function (concord)
         return a.position.y < b.position.y
     end
 
+    -- Get the rotation of the entity.
+    ---@param entity table
+    ---@return number
+    function RenderSystem:_getRotation(entity)
+        if entity:get('rotation') then
+            return entity:get('rotation').value
+        end
+        return 0
+    end
 
     return RenderSystem
 end

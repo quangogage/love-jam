@@ -4,7 +4,6 @@
 -- Render behavior / what is rendered will depend on what other components the
 -- entity may have.
 
-
 return function (concord)
     ---@class RenderSystem : System
     ---@field entities table[]

@@ -37,7 +37,7 @@ end
 return function (e, x, y, friendly, powerups)
     e
         :assemble(CharacterAssemblage, x, y)
-        :give('health', 10)
+        :give('health', 7)
         :give('dimensions', dimensions.width, dimensions.height)
         :give('combatProperties', 'bow', {
             damageAmount = 1,

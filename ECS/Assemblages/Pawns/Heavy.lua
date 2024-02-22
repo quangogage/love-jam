@@ -1,12 +1,12 @@
----@author Gage Henderson 2024-02-21 18:35
+---@author Gage Henderson 2024-02-22 10:15
 --
----@class Mage : Pawn
+---@class Heavy : Pawn
 --
 
 local Vec2                = require('Classes.Types.Vec2')
 local CharacterAssemblage = require('ECS.Assemblages.Pawns.Pawn')
-local dimensions          = Vec2(50, 90)
-local scale               = Vec2(1.1,1.1)
+local dimensions          = Vec2(60, 110)
+local scale               = Vec2(1.2,1.2)
 
 -- ──────────────────────────────────────────────────────────────────────
 local onSpawnSounds       = {
@@ -30,7 +30,7 @@ for _, sound in ipairs(attackSounds) do
     sound:setVolume(settings:getVolume('sfx'))
 end
 
----@param e Mage
+---@param e Heavy
 ---@param x number
 ---@param y number
 ---@param friendly boolean
@@ -38,16 +38,16 @@ end
 return function (e, x, y, friendly, powerups)
     e
         :assemble(CharacterAssemblage, x, y)
-        :give('health', 22)
+        :give('health', 40)
         :give('dimensions', dimensions.x, dimensions.y)
-        :give('combatProperties', 'fireball', {
+        :give('combatProperties', 'melee', {
             ---zzz.
-            damageAmount = 2.8,
-            attackSpeed = 1,
-            range = 370,
+            damageAmount = 2.5,
+            attackSpeed = 1.87,
+            range = 160
         })
-        :give('pawnAnimations', 'mage')
-        :give('pushbackRadius', 35)
+        :give('pawnAnimations', 'heavy')
+        :give('pushbackRadius', 45)
         :give('groundPosition', 0, 30)
         :give('scale', scale.x, scale.y)
 

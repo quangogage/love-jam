@@ -6,5 +6,7 @@
 
 return {
     --"toggleRanges",
-    --"testRoom"
+    -- "testRoom",
+    -- "motherlode",
+    -- "toggleHitboxes"
 }

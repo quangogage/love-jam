@@ -148,7 +148,56 @@ local animationSets = {
             upRight   = 'assets/images/mage/dead_up_right',
             upLeft    = 'assets/images/mage/dead_up_left'
         }
-    }
+    },
+    heavy = {
+        attack = {
+            perFrameFramerateOffset = {
+                [2] = 5     -- Second frame will last 0.5 seconds longer.
+            },
+            framerate               = 0.1,
+            up                      = 'assets/images/heavy/attack_up',
+            down                    = 'assets/images/heavy/attack_down',
+            left                    = 'assets/images/heavy/attack_left',
+            right                   = 'assets/images/heavy/attack_right',
+            downRight               = 'assets/images/heavy/attack_down_right',
+            downLeft                = 'assets/images/heavy/attack_down_left',
+            upRight                 = 'assets/images/heavy/attack_up_right',
+            upLeft                  = 'assets/images/heavy/attack_up_left',
+        },
+        walk = {
+            framerate = 0.1,
+            up        = 'assets/images/heavy/walk_up',
+            down      = 'assets/images/heavy/walk_down',
+            left      = 'assets/images/heavy/walk_left',
+            right     = 'assets/images/heavy/walk_right',
+            downRight = 'assets/images/heavy/walk_down_right',
+            downLeft  = 'assets/images/heavy/walk_down_left',
+            upRight   = 'assets/images/heavy/walk_up_right',
+            upLeft    = 'assets/images/heavy/walk_up_left',
+        },
+        idle = {
+            framerate = 0.1,
+            up        = 'assets/images/heavy/idle_up',
+            down      = 'assets/images/heavy/idle_down',
+            left      = 'assets/images/heavy/idle_left',
+            right     = 'assets/images/heavy/idle_right',
+            downRight = 'assets/images/heavy/idle_down_right',
+            downLeft  = 'assets/images/heavy/idle_down_left',
+            upRight   = 'assets/images/heavy/idle_up_right',
+            upLeft    = 'assets/images/heavy/idle_up_left',
+        },
+        dead = {
+            framerate = 0.1,
+            up        = 'assets/images/heavy/dead_up',
+            down      = 'assets/images/heavy/dead_down',
+            left      = 'assets/images/heavy/dead_left',
+            right     = 'assets/images/heavy/dead_right',
+            downRight = 'assets/images/heavy/dead_down_right',
+            downLeft  = 'assets/images/heavy/dead_down_left',
+            upRight   = 'assets/images/heavy/dead_up_right',
+            upLeft    = 'assets/images/heavy/dead_up_left'
+        }
+    },
 
 }
 

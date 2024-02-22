@@ -132,6 +132,7 @@ function CombatScene:update(dt)
         self.powerupSelectionMenu:update(dt)
         self.levelTransitionHandler:update(dt)
     end
+    self.renderCanvas:update(dt)
     self.pauseMenu:update(dt)
 end
 function CombatScene:draw()
@@ -142,12 +143,13 @@ function CombatScene:draw()
     self.world:emit('draw')
     self:_drawWorldBoundary()
     self.camera:unset()
+    self.renderCanvas:stopDrawing()
+    self.renderCanvas:draw()
+
     self.powerupSelectionMenu:draw()
     self.pawnSelectionMenu:draw()
     self.levelTransitionHandler:draw()
     self.pauseMenu:draw()
-    self.renderCanvas:stopDrawing()
-    self.renderCanvas:draw()
 end
 function CombatScene:keypressed(key)
     if not self.paused then

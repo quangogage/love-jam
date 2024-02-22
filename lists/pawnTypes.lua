@@ -9,6 +9,12 @@ return {
         name           = "Archer",
         assemblageName = "Archer",
         description    = "Here to save the day!",
-        price          = 1,
+        price          = 2,
+    },
+    {
+        name           = "Mage",
+        assemblageName = "Mage",
+        description    = "Here to save the day!",
+        price          = 3,
     }
 }

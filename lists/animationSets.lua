@@ -99,6 +99,55 @@ local animationSets = {
             upRight   = 'assets/images/archer/dead_up_right',
             upLeft    = 'assets/images/archer/dead_up_left'
         }
+    },
+    mage = {
+        attack = {
+            perFrameFramerateOffset = {
+                [2] = 5     -- Second frame will last 0.5 seconds longer.
+            },
+            framerate               = 0.1,
+            up                      = 'assets/images/mage/attack_up',
+            down                    = 'assets/images/mage/attack_down',
+            left                    = 'assets/images/mage/attack_left',
+            right                   = 'assets/images/mage/attack_right',
+            downRight               = 'assets/images/mage/attack_down_right',
+            downLeft                = 'assets/images/mage/attack_down_left',
+            upRight                 = 'assets/images/mage/attack_up_right',
+            upLeft                  = 'assets/images/mage/attack_up_left',
+        },
+        walk = {
+            framerate = 0.1,
+            up        = 'assets/images/mage/walk_up',
+            down      = 'assets/images/mage/walk_down',
+            left      = 'assets/images/mage/walk_left',
+            right     = 'assets/images/mage/walk_right',
+            downRight = 'assets/images/mage/walk_down_right',
+            downLeft  = 'assets/images/mage/walk_down_left',
+            upRight   = 'assets/images/mage/walk_up_right',
+            upLeft    = 'assets/images/mage/walk_up_left',
+        },
+        idle = {
+            framerate = 0.1,
+            up        = 'assets/images/mage/idle_up',
+            down      = 'assets/images/mage/idle_down',
+            left      = 'assets/images/mage/idle_left',
+            right     = 'assets/images/mage/idle_right',
+            downRight = 'assets/images/mage/idle_down_right',
+            downLeft  = 'assets/images/mage/idle_down_left',
+            upRight   = 'assets/images/mage/idle_up_right',
+            upLeft    = 'assets/images/mage/idle_up_left',
+        },
+        dead = {
+            framerate = 0.1,
+            up        = 'assets/images/mage/dead_up',
+            down      = 'assets/images/mage/dead_down',
+            left      = 'assets/images/mage/dead_left',
+            right     = 'assets/images/mage/dead_right',
+            downRight = 'assets/images/mage/dead_down_right',
+            downLeft  = 'assets/images/mage/dead_down_left',
+            upRight   = 'assets/images/mage/dead_up_right',
+            upLeft    = 'assets/images/mage/dead_up_left'
+        }
     }
 
 }

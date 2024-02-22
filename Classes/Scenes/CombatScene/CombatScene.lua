@@ -23,6 +23,7 @@ local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransiti
 local PauseMenu              = require('Classes.Scenes.CombatScene.Interface.PauseMenu.PauseMenu')
 local BackgroundRenderer     = require('Classes.Scenes.CombatScene.BackgroundRenderer')
 local CoinManager            = require('Classes.Scenes.CombatScene.CoinManager')
+local RenderCanvas           = require('Classes.Scenes.CombatScene.RenderCanvas')
 
 ---@class CombatScene
 ---@field camera Camera
@@ -41,6 +42,7 @@ local CoinManager            = require('Classes.Scenes.CombatScene.CoinManager')
 ---@field backgroundRenderer BackgroundRenderer
 ---@field coinManager CoinManager
 ---@field disableWorldUpdate boolean
+---@field renderCanvas RenderCanvas
 ---@field paused boolean - Set in PauseMenu
 ---@field disableCameraControls boolean
 ---@field songs love.Source[]
@@ -88,6 +90,7 @@ end
 function CombatScene:init()
     self:_createSubscriptions()
     self:_initWorld()
+    self.renderCanvas         = RenderCanvas()
     self.camera               = Camera()
     self.coinManager          = CoinManager()
     self.powerupStateManager  = PowerupStateManager(self.eventManager)
@@ -132,6 +135,7 @@ function CombatScene:update(dt)
     self.pauseMenu:update(dt)
 end
 function CombatScene:draw()
+    self.renderCanvas:startDrawing()
     self.camera:set()
     self.backgroundRenderer:draw()
     self.world:emit('drawCorpses')
@@ -142,6 +146,8 @@ function CombatScene:draw()
     self.pawnSelectionMenu:draw()
     self.levelTransitionHandler:draw()
     self.pauseMenu:draw()
+    self.renderCanvas:stopDrawing()
+    self.renderCanvas:draw()
 end
 function CombatScene:keypressed(key)
     if not self.paused then

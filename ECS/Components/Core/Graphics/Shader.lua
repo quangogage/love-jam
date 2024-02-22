@@ -2,6 +2,11 @@
 --
 ---@class Shader : Component
 -- Define a shader to be applied to the entity when drawn.
+--
+-- ╭─────────────────────────────────────────────────────────╮
+-- │ TODO: Actually  implement these.                        │
+-- ╰─────────────────────────────────────────────────────────╯
+--
 ---@field shader love.Shader
 ---@field update function(shader: love.Shader)
 

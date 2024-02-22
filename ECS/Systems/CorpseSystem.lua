@@ -53,9 +53,10 @@ return function (concord)
                 },
                 function(animatedEffect)
                     -- Remove and draw to corpse layer.
+                    local storedCanvas = love.graphics.getCanvas()
                     love.graphics.setCanvas(self.canvas)
                     world:emit("entity_render", animatedEffect)
-                    love.graphics.setCanvas()
+                    love.graphics.setCanvas(storedCanvas)
                     animatedEffect:destroy()
                 end
             )

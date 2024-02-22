@@ -52,7 +52,7 @@ function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, pawnName, x, 
         local price = self:_getPawnPrice(pawnTypeAssemblage)
 
         if self.coinManager.coins >= price then
-            util.entityAssembler.assemble(
+            local newPawn = util.entityAssembler.assemble(
                 self.world, pawnTypeAssemblage, x, y, true, powerups
             )
 
@@ -63,6 +63,8 @@ function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, pawnName, x, 
             sound:play()
 
             self.coinManager:removeCoins(price)
+
+            self.world:emit("event_spawnedFriendlyPawn", newPawn)
         end
 
     end

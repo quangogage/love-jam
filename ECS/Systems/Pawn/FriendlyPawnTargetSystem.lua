@@ -14,6 +14,13 @@ return function (concord)
     ----------------------------
     -- [[ Public Functions ]] --
     ----------------------------
+    function FriendlyPawnTargetSystem:event_newLevel()
+        self.playerHasCommanded = false
+    end
+    function FriendlyPawnTargetSystem:event_playerCommand()
+        self.playerHasCommanded = true
+    end
+
     -- If a friendly pawn's target dies, have it auto-target
     -- the next nearest enemy pawn.
     ---@param pawn BasicPawn | Pawn | Entity | table
@@ -29,13 +36,22 @@ return function (concord)
         end
     end
 
+    -- After a new friendly pawn is spawned, have it auto-target.
+    -- (so long as the player has made their first move in the level).
+    ---@param pawn BasicPawn | Pawn | Entity | table
+    function FriendlyPawnTargetSystem:event_spawnedFriendlyPawn(pawn)
+        if self.playerHasCommanded then
+            self:_targetClosestEnemyPawn(pawn)
+        end
+    end
+
 
     -----------------------------
     -- [[ Private Functions ]] --
     -----------------------------
     -- Target the closest enemy pawn.
     ---@param friendlyPawn BasicPawn | Pawn | Entity | table
-    ---@param ignoreEntities table
+    ---@param ignoreEntities? table
     function FriendlyPawnTargetSystem:_targetClosestEnemyPawn(friendlyPawn, ignoreEntities)
         local closestEnemyPawn = nil
         local closestDistance = math.huge

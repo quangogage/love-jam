@@ -12,7 +12,7 @@ return function (concord)
     local EnemyPawnTargetSystem = concord.system({
         enemyEntities    = { 'hostile', 'combatProperties', 'health' },
         friendlyEntities = { 'friendly', 'health' },
-        friendlyPawns       = { 'friendly', "isPawn" },
+        friendlyPawns    = { 'friendly', 'isPawn' },
     })
 
 
@@ -68,9 +68,9 @@ return function (concord)
         end
         local closestFriendlyPawn = nil
         local closestDistance     = math.huge
-        ignoreEntities = ignoreEntities or {}
+        ignoreEntities            = ignoreEntities or {}
 
-        local shouldIgnore = function (entity)
+        local shouldIgnore        = function (entity)
             for _, ignoreEntity in ipairs(ignoreEntities) do
                 if entity == ignoreEntity then
                     return true
@@ -80,7 +80,7 @@ return function (concord)
         end
 
         for _, friendlyEntity in ipairs(self.friendlyEntities) do
-            if not shouldIgnore(friendlyEntity) and not friendlyEntity:get("isDead") then
+            if not shouldIgnore(friendlyEntity) and not friendlyEntity:get('isDead') then
                 local distance = math.sqrt(
                     (enemyPawn.position.x - friendlyEntity.position.x) ^ 2 +
                     (enemyPawn.position.y - friendlyEntity.position.y) ^ 2
@@ -106,7 +106,7 @@ return function (concord)
             if #self.friendlyPawns > 0 then
                 local nearestPawn = self.friendlyPawns[1]
                 local nearestPawnDistance = math.huge
-                for _,friendlyPawn in ipairs(self.friendlyPawns) do
+                for _, friendlyPawn in ipairs(self.friendlyPawns) do
                     local thisDistance = math.sqrt(
                         (e.groundPosition.x - friendlyPawn.groundPosition.x) ^ 2 +
                         (e.groundPosition.y - friendlyPawn.groundPosition.y) ^ 2

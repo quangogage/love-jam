@@ -22,6 +22,7 @@ return function (concord, coinManager)
         self.playerHasCommanded = true
     end
 
+    -- Add coins when an enemy dies.
     function CoinGenerationSystem:event_entityDied(e)
         if e:get("hostile") and e:get("coinValue") then
             coinManager:addCoins(e:get("coinValue").value)

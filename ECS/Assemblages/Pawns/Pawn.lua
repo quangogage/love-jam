@@ -18,5 +18,5 @@ return function (e, x, y)
         :give('groundPosition')
         :give('isPawn')
         :give('armor', 0)
-        :give("coinValue", 1)
+        :give('coinValue', 0.5)
 end

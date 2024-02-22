@@ -20,7 +20,7 @@ local CoinManager = Goop.Class({
     dynamic = {
         coins    = STARTING_AMOUNT,
         genTimer = 0,
-        genRate  = 5
+        genRate  = 8
     }
 })
 
@@ -44,6 +44,7 @@ function CoinManager:getGenerationRate()
     return 1 / self.genRate
 end
 -- Called from CoinGenerationSystem.... don't ask...
+-- Continously generate a small amt of coins as you play.
 function CoinManager:generateCoins(dt)
     self.genTimer = self.genTimer + dt
     if self.genTimer >= self.genRate then

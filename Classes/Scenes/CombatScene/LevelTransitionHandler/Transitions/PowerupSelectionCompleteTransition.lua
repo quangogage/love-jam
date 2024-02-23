@@ -21,6 +21,7 @@ function PowerupSelectionCompleteTransition:update(dt)
     if self.timer >= self.waitTime then
         self.eventManager:broadcast("closePowerupSelectionMenu")
         self.eventManager:broadcast("loadNextLevel")
+        self.eventManager:broadcast("enableCameraControls")
         self.renderCanvas:beginZoomIn()
         self.transitionHandler:setIdle()
     end

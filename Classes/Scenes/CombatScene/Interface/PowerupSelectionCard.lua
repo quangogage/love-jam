@@ -2,12 +2,12 @@
 --
 --
 
-local Element            = require('Classes.Elements.Element')
+local util         = require('util')({ 'graphics' })
+local Element      = require('Classes.Elements.Element')
 
-local CARD_CORNER_RADIUS = 10
-local NAME_FONT          = love.graphics.newFont(fonts.title, 34)
-local DESC_FONT          = love.graphics.newFont(fonts.sub, 18)
-local TEXT_PADDING       = 10
+local NAME_FONT    = love.graphics.newFont(fonts.title, 34)
+local DESC_FONT    = love.graphics.newFont(fonts.sub, 18)
+local TEXT_PADDING = 50
 
 
 ---@class PowerupSelectionCard : Element
@@ -20,6 +20,7 @@ local TEXT_PADDING       = 10
 ---@field width number
 ---@field height number
 ---@field animation table
+---@field bgImage love.Image
 local PowerupSelectionCard = Goop.Class({
     extends = Element,
     parameters = {
@@ -31,13 +32,14 @@ local PowerupSelectionCard = Goop.Class({
     dynamic = {
         timer           = 0,
         animationOffset = 0,
-        width           = 200,
-        height          = 200,
+        width           = 260,
+        height          = 358,
         animation       = {
             y     = 50,
             speed = 2,
             alpha = 0
-        }
+        },
+        bgImage         = love.graphics.newImage('assets/images/ui/card.png'),
     }
 })
 
@@ -80,25 +82,20 @@ function PowerupSelectionCard:_updateAnimation(dt)
     self.position.y = self.position.y + self.animation.y
 end
 function PowerupSelectionCard:_drawBackground()
-    if self.selected then
-        love.graphics.setColor(0, 1, 0)
-        love.graphics.rectangle('fill', self.position.x, self.position.y, self.width, self.height, CARD_CORNER_RADIUS, CARD_CORNER_RADIUS)
-    end
+    local scale = util.graphics.getScaleForDimensions(self.bgImage, self.width, self.height)
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
-    love.graphics.setLineWidth(2)
-    love.graphics.rectangle('line', self.position.x, self.position.y, self.width, self.height, CARD_CORNER_RADIUS,
-        CARD_CORNER_RADIUS)
+    love.graphics.draw(self.bgImage, self.position.x, self.position.y, 0, scale.x, scale.y)
 end
 function PowerupSelectionCard:_printName()
     love.graphics.setFont(NAME_FONT)
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
-    love.graphics.printf(self.name, self.position.x + TEXT_PADDING / 2, self.position.y + 10, self.width - TEXT_PADDING,
+    love.graphics.printf(self.name, self.position.x + TEXT_PADDING / 2, self.position.y + 30, self.width - TEXT_PADDING,
         'center')
 end
 function PowerupSelectionCard:_printDescription()
     love.graphics.setFont(DESC_FONT)
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
-    love.graphics.printf(self.description, self.position.x + TEXT_PADDING / 2, self.position.y + 60,
+    love.graphics.printf(self.description, self.position.x + TEXT_PADDING / 2, self.position.y + self.height - 115,
         self.width - TEXT_PADDING, 'center')
 end
 

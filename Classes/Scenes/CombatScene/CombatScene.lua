@@ -47,6 +47,7 @@ local RenderCanvas           = require('Classes.Scenes.CombatScene.RenderCanvas'
 ---@field disableCameraControls boolean
 ---@field songs love.Source[]
 ---@field ambienceTrack love.Source
+---@field victoryJingle love.Source
 local CombatScene            = Goop.Class({
     arguments = { 'eventManager' },
     static = {

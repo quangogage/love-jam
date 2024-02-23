@@ -21,6 +21,7 @@ local CARD_ANIMATION_OFFSET = 0.5
 ---@field songWaitTimer number
 ---@field playedSong boolean
 ---@field bgImage love.Image
+---@field teller table
 local PowerupSelectionMenu = Goop.Class({
     arguments = { 'eventManager', 'combatScene' },
     dynamic = {
@@ -29,7 +30,7 @@ local PowerupSelectionMenu = Goop.Class({
         songWaitTime  = 0,
         songWaitTimer = 0.2,
         song          = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream'),
-        bgImage       = love.graphics.newImage('assets/images/ui/bg.png')
+        bgImage       = love.graphics.newImage('assets/images/ui/bg.png'),
     }
 })
 PowerupSelectionMenu.song:setVolume(settings:getVolume('music'))

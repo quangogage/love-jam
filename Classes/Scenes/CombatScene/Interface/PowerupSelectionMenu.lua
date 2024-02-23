@@ -2,6 +2,7 @@
 --
 --
 
+local util = require('util')({ 'graphics' })
 local powerups = require('lists.powerups')
 local PowerupSelectionCard = require('Classes.Scenes.CombatScene.Interface.PowerupSelectionCard')
 
@@ -19,17 +20,19 @@ local CARD_ANIMATION_OFFSET = 0.5
 ---@field songWaitTime number
 ---@field songWaitTimer number
 ---@field playedSong boolean
+---@field bgImage love.Image
 local PowerupSelectionMenu = Goop.Class({
     arguments = { 'eventManager', 'combatScene' },
     dynamic = {
-        active = false,
-        cards = {},
+        active        = false,
+        cards         = {},
         songWaitTime  = 0,
-        songWaitTimer = 1,
-        song          = love.audio.newSource("assets/audio/songs/Fortune-Teller.mp3", "stream"),
+        songWaitTimer = 0.2,
+        song          = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream'),
+        bgImage       = love.graphics.newImage('assets/images/ui/bg.png')
     }
 })
-PowerupSelectionMenu.song:setVolume(settings:getVolume("music"))
+PowerupSelectionMenu.song:setVolume(settings:getVolume('music'))
 PowerupSelectionMenu.song:setLooping(true)
 
 ----------------------------
@@ -73,11 +76,15 @@ function PowerupSelectionMenu:update(dt)
 end
 function PowerupSelectionMenu:draw()
     if self.active then
-        self:_drawBackgroundOverlay()
         for _, card in ipairs(self.cards) do
             card:draw()
         end
     end
+end
+function PowerupSelectionMenu:drawBackground()
+    local scale = util.graphics.getScaleForDimensions(self.bgImage, love.graphics.getWidth(), love.graphics.getHeight())
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(self.bgImage, 0, 0, 0, scale.x, scale.y)
 end
 function PowerupSelectionMenu:mousepressed(x, y, button)
     self:_selectCard(x, y, button)
@@ -87,9 +94,6 @@ end
 -----------------------------
 -- [[ Private Functions ]] --
 -----------------------------
-function PowerupSelectionMenu:_drawBackgroundOverlay()
-    -- zzz...
-end
 function PowerupSelectionMenu:_generateCards()
     self.cards = {}
     for i = 1, 3 do
@@ -133,13 +137,15 @@ end
 
 function PowerupSelectionMenu:_createSubscriptions()
     self.subscriptions = {}
-    self.subscriptions["interface_selectPawnType"] = self.eventManager:subscribe("interface_selectPawnType", function(pawnType)
-        if self.active and self.selectedPowerupName and not self.hasSelected then
-            self.eventManager:broadcast("interface_addPowerupToType", pawnType, self.selectedPowerupName)
-            self.hasSelected = true
-            self.eventManager:broadcast("endPowerupSelection")
-        end
-    end)
+    self.subscriptions['interface_selectPawnType'] = self.eventManager:subscribe('interface_selectPawnType',
+        function (
+            pawnType)
+            if self.active and self.selectedPowerupName and not self.hasSelected then
+                self.eventManager:broadcast('interface_addPowerupToType', pawnType, self.selectedPowerupName)
+                self.hasSelected = true
+                self.eventManager:broadcast('endPowerupSelection')
+            end
+        end)
 end
 function PowerupSelectionMenu:_destroySubscriptions()
     for event, uuid in pairs(self.subscriptions) do

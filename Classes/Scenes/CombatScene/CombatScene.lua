@@ -139,6 +139,8 @@ function CombatScene:update(dt)
     self.pauseMenu:update(dt)
 end
 function CombatScene:draw()
+    self.powerupSelectionMenu:drawBackground()
+
     self.renderCanvas:startDrawing()
     self.camera:set()
     self.backgroundRenderer:draw()

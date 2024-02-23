@@ -43,11 +43,11 @@ end
 --------------------------
 function LevelStartingTransition:init()
     self.eventManager:broadcast("disableCameraControls")
+    self.eventManager:broadcast("centerCameraOnFriendlyBase")
 end
 function LevelStartingTransition:update(dt)
     self.timer = self.timer + dt
     self:_handleFades(dt)
-    self.eventManager:broadcast("centerCameraOnFriendlyBase")
 end
 function LevelStartingTransition:draw()
     self:_drawOverlay()

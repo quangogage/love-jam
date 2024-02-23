@@ -121,10 +121,10 @@ end
 function CombatScene:update(dt)
     if not self.disableWorldUpdate and not self.paused then
         self.world:emit('update', dt)
-        self.camera:update(dt)
         if not self.disableCameraControls then
             self.cameraControls:update(dt)
         end
+        self.camera:update(dt)
     end
     if not self.paused then
         self.pawnSelectionMenu:update(dt)

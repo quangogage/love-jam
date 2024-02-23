@@ -140,6 +140,8 @@ function PowerupSelectionMenu:update(dt)
         else
             self.highlightBar.alpha = 0
         end
+    else
+        self.highlightBar.alpha = 0
     end
     self:_updateFinger(dt)
     self:_updateSpeechBubble(dt)

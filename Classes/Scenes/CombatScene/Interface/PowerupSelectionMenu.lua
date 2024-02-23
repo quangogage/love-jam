@@ -15,14 +15,22 @@ local CARD_ANIMATION_OFFSET = 0.5
 ---@field selectedPowerupName string - Set by clicking a card.
 ---@field fadingOut boolean
 ---@field hasSelected boolean
+---@field song love.Source
+---@field songWaitTime number
+---@field songWaitTimer number
+---@field playedSong boolean
 local PowerupSelectionMenu = Goop.Class({
     arguments = { 'eventManager', 'combatScene' },
     dynamic = {
         active = false,
-        cards = {}
+        cards = {},
+        songWaitTime  = 0,
+        songWaitTimer = 1,
+        song          = love.audio.newSource("assets/audio/songs/Fortune-Teller.mp3", "stream"),
     }
 })
-
+PowerupSelectionMenu.song:setVolume(settings:getVolume("music"))
+PowerupSelectionMenu.song:setLooping(true)
 
 ----------------------------
 -- [[ Public Functions ]] --
@@ -32,11 +40,14 @@ function PowerupSelectionMenu:open()
     self.active = true
     self.eventManager:broadcast('disableWorldUpdate')
     self:_generateCards()
+    self.songWaitTime = 0
+    self.playedSong = false
 end
 function PowerupSelectionMenu:close()
     self.active = false
     self.selectedPowerupName = nil
     self.eventManager:broadcast('enableWorldUpdate')
+    self.song:stop()
 end
 
 --------------------------
@@ -51,6 +62,13 @@ end
 function PowerupSelectionMenu:update(dt)
     for _, card in ipairs(self.cards) do
         card:update(dt)
+    end
+    if self.active then
+        self.songWaitTime = self.songWaitTime + dt
+        if self.songWaitTime > self.songWaitTimer and not self.playedSong then
+            self.song:play()
+            self.playedSong = true
+        end
     end
 end
 function PowerupSelectionMenu:draw()

@@ -78,8 +78,11 @@ function CombatScene:loadNextLevel()
     -- Disable pawn generation.
     -- See PawnGenerationSystem.
     self.world:emit('event_newLevel')
+
+    self:_startCombatAudio()
 end
 function CombatScene:completeLevel()
+    self:_stopCombatAudio()
     self.levelTransitionHandler:setState('level-complete')
 end
 
@@ -106,7 +109,6 @@ function CombatScene:init()
     self:loadNextLevel()
     self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self, self.renderCanvas)
     self.levelTransitionHandler:setState('scene-starting')
-    self:_initSound()
     -- DEV:
     console.world = self.world
     console:launchOptions()
@@ -299,6 +301,7 @@ function CombatScene:_createSubscriptions()
             self.camera:setToMaxZoom()
         end)
     self.subscriptions['openPowerupSelectionMenu'] = self.eventManager:subscribe('openPowerupSelectionMenu', function ()
+        self:_stopCombatAudio()
         self.powerupSelectionMenu:open()
     end)
     self.subscriptions['disableWorldUpdate'] = self.eventManager:subscribe('disableWorldUpdate', function ()
@@ -323,7 +326,7 @@ function CombatScene:_destroySubscriptions()
         self.eventManager:unsubscribe(event, uuid)
     end
 end
-function CombatScene:_initSound()
+function CombatScene:_startCombatAudio()
     for _, song in ipairs(self.songs) do
         song:setVolume(settings:getVolume('music'))
         song:setLooping(true)
@@ -333,5 +336,11 @@ function CombatScene:_initSound()
     self.ambienceTrack:setLooping(true)
     self.ambienceTrack:setVolume(settings:getVolume('sfx') * 0.2)
     self.ambienceTrack:play()
+end
+function CombatScene:_stopCombatAudio()
+    for _, song in ipairs(self.songs) do
+        song:stop()
+    end
+    self.ambienceTrack:stop()
 end
 return CombatScene

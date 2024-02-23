@@ -84,19 +84,21 @@ function PawnSelectionMenu:_initCards()
     local x = self.cardScreenPadding
     self.cards = {}
     for _, pawnType in ipairs(pawnTypes) do
-        local newCard = PawnSelectionCard({
-            anchor         = { x = 0, y = 1 },
-            offset         = { x = x, y = -self.height / 2 - self.cardHeight / 2 },
-            width          = self.cardWidth,
-            height         = self.cardHeight,
-            name           = pawnType.name,
-            description    = pawnType.description,
-            price          = pawnType.price,
-            powerups       = self.powerupStateManager:getPowerupsForPawnType(pawnType.name),
-            assemblageName = pawnType.assemblageName
-        })
-        x = x + self.cardWidth + self.cardSpacing
-        table.insert(self.cards, newCard)
+        if not pawnType.hostileOnly then
+            local newCard = PawnSelectionCard({
+                anchor         = { x = 0, y = 1 },
+                offset         = { x = x, y = -self.height / 2 - self.cardHeight / 2 },
+                width          = self.cardWidth,
+                height         = self.cardHeight,
+                name           = pawnType.name,
+                description    = pawnType.description,
+                price          = pawnType.price,
+                powerups       = self.powerupStateManager:getPowerupsForPawnType(pawnType.name),
+                assemblageName = pawnType.assemblageName
+            })
+            x = x + self.cardWidth + self.cardSpacing
+            table.insert(self.cards, newCard)
+        end
     end
 end
 function PawnSelectionMenu:_drawBackground()

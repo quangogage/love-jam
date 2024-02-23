@@ -22,5 +22,17 @@ return {
         assemblageName = "Heavy",
         description    = "Here to save the day!",
         price          = 6,
+    },
+
+    -- ──────────────────────────────────────────────────────────────────────
+    -- ╭─────────────────────────────────────────────────────────╮
+    -- │ Hostile only:                                           │
+    -- ╰─────────────────────────────────────────────────────────╯
+    {
+        name           = "LilMeleeEnemy",
+        assemblageName = "LilMeleeEnemy",
+        description    = "Here to ruin your day!",
+        price          = 1,
+        hostileOnly    = true,
     }
 }

@@ -2,6 +2,7 @@
 --
 ---@class Knight : Pawn
 
+
 local Vec2                = require('Classes.Types.Vec2')
 local CharacterAssemblage = require('ECS.Assemblages.Pawns.Pawn')
 local dimensions          = Vec2(40, 80)

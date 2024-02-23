@@ -7,6 +7,9 @@ return {
     -- Passive generation rate (generate a coin every 'passiveRate' seconds):
     coinGenerationRate = 8,
 
+    -- How many coins you get at the start of a new level:
+    newLevelCoinReward = 3,
+
     -- How much each one is worth.
     enemyCoinReward = {
         tower = 2,

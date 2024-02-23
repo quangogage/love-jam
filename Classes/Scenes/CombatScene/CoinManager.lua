@@ -10,15 +10,13 @@
 --
 -- See CoinGenerationSystem for where those coins actually get added.
 
-local STARTING_AMOUNT = 3
-
 ---@class CoinManager
 ---@field coins integer
 ---@field genTimer number
 ---@field genRate number
 local CoinManager = Goop.Class({
     dynamic = {
-        coins    = STARTING_AMOUNT,
+        coins    = 0,
         genTimer = 0,
         genRate  = KNOBS.coinGenerationRate
     }

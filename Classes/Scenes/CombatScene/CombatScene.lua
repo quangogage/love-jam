@@ -73,8 +73,7 @@ function CombatScene:loadNextLevel()
     -- Clear out all current entities and generate new ones.
     self:_generateLevel(self.currentLevelIndex)
 
-    -- 
-    self.coinManager:addCoins(3)
+    self.coinManager:addCoins(KNOBS.newLevelCoinReward)
 
     -- Disable pawn generation.
     -- See PawnGenerationSystem.

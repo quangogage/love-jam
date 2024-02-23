@@ -55,6 +55,7 @@ local CombatScene            = Goop.Class({
             love.audio.newSource('assets/audio/songs/warfare-1.mp3', 'stream'),
             love.audio.newSource('assets/audio/songs/warfare-2.mp3', 'stream'),
         },
+        victoryJingle = love.audio.newSource('assets/audio/songs/victory.wav', 'stream'),
         ambienceTrack = love.audio.newSource('assets/audio/sfx/battle-ambience.mp3', 'stream'),
     }
 })
@@ -83,6 +84,7 @@ function CombatScene:loadNextLevel()
 end
 function CombatScene:completeLevel()
     self:_stopCombatAudio()
+    self.victoryJingle:play()
     self.levelTransitionHandler:setState('level-complete')
 end
 

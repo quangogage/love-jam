@@ -14,11 +14,14 @@ local FONT = love.graphics.newFont(fonts.title, 48)
 ---@field skipBuffer number
 ---@field renderCanvas RenderCanvas
 ---@field waitTime number
+---@field zoomWaitTime number
+---@field openMenuWaitTime number
 local LevelCompleteTransition = Goop.Class({
     arguments = { 'transitionHandler', 'eventManager', 'renderCanvas' },
     dynamic = {
-        timer    = 0,
-        waitTime = 1,
+        timer = 0,
+        zoomWaitTime = 1,
+        openMenuWaitTime = 3,
     }
 })
 
@@ -28,11 +31,17 @@ local LevelCompleteTransition = Goop.Class({
 --------------------------
 function LevelCompleteTransition:init()
     self.eventManager:broadcast("disableWorldUpdate")
-    self.renderCanvas:beginZoomOut()
 end
 function LevelCompleteTransition:update(dt)
     self.timer = self.timer + dt
-    if self.timer >= self.waitTime then
+    -- Wait a moment before zooming out.
+    if self.timer >= self.zoomWaitTime and not self.zoomedOut then
+        self.renderCanvas:beginZoomOut()
+        self.zoomedOut = true
+    end
+
+    -- Wait to actually open the powerup menu.
+    if self.timer >= self.openMenuWaitTime then
         self.eventManager:broadcast("openPowerupSelectionMenu")
         self.transitionHandler:setIdle()
     end

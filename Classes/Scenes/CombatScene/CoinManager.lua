@@ -20,7 +20,7 @@ local CoinManager = Goop.Class({
     dynamic = {
         coins    = STARTING_AMOUNT,
         genTimer = 0,
-        genRate  = 8
+        genRate  = KNOBS.coinGenerationRate
     }
 })
 

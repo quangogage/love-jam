@@ -4,6 +4,10 @@ return {
     -- │ Coin values:                                            │
     -- ╰─────────────────────────────────────────────────────────╯
 
+    -- Passive generation rate (generate a coin every 'passiveRate' seconds):
+    coinGenerationRate = 8,
+
+    -- How much each one is worth.
     enemyCoinReward = {
         tower = 2,
         meleeEnemy = 0.5,

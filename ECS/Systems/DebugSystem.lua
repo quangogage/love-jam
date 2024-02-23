@@ -117,7 +117,7 @@ return function (concord, camera, onLevelComplete, coinManager)
             if key == "t" then
                 util.entityAssembler.assemble(
                     self:getWorld(),
-                    'RangedEnemy',
+                    'LilMeleeEnemy',
                     x, y
                 )
             end

@@ -19,12 +19,10 @@ return function (e, x, y, friendly, powerups)
         :give('dimensions', dimensions.width, dimensions.height)
         :give('combatProperties', 'melee', {
             damageAmount = KNOBS.meleeEnemy.damageAmount,
-            attackSpeed = KNOBS.meleeEnemy.attackSpeed,
-            range = KNOBS.meleeEnemy.range
+            attackSpeed  = KNOBS.meleeEnemy.attackSpeed,
+            range        = KNOBS.meleeEnemy.range
         })
-        --:give('pawnAnimations', 'knight')
-        :give("renderRectangle", dimensions.width, dimensions.height)
-        :give("color", 1, 0, 0)
+        :give('pawnAnimations', 'enemy_knight')
         :give('pushbackRadius', 35)
         :give('groundPosition', 0, 30)
         :give('coinValue', KNOBS.enemyCoinReward.meleeEnemy)

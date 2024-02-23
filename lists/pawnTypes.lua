@@ -34,5 +34,12 @@ return {
         description    = "Here to ruin your day!",
         price          = 1,
         hostileOnly    = true,
+    },
+    {
+        name          = "RangedEnemy",
+        assemblageName = "RangedEnemy",
+        description    = "Here to ruin your day!",
+        price          = 2,
+        hostileOnly    = true,
     }
 }

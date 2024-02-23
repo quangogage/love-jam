@@ -36,7 +36,7 @@ function CoinManager:removeCoins(amount)
     self.coins = self.coins - amount
 end
 function CoinManager:resetCoins()
-    self.coins = STARTING_AMOUNT
+    self.coins = 0
 end
 -- Get a number representing the amount of coins being generated per second.
 ---@return number

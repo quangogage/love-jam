@@ -5,9 +5,9 @@
 local util         = require('util')({ 'graphics' })
 local Element      = require('Classes.Elements.Element')
 
-local NAME_FONT    = love.graphics.newFont(fonts.title, 34)
-local DESC_FONT    = love.graphics.newFont(fonts.sub, 18)
-local TEXT_PADDING = 50
+local NAME_FONT    = love.graphics.newFont(fonts.title, 34 * 0.85)
+local DESC_FONT    = love.graphics.newFont(fonts.sub, 18 * 0.85)
+local TEXT_PADDING = 35
 
 
 ---@class PowerupSelectionCard : Element
@@ -33,8 +33,8 @@ local PowerupSelectionCard = Goop.Class({
     dynamic = {
         timer           = 0,
         animationOffset = 0,
-        width           = 260,
-        height          = 358,
+        width           = 260 * 0.85,
+        height          = 358 * 0.85,
         hovered         = false,
         animation       = {
             y     = 50,

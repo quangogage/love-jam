@@ -198,7 +198,55 @@ local animationSets = {
             upLeft    = 'assets/images/heavy/dead_up_left'
         }
     },
-
+    enemy_ranger = {
+        attack = {
+            perFrameFramerateOffset = {
+                [2] = 5     -- Second frame will last 0.5 seconds longer.
+            },
+            framerate               = 0.1,
+            up                      = 'assets/images/enemy_ranger/attack_up',
+            down                    = 'assets/images/enemy_ranger/attack_down',
+            left                    = 'assets/images/enemy_ranger/attack_left',
+            right                   = 'assets/images/enemy_ranger/attack_right',
+            downRight               = 'assets/images/enemy_ranger/attack_down_right',
+            downLeft                = 'assets/images/enemy_ranger/attack_down_left',
+            upRight                 = 'assets/images/enemy_ranger/attack_up_right',
+            upLeft                  = 'assets/images/enemy_ranger/attack_up_left',
+        },
+        walk = {
+            framerate = 0.1,
+            up        = 'assets/images/enemy_ranger/walk_up',
+            down      = 'assets/images/enemy_ranger/walk_down',
+            left      = 'assets/images/enemy_ranger/walk_left',
+            right     = 'assets/images/enemy_ranger/walk_right',
+            downRight = 'assets/images/enemy_ranger/walk_down_right',
+            downLeft  = 'assets/images/enemy_ranger/walk_down_left',
+            upRight   = 'assets/images/enemy_ranger/walk_up_right',
+            upLeft    = 'assets/images/enemy_ranger/walk_up_left',
+        },
+        idle = {
+            framerate = 0.1,
+            up        = 'assets/images/enemy_ranger/idle_up',
+            down      = 'assets/images/enemy_ranger/idle_down',
+            left      = 'assets/images/enemy_ranger/idle_left',
+            right     = 'assets/images/enemy_ranger/idle_right',
+            downRight = 'assets/images/enemy_ranger/idle_down_right',
+            downLeft  = 'assets/images/enemy_ranger/idle_down_left',
+            upRight   = 'assets/images/enemy_ranger/idle_up_right',
+            upLeft    = 'assets/images/enemy_ranger/idle_up_left',
+        },
+        dead = {
+            framerate = 0.1,
+            up        = 'assets/images/enemy_ranger/dead_up',
+            down      = 'assets/images/enemy_ranger/dead_down',
+            left      = 'assets/images/enemy_ranger/dead_left',
+            right     = 'assets/images/enemy_ranger/dead_right',
+            downRight = 'assets/images/enemy_ranger/dead_down_right',
+            downLeft  = 'assets/images/enemy_ranger/dead_down_left',
+            upRight   = 'assets/images/enemy_ranger/dead_up_right',
+            upLeft    = 'assets/images/enemy_ranger/dead_up_left'
+        }
+    },
 }
 
 for setName, set in pairs(animationSets) do

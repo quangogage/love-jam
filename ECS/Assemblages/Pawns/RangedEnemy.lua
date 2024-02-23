@@ -30,9 +30,7 @@ return function (e, x, y, friendly, powerups)
             range        = KNOBS.rangedEnemy.range,
             sounds       = attackSounds
         })
-    -- :give('pawnAnimations', 'rangedEnemy')
-        :give('renderRectangle', dimensions.width, dimensions.height)
-        :give("color", 1, 0.5, 0.3)
+        :give('pawnAnimations', 'enemy_ranger')
         :give('pushbackRadius', 35)
         :give('groundPosition', 0, 30)
         :give('movement', {

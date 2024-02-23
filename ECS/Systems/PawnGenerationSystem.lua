@@ -56,11 +56,12 @@ return function (concord)
     function PawnGenerationSystem:_spawnPawn(e)
         local world = self:getWorld()
         if world then
+            local pawnType = e.pawnGeneration.pawnTypes[math.random(1, #e.pawnGeneration.pawnTypes)]
             local friendlyBase = world.friendlyBase
             local angle = math.atan2(friendlyBase.position.y - e.position.y, friendlyBase.position.x - e.position.x)
             local distance = 150
             local newPawn = util.entityAssembler.assemble(world,
-                e.pawnGeneration.pawnType,
+                pawnType,
                 e.position.x + math.cos(angle) * distance,
                 e.position.y + math.sin(angle) * distance,
                 e.friendly

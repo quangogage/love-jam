@@ -43,6 +43,9 @@ return function (e, x, y, friendly, powerups)
         :give('pushbackRadius', 45)
         :give('groundPosition', 0, 30)
         :give('scale', scale.x, scale.y)
+        :give("movement", {
+            walkSpeed = KNOBS.heavy.walkSpeed
+        })
 
     if friendly then
         e:give('friendly')

@@ -28,6 +28,9 @@ return function (e, x, y, friendly, powerups)
         :give('pushbackRadius', 35)
         :give('groundPosition', 0, 30)
         :give('coinValue', KNOBS.enemyCoinReward.meleeEnemy)
+        :give('movement', {
+            walkSpeed = KNOBS.meleeEnemy.walkSpeed
+        })
 
     if friendly then
         e:give('friendly')

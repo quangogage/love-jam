@@ -14,6 +14,7 @@ return {
     -- ╰─────────────────────────────────────────────────────────╯
     meleeEnemy = {
         health = 5,
+        walkSpeed = 1200,
         damageAmount = 1,
         attackSpeed = 1,
         range = 120,
@@ -31,6 +32,7 @@ return {
     --
     knight = {
         health = 10,
+        walkSpeed = 1200,
         damageAmount = 1,
         attackSpeed = 1,
         range = 120,
@@ -38,6 +40,7 @@ return {
     },
     archer = {
         health = 7,
+        walkSpeed = 1400,
         damageAmount = 1,
         attackSpeed = 1.2,
         range = 420.69,
@@ -45,6 +48,7 @@ return {
     },
     mage = {
         health = 22,
+        walkSpeed = 1200,
         damageAmount = 2.8,
         attackSpeed = 1,
         range = 370,
@@ -52,6 +56,7 @@ return {
     },
     heavy = {
         health = 40,
+        walkSpeed = 900,
         damageAmount = 2.5,
         attackSpeed = 1.87,
         range = 160,

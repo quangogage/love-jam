@@ -48,6 +48,9 @@ return function (e, x, y, friendly, powerups)
         :give('pawnAnimations', 'archer')
         :give('pushbackRadius', 35)
         :give('groundPosition',0,30)
+        :give('movement', {
+            walkSpeed = KNOBS.archer.walkSpeed
+        })
 
     if friendly then
         e:give('friendly')

@@ -30,6 +30,7 @@ local Vec2 = require('Classes.Types.Vec2')
 ---@field canvasDimensionMultiplier number
 ---@field zoomedOut table
 ---@field zoomedIn table
+---@field crystalBallSize number
 local RenderCanvas = Goop.Class({
     dynamic = {
         shader                    = love.graphics.newShader(require('shaders.ballShader')),
@@ -158,9 +159,6 @@ function RenderCanvas:draw()
         self.overlayImage:getWidth() * 0.5,
         self.overlayImage:getHeight() * 0.5
     )
-
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.print(self.position.x)
 end
 
 

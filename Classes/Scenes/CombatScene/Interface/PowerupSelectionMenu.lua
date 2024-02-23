@@ -22,6 +22,7 @@ local CARD_ANIMATION_OFFSET = 0.5
 ---@field playedSong boolean
 ---@field bgImage love.Image
 ---@field teller table
+---@field speechBubble table
 local PowerupSelectionMenu = Goop.Class({
     arguments = { 'eventManager', 'combatScene' },
     dynamic = {
@@ -31,6 +32,20 @@ local PowerupSelectionMenu = Goop.Class({
         songWaitTimer = 0.2,
         song          = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream'),
         bgImage       = love.graphics.newImage('assets/images/ui/bg.png'),
+        speechBubble  = {
+            alpha  = 0,
+            text   = '',
+            font   = love.graphics.newFont(fonts.speechBubble, 30),
+            image  = love.graphics.newImage('assets/images/ui/chat.png'),
+            padding = 100,
+            prompts = {
+                "Choose wisely.",
+                "The battle is won before it begins.",
+                "It seems you will do well.",
+            },
+            anchor = { x = 0.25, y = 0 },
+            offset = { x = 0, y = 20 }
+        }
     }
 })
 PowerupSelectionMenu.song:setVolume(settings:getVolume('music'))
@@ -46,6 +61,7 @@ function PowerupSelectionMenu:open()
     self:_generateCards()
     self.songWaitTime = 0
     self.playedSong = false
+    self.speechBubble.text = self.speechBubble.prompts[love.math.random(1, #self.speechBubble.prompts)]
 end
 function PowerupSelectionMenu:close()
     self.active = false
@@ -74,8 +90,10 @@ function PowerupSelectionMenu:update(dt)
             self.playedSong = true
         end
     end
+    self:_updateSpeechBubble(dt)
 end
 function PowerupSelectionMenu:draw()
+    self:_drawSpeechBubble()
     if self.active then
         for _, card in ipairs(self.cards) do
             card:draw()
@@ -151,6 +169,29 @@ end
 function PowerupSelectionMenu:_destroySubscriptions()
     for event, uuid in pairs(self.subscriptions) do
         self.eventManager:unsubscribe(event, uuid)
+    end
+end
+
+function PowerupSelectionMenu:_drawSpeechBubble()
+    love.graphics.setColor(1, 1, 1, self.speechBubble.alpha)
+    love.graphics.draw(self.speechBubble.image,
+        love.graphics.getWidth() * self.speechBubble.anchor.x + self.speechBubble.offset.x,
+        love.graphics.getHeight() * self.speechBubble.anchor.y + self.speechBubble.offset.y
+    )
+    love.graphics.setFont(self.speechBubble.font)
+    love.graphics.setColor(1, 0, 1, self.speechBubble.alpha)
+    love.graphics.printf(self.speechBubble.text,
+        love.graphics.getWidth() * self.speechBubble.anchor.x + self.speechBubble.offset.x + self.speechBubble.padding / 2,
+        love.graphics.getHeight() * self.speechBubble.anchor.y + self.speechBubble.offset.y + 20,
+        self.speechBubble.image:getWidth() - self.speechBubble.padding,
+        'left'
+    )
+end
+function PowerupSelectionMenu:_updateSpeechBubble(dt)
+    if self.active then
+        self.speechBubble.alpha = math.min(self.speechBubble.alpha + dt * 2, 1)
+    else
+        self.speechBubble.alpha = math.max(self.speechBubble.alpha - dt * 2, 0)
     end
 end
 

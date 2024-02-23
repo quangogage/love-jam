@@ -6,9 +6,10 @@ KNOBS               = require('KNOBS')
 fonts               = {
     -- title = 'assets/fonts/BebasNeue-Regular.ttf',
     -- sub   = 'assets/fonts/RobotoCondensed-Light.ttf',
-    title  = 'assets/fonts/Mina is gone.ttf',
-    sub    = 'assets/fonts/TheanoDidot-Regular.ttf',
+    title        = 'assets/fonts/Mina is gone.ttf',
+    sub          = 'assets/fonts/TheanoDidot-Regular.ttf',
     -- sub = 'assets/fonts/Rise of Kingdom.ttf',
     --button = 'assets/fonts/Rudelsberg-Plakatschrift.ttf',
-    button = 'assets/fonts/TheanoDidot-Regular.ttf',
+    button       = 'assets/fonts/TheanoDidot-Regular.ttf',
+    speechBubble = 'assets/fonts/rsuf.ttf'
 }

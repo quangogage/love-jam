@@ -105,7 +105,7 @@ function CombatScene:init()
     self.currentLevelIndex = 0
     self:loadNextLevel()
     self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self, self.renderCanvas)
-    self.levelTransitionHandler:setState('level-starting')
+    self.levelTransitionHandler:setState('scene-starting')
     self:_initSound()
     -- DEV:
     console.world = self.world
@@ -307,11 +307,8 @@ function CombatScene:_createSubscriptions()
     self.subscriptions['enableWorldUpdate'] = self.eventManager:subscribe('enableWorldUpdate', function ()
         self.disableWorldUpdate = false
     end)
-    self.subscriptions['startLevelTransition'] = self.eventManager:subscribe('startLevelTransition', function ()
-        self.levelTransitionHandler:setState('level-starting')
-    end)
     self.subscriptions['endPowerupSelection'] = self.eventManager:subscribe('endPowerupSelection', function ()
-        self.levelTransitionHandler:setState('powerup-selection-ending')
+        self.levelTransitionHandler:setState('powerup-selection-complete')
     end)
     self.subscriptions['closePowerupSelectionMenu'] = self.eventManager:subscribe('closePowerupSelectionMenu',
         function ()

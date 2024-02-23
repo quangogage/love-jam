@@ -21,14 +21,14 @@ local Vec2 = require('Classes.Types.Vec2')
 ---@field targetValues table
 local RenderCanvas = Goop.Class({
     dynamic = {
-        shader           = love.graphics.newShader(require('shaders.ballShader')),
-        distortionAmount = 0,
-        refractionAmount = 0,
-        zoomFactor       = 1,
-        scale            = Vec2(1, 1),
-        position         = Vec2(0, 0),
-        offset = Vec2(0.5, 0.5),
-        targetValues = {
+        shader              = love.graphics.newShader(require('shaders.ballShader')),
+        distortionAmount    = 0,
+        refractionAmount    = 0,
+        zoomFactor          = 1,
+        scale               = Vec2(1, 1),
+        position            = Vec2(0, 0),
+        offset              = Vec2(0.5, 0.5),
+        targetValues        = {
             distortionAmount = 0,
             refractionAmount = 0,
             scale            = Vec2(1, 1),
@@ -58,6 +58,15 @@ function RenderCanvas:beginZoomOut()
     self.targetValues.position = Vec2(
         love.graphics.getWidth() * 0.25,
         love.graphics.getHeight() * 0.25
+    )
+end
+function RenderCanvas:beginZoomIn()
+    self.targetValues.distortionAmount = 0
+    self.targetValues.refractionAmount = 0
+    self.targetValues.scale = Vec2(1, 1)
+    self.targetValues.position = Vec2(
+        love.graphics.getWidth() * 0.5,
+        love.graphics.getHeight() * 0.5
     )
 end
 
@@ -99,8 +108,10 @@ function RenderCanvas:_updateTargetValues(dt)
     self.position.y = self.position.y + (self.targetValues.position.y - self.position.y) * self.positionTargetSpeed * dt
     self.scale.x = self.scale.x + (self.targetValues.scale.x - self.scale.x) * self.scaleTargetSpeed * dt
     self.scale.y = self.scale.y + (self.targetValues.scale.y - self.scale.y) * self.scaleTargetSpeed * dt
-    self.distortionAmount = self.distortionAmount + (self.targetValues.distortionAmount - self.distortionAmount) * self.shaderTargetSpeed * dt
-    self.refractionAmount = self.refractionAmount + (self.targetValues.refractionAmount - self.refractionAmount) * self.shaderTargetSpeed * dt
+    self.distortionAmount = self.distortionAmount +
+    (self.targetValues.distortionAmount - self.distortionAmount) * self.shaderTargetSpeed * dt
+    self.refractionAmount = self.refractionAmount +
+    (self.targetValues.refractionAmount - self.refractionAmount) * self.shaderTargetSpeed * dt
 end
 
 return RenderCanvas

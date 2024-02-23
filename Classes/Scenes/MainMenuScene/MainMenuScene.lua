@@ -20,7 +20,7 @@ local MainMenuScene = Goop.Class({
     dynamic = {
         elements    = {},
         hoverCursor = love.mouse.getSystemCursor('hand'),
-        song = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream'),
+        song = love.audio.newSource('assets/audio/songs/Fortunes-Misfavor.mp3', 'stream'),
     }
 })
 

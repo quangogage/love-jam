@@ -3,9 +3,9 @@
 --
 
 local transitions = {
-    ['level-starting']           = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.LevelStartingTransition"),
-    ['level-complete']           = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.LevelCompleteTransition"),
-    ['powerup-selection-ending'] = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.PowerupSelectionEndingTransition"),
+    ['level-complete']             = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.LevelCompleteTransition"),
+    ['scene-starting']             = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.SceneStartingTransition"),
+    ['powerup-selection-complete'] = require("Classes.Scenes.CombatScene.LevelTransitionHandler.Transitions.PowerupSelectionCompleteTransition")
 }
 
 ---@class LevelTransitionHandler
@@ -40,12 +40,16 @@ end
 --------------------------
 function LevelTransitionHandler:update(dt)
     if self.currentTransition then
-        self.currentTransition:update(dt)
+        if self.currentTransition.update then
+            self.currentTransition:update(dt)
+        end
     end
 end
 function LevelTransitionHandler:draw()
     if self.currentTransition then
-        self.currentTransition:draw()
+        if self.currentTransition.draw then
+            self.currentTransition:draw()
+        end
     end
 end
 function LevelTransitionHandler:mousepressed()

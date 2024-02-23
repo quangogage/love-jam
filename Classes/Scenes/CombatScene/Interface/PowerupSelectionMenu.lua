@@ -18,22 +18,29 @@ local CARD_ANIMATION_OFFSET = 0.5
 ---@field hasSelected boolean
 ---@field song love.Source
 ---@field songWaitTime number
----@field songWaitTimer number
 ---@field playedSong boolean
 ---@field bgImage love.Image
 ---@field teller table
 ---@field speechBubble table
 ---@field description table
 ---@field finger table
+---@field highlightBar table
 local PowerupSelectionMenu = Goop.Class({
     arguments = { 'eventManager', 'combatScene' },
     dynamic = {
+        timer = 0,
         active        = false,
         cards         = {},
         songWaitTime  = 0,
-        songWaitTimer = 0.2,
         song          = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream'),
         bgImage       = love.graphics.newImage('assets/images/ui/bg.png'),
+        highlightBar = {
+            image = love.graphics.newImage('assets/images/ui/yellow_gradient.png'),
+            scale = { x = 1, y = 0.85 },
+            anchor = { x = 0, y = 0.5 },
+            alpha = 0,
+            waitTime = 1,
+        },
         speechBubble  = {
             alpha  = 0,
             wiggleIntensity = 5,
@@ -91,7 +98,7 @@ function PowerupSelectionMenu:open()
     self.active = true
     self.eventManager:broadcast('disableWorldUpdate')
     self:_generateCards()
-    self.songWaitTime = 0
+    self.timer = 0
     self.playedSong = false
     self.speechBubble.text = self.speechBubble.prompts[love.math.random(1, #self.speechBubble.prompts)]
     self:_setFingerState('selectingPowerup')
@@ -123,10 +130,15 @@ function PowerupSelectionMenu:update(dt)
         end
     end
     if self.active then
-        self.songWaitTime = self.songWaitTime + dt
-        if self.songWaitTime > self.songWaitTimer and not self.playedSong then
+        self.timer = self.timer + dt
+        if self.timer > self.songWaitTime and not self.playedSong then
             self.song:play()
             self.playedSong = true
+        end
+        if self.timer >= self.highlightBar.waitTime then
+            self.highlightBar.alpha = self.highlightBar.alpha + (1 - self.highlightBar.alpha) * 5 * dt
+        else
+            self.highlightBar.alpha = 0
         end
     end
     self:_updateFinger(dt)
@@ -134,12 +146,15 @@ function PowerupSelectionMenu:update(dt)
 
     if not self.selectedPowerupName then
         self:_setFingerState("selectingPowerup")
+        self.highlightBar.anchor.y = 0.5
     else
         self:_setFingerState("selectingPawn")
+        self.highlightBar.anchor.y = 1
     end
     return hovered
 end
 function PowerupSelectionMenu:draw()
+    self:_drawHighlightBar()
     self:_drawSpeechBubble()
     self:_drawDescription()
     self:_drawFinger()
@@ -286,6 +301,15 @@ function PowerupSelectionMenu:_updateFinger(dt)
     local direction = self.finger.rotation + math.pi / 2
     self.finger.animX = math.cos(direction) * currentAmt
     self.finger.animY = math.sin(direction) * currentAmt
+end
+function PowerupSelectionMenu:_drawHighlightBar()
+    love.graphics.setColor(1, 1, 1, self.highlightBar.alpha)
+    love.graphics.draw(self.highlightBar.image,
+        love.graphics.getWidth() * self.highlightBar.anchor.x,
+        love.graphics.getHeight() * self.highlightBar.anchor.y,
+        0, self.highlightBar.scale.x, self.highlightBar.scale.y,
+        0, self.highlightBar.image:getHeight() / 2
+    )
 end
 
 return PowerupSelectionMenu

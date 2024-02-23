@@ -69,6 +69,8 @@ return function (concord)
                     e.position.y = e.position.y +
                         math.sin(direction) * e.movement.walkSpeed * dt
                 end
+            elseif e.target.position then
+                e:remove('target')
             end
         end
     end

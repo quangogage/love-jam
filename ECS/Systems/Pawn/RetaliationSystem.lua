@@ -15,9 +15,10 @@ return function (concord)
         local attacker = successfulAttack.attacker
         local target = successfulAttack.target
         if target:get("isPawn") then
-            -- If the person who attacked is not dead, and the person who
-            -- was attacked is not already targeting something.
-            if not attacker:get("isDead") and not target.target then
+
+            -- If the person who attacked is not dead.
+            -- And the person who was attacked is not already targeting something.
+            if not attacker:get("isDead") and not target:get("target") then
                 target:give('target', { entity = attacker })
             end
         end

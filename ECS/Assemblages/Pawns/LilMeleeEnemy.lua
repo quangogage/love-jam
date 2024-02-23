@@ -41,12 +41,4 @@ return function (e, x, y, friendly, powerups)
     if powerups then
         e:give('powerups', powerups)
     end
-
-    if friendly then
-        local sound = onSpawnSounds[math.random(1, #onSpawnSounds)]
-        if sound:isPlaying() then
-            sound = sound:clone()
-        end
-        sound:play()
-    end
 end

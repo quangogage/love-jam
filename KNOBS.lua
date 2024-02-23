@@ -12,24 +12,32 @@ return {
     -- ╭─────────────────────────────────────────────────────────╮
     -- │ Enemy pawn stats:                                       │
     -- ╰─────────────────────────────────────────────────────────╯
+    -- Lower attack speed = faster
+    -- `toggleRanges` console command to view the ranges of each pawn.
     meleeEnemy = {
-        health = 5,
+        health = 7,
         walkSpeed = 1200,
         damageAmount = 1,
         attackSpeed = 1,
         range = 120,
         price = 1
     },
+    rangedEnemy = {
+        health = 5,
+        walkSpeed = 1000,
+        damageAmount = 1,
+        attackSpeed = 1.2,
+        range = 420.69,
+        price = 2
+    },
 
 
-
+    -- ──────────────────────────────────────────────────────────────────────
     -- ╭─────────────────────────────────────────────────────────╮
     -- │ Player pawn stats:                                      │
     -- ╰─────────────────────────────────────────────────────────╯
-    -- ──────────────────────────────────────────────────────────────────────
     -- Lower attack speed = faster
     -- `toggleRanges` console command to view the ranges of each pawn.
-    --
     knight = {
         health = 10,
         walkSpeed = 1200,
@@ -40,7 +48,7 @@ return {
     },
     archer = {
         health = 7,
-        walkSpeed = 1400,
+        walkSpeed = 1000,
         damageAmount = 1,
         attackSpeed = 1.2,
         range = 420.69,

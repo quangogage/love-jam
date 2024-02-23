@@ -35,7 +35,7 @@ return function (concord)
 
         if not data.sounds then
             for _, sound in pairs(c.sounds) do
-                sound:setVolume(settings:getVolume("sfx") * 0.2)
+                sound:setVolume(settings:getVolume("sfx"))
             end
         end
     end)

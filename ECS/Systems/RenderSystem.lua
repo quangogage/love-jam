@@ -4,9 +4,9 @@
 -- Render behavior / what is rendered will depend on what other components the
 -- entity may have.
 
-local outlineShader = love.graphics.newShader(require('shaders.outlineShader'))
-outlineShader:send('outlineWidth', 20)
-outlineShader:send('outlineColor', { 0, 1, 0, 1 })
+local Vec2 = require("Classes.Types.Vec2")
+local selectedIcon = love.graphics.newImage("assets/images/icons/pointer.png")
+local selectedIconOffset = Vec2(0, -30)
 
 return function (concord)
     ---@class RenderSystem : System
@@ -50,6 +50,7 @@ return function (concord)
         if entity:get('image') then
             self:_renderImage(entity)
         end
+        self:_drawSelectedIcon(entity)
     end
 
     -- Render a rectangle at the entity position.
@@ -102,6 +103,21 @@ return function (concord)
             return entity:get('rotation').value
         end
         return 0
+    end
+
+    -- Draw a red arrow above the entity if they are selected.
+    ---@param e BasicPawn | Pawn | Entity | table
+    function RenderSystem:_drawSelectedIcon(e)
+        if e:get("selected") then
+            local dimensions = e.dimensions
+            local position = e.position
+            love.graphics.draw(selectedIcon, 
+                position.x + selectedIconOffset.x,
+                position.y - dimensions.height / 2 + selectedIconOffset.y,
+                0, 1, 1,
+                selectedIcon:getWidth() / 2, selectedIcon:getHeight() / 2
+            )
+        end
     end
 
 

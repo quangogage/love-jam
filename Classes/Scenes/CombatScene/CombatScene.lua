@@ -19,7 +19,7 @@ local FriendlySpawnHandler   = require('Classes.Scenes.CombatScene.FriendlySpawn
 local PowerupStateManager    = require('Classes.Scenes.CombatScene.PowerupStateManager')
 local PawnSelectionMenu      = require('Classes.Scenes.CombatScene.Interface.PawnSelectionMenu')
 local PowerupSelectionMenu   = require('Classes.Scenes.CombatScene.Interface.PowerupSelectionMenu')
-local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler')
+local LevelTransitionHandler = require('Classes.Scenes.CombatScene.LevelTransitionHandler.LevelTransitionHandler')
 local PauseMenu              = require('Classes.Scenes.CombatScene.Interface.PauseMenu.PauseMenu')
 local BackgroundRenderer     = require('Classes.Scenes.CombatScene.BackgroundRenderer')
 local CoinManager            = require('Classes.Scenes.CombatScene.CoinManager')
@@ -104,7 +104,7 @@ function CombatScene:init()
     self:_initLevels()
     self.currentLevelIndex = 0
     self:loadNextLevel()
-    self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self)
+    self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self, self.renderCanvas)
     self.levelTransitionHandler:setState('level-starting')
     self:_initSound()
     -- DEV:

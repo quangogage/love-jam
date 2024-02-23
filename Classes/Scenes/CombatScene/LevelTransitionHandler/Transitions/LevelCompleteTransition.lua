@@ -12,22 +12,13 @@ local FONT = love.graphics.newFont(fonts.title, 48)
 ---@field text table
 ---@field fadeBackIn boolean
 ---@field skipBuffer number
+---@field renderCanvas RenderCanvas
+---@field waitTime number
 local LevelCompleteTransition = Goop.Class({
-    arguments = { 'transitionHandler', 'eventManager' },
+    arguments = { 'transitionHandler', 'eventManager', 'renderCanvas' },
     dynamic = {
-        timer      = 0,
-        fadeBackIn = false,
-        skipBuffer = 0.1,
-        overlay = {
-            alpha     = 0,
-            fadeSpeed = 2,
-            waitTime  = 1,
-        },
-        text = {
-            alpha     = 0,
-            fadeSpeed = 2,
-            holdTime  = 2
-        }
+        timer    = 0,
+        waitTime = 1,
     }
 })
 
@@ -37,26 +28,21 @@ local LevelCompleteTransition = Goop.Class({
 --------------------------
 function LevelCompleteTransition:init()
     self.eventManager:broadcast("disableWorldUpdate")
+    self.renderCanvas:beginZoomOut()
 end
 function LevelCompleteTransition:update(dt)
     self.timer = self.timer + dt
-    self:_handleFade(dt)
+    if self.timer >= self.waitTime then
+        self.eventManager:broadcast("openPowerupSelectionMenu")
+        self.transitionHandler:setIdle()
+    end
 end
 function LevelCompleteTransition:draw()
-    self:_drawOverlay()
-    self:_printText()
+    -- self:_printText()
 end
 function LevelCompleteTransition:mousepressed()
-    if self.timer >= self.skipBuffer then
-        self.eventManager:broadcast("openPowerupSelectionMenu")
-        self.transitionHandler:setIdle()
-    end
 end
 function LevelCompleteTransition:keypressed(key)
-    if self.timer >= self.skipBuffer then
-        self.eventManager:broadcast("openPowerupSelectionMenu")
-        self.transitionHandler:setIdle()
-    end
 end
 
 

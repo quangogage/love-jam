@@ -19,7 +19,6 @@ local Vec2 = require('Classes.Types.Vec2')
 ---@field scale Vec2
 ---@field position Vec2
 ---@field offset Vec2
----@field targetValues table
 ---@field teller table
 ---@field overlayAlpha number
 ---@field overlayAlphaTarget number
@@ -29,6 +28,8 @@ local Vec2 = require('Classes.Types.Vec2')
 ---@field shaderTargetSpeed number
 ---@field overlayImage love.Image
 ---@field canvasDimensionMultiplier number
+---@field zoomedOut table
+---@field zoomedIn table
 local RenderCanvas = Goop.Class({
     dynamic = {
         shader                    = love.graphics.newShader(require('shaders.ballShader')),
@@ -39,6 +40,22 @@ local RenderCanvas = Goop.Class({
         position                  = Vec2(0, 0),
         offset                    = Vec2(0.5, 0.5),
         canvasDimensionMultiplier = 2,
+        zoomedOut                 = {
+            tellerScale      = Vec2(1, 1),
+            distortionAmount = 5,
+            refractionAmount = 5,
+            scale            = Vec2(0.5, 0.5),
+            position         = Vec2(love.graphics.getWidth() * 0.25, love.graphics.getHeight() * 0.25),
+            overlayAlpha     = 1
+        },
+        zoomedIn                  = {
+            tellerScale      = Vec2(15, 15),
+            distortionAmount = 0,
+            refractionAmount = 0,
+            scale            = Vec2(1, 1),
+            position         = Vec2(love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5),
+            overlayAlpha     = 0
+        },
         teller                    = {
             image          = love.graphics.newImage('assets/images/ui/teller.png'),
             anchor         = { x = 0.25, y = 0.25 },
@@ -50,20 +67,13 @@ local RenderCanvas = Goop.Class({
         },
         crystalBallSize           = 100,
         overlayImage              = love.graphics.newImage('assets/images/ui/overlay.png'),
-        targetValues              = {
-            distortionAmount = 0,
-            refractionAmount = 0,
-            scale            = Vec2(1, 1),
-            position         = Vec2(0, 0),
-            overlayAlpha     = 0,
-        },
         overlayAlpha              = 0,
         overlayAlphaTarget        = 0,
         overlayAlphaSpeed         = 2,
         positionTargetSpeed       = 2,
         scaleTargetSpeed          = 2,
         shaderTargetSpeed         = 1.5,
-        state                     = 'zoomingIn'
+        state                     = 'zoomedIn'
     }
 })
 
@@ -86,30 +96,18 @@ function RenderCanvas:stopDrawing()
 end
 -- Called from "LevelCompleteTransition".
 function RenderCanvas:beginZoomOut()
-    self.targetValues.distortionAmount = 5
-    self.targetValues.refractionAmount = 5
-    self.targetValues.scale = Vec2(0.5, 0.5)
-    self.targetValues.position = Vec2(
+    self.zoomedOut.position = Vec2(
         love.graphics.getWidth() * 0.25,
         love.graphics.getHeight() * 0.25
     )
-    self.teller.scale = { x = self.teller.zoomedOutScale.x, y = self.teller.zoomedOutScale.y }
-    self.teller.targetScale = self.teller.zoomedInScale
-    self.overlayAlphaTarget = 1
-    self.state = 'zoomingOut'
+    self.state = "zoomedOut"
 end
 function RenderCanvas:beginZoomIn()
-    self.targetValues.distortionAmount = 0
-    self.targetValues.refractionAmount = 0
-    self.targetValues.scale = Vec2(1, 1)
-    self.targetValues.position = Vec2(
+    self.zoomedIn.position = Vec2(
         love.graphics.getWidth() * self.offset.x,
         love.graphics.getHeight() * self.offset.y
     )
-    self.teller.scale = { x = self.teller.zoomedInScale.x, y = self.teller.zoomedInScale.y }
-    self.teller.targetScale = self.teller.zoomedOutScale
-    self.overlayAlphaTarget = 0
-    self.state = 'zoomingIn'
+    self.state = 'zoomedIn'
 end
 
 --------------------------
@@ -121,7 +119,10 @@ function RenderCanvas:init()
         love.graphics.getWidth() * self.offset.x,
         love.graphics.getHeight() * self.offset.y
     )
-    self.targetValues.position = self.position
+    self.zoomedIn.position = Vec2(
+        love.graphics.getWidth() * self.offset.x,
+        love.graphics.getHeight() * self.offset.y
+    )
 end
 function RenderCanvas:update(dt)
     self:_updateTargetValues(dt)
@@ -167,25 +168,17 @@ end
 -- [[ Private Functions ]] --
 -----------------------------
 function RenderCanvas:_updateTargetValues(dt)
-    local multiplier      = self.state == 'zoomingIn' and 0.2 or 1
-    self.position.x       = util.math.lerp(self.position.x, self.targetValues.position.x,
-        self.positionTargetSpeed * dt * multiplier)
-    self.position.y       = util.math.lerp(self.position.y, self.targetValues.position.y,
-        self.positionTargetSpeed * dt * multiplier)
-    self.scale.x          = util.math.lerp(self.scale.x, self.targetValues.scale.x,
-        self.scaleTargetSpeed * dt * multiplier)
-    self.scale.y          = util.math.lerp(self.scale.y, self.targetValues.scale.y,
-        self.scaleTargetSpeed * dt * multiplier)
-    self.distortionAmount = util.math.lerp(self.distortionAmount, self.targetValues.distortionAmount,
-        self.shaderTargetSpeed * dt * multiplier)
-    self.refractionAmount = util.math.lerp(self.refractionAmount, self.targetValues.refractionAmount,
-        self.shaderTargetSpeed * dt * multiplier)
-    self.teller.scale.x   = util.math.lerp(self.teller.scale.x, self.teller.targetScale.x,
-        self.teller.zoomSpeed * dt * multiplier)
-    self.teller.scale.y   = util.math.lerp(self.teller.scale.y, self.teller.targetScale.y,
-        self.teller.zoomSpeed * dt * multiplier)
-    self.overlayAlpha     = util.math.lerp(self.overlayAlpha, self.overlayAlphaTarget,
-        self.overlayAlphaSpeed * dt * multiplier)
+    local targetValues = self[self.state]
+    self.position.x = util.math.lerp(self.position.x, targetValues.position.x, self.positionTargetSpeed * dt)
+    self.position.y = util.math.lerp(self.position.y, targetValues.position.y, self.positionTargetSpeed * dt)
+    self.scale.x = util.math.lerp(self.scale.x, targetValues.scale.x, self.scaleTargetSpeed * dt)
+    self.scale.y = util.math.lerp(self.scale.y, targetValues.scale.y, self.scaleTargetSpeed * dt)
+    self.distortionAmount = util.math.lerp(self.distortionAmount, targetValues.distortionAmount, self.shaderTargetSpeed * dt)
+    self.refractionAmount = util.math.lerp(self.refractionAmount, targetValues.refractionAmount, self.shaderTargetSpeed * dt)
+    self.overlayAlpha = util.math.lerp(self.overlayAlpha, targetValues.overlayAlpha, self.overlayAlphaSpeed * dt)
+    self.teller.scale.x = util.math.lerp(self.teller.scale.x, targetValues.tellerScale.x, self.teller.zoomSpeed * dt)
+    self.teller.scale.y = util.math.lerp(self.teller.scale.y, targetValues.tellerScale.y, self.teller.zoomSpeed * dt)
+
 end
 
 function RenderCanvas:_stencilFunction()
@@ -203,7 +196,7 @@ function RenderCanvas:_initCanvas()
         love.graphics.getWidth() * self.canvasDimensionMultiplier,
         love.graphics.getHeight() * self.canvasDimensionMultiplier
     )
-    self.teller.zoomedOutScale = {
+    self.zoomedIn.tellerScale = {
         x = love.graphics.getWidth() / self.crystalBallSize,
         y = love.graphics.getWidth() / self.crystalBallSize
     }

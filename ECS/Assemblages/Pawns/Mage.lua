@@ -39,12 +39,12 @@ end
 return function (e, x, y, friendly, powerups)
     e
         :assemble(CharacterAssemblage, x, y)
-        :give('health', 22)
+        :give('health', KNOBS.mage.health)
         :give('dimensions', dimensions.x, dimensions.y)
         :give('combatProperties', 'fireball', {
-            damageAmount = 2.8,
-            attackSpeed  = 1,
-            range        = 370,
+            damageAmount = KNOBS.mage.damageAmount,
+            attackSpeed  = KNOBS.mage.attackSpeed,
+            range        = KNOBS.mage.range,
             sounds       = attackSounds
         })
         :give('pawnAnimations', 'mage')

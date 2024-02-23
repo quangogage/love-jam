@@ -15,5 +15,5 @@ return function (e, x, y)
         :give("pawnGeneration")
         :give("groundPosition", 0, 0)
         :give("isTower")
-        :give("coinValue", 2)
+        :give("coinValue", KNOBS.enemyCoinReward.tower)
 end

@@ -37,12 +37,12 @@ end
 return function (e, x, y, friendly, powerups)
     e
         :assemble(CharacterAssemblage, x, y)
-        :give('health', 7)
+        :give('health', KNOBS.archer.health)
         :give('dimensions', dimensions.width, dimensions.height)
         :give('combatProperties', 'bow', {
-            damageAmount = 1,
-            attackSpeed  = 1.2,
-            range        = 420.69,
+            damageAmount = KNOBS.archer.damageAmount,
+            attackSpeed  = KNOBS.archer.attackSpeed,
+            range        = KNOBS.archer.range,
             sounds       = attackSounds
         })
         :give('pawnAnimations', 'archer')

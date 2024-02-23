@@ -3,13 +3,13 @@ return {
         name           = "Knight",
         assemblageName = "Knight",
         description    = "Here to save the day!",
-        price          = 1,
+        price          = KNOBS.knight.price,
     },
     {
         name           = "Archer",
         assemblageName = "Archer",
         description    = "Here to save the day!",
-        price          = 2,
+        price          = KNOBS.archer.price,
     },
     {
         name           = "Mage",

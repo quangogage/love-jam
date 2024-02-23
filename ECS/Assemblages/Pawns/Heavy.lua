@@ -32,13 +32,12 @@ end
 return function (e, x, y, friendly, powerups)
     e
         :assemble(CharacterAssemblage, x, y)
-        :give('health', 40)
+        :give('health', KNOBS.heavy.health)
         :give('dimensions', dimensions.x, dimensions.y)
         :give('combatProperties', 'melee', {
-            ---zzz.
-            damageAmount = 2.5,
-            attackSpeed = 1.87,
-            range = 160
+            damageAmount = KNOBS.heavy.damageAmount,
+            attackSpeed = KNOBS.heavy.attackSpeed,
+            range = KNOBS.heavy.range
         })
         :give('pawnAnimations', 'heavy')
         :give('pushbackRadius', 45)

@@ -3,17 +3,31 @@ return {
     -- ╭─────────────────────────────────────────────────────────╮
     -- │ How much destroying each one is worth.                  │
     -- ╰─────────────────────────────────────────────────────────╯
+
     enemyCoinReward = {
         tower = 2,
         meleeEnemy = 0.5,
         rangedEnemy = 0.5,
     },
+
+    -- ──────────────────────────────────────────────────────────────────────
+    -- ╭─────────────────────────────────────────────────────────╮
+    -- │ Enemy tower stats:                                      │
+    -- ╰─────────────────────────────────────────────────────────╯
+    -- Lower spawn rate = faster (spawn every 'spawnRate' seconds).
+
+    enemyTower = {
+        health = 26,
+        spawnRate = 10
+    },
+
     -- ──────────────────────────────────────────────────────────────────────
     -- ╭─────────────────────────────────────────────────────────╮
     -- │ Enemy pawn stats:                                       │
     -- ╰─────────────────────────────────────────────────────────╯
-    -- Lower attack speed = faster
+    -- Lower attack speed = faster (attack every 'attackSpeed' seconds).
     -- `toggleRanges` console command to view the ranges of each pawn.
+
     meleeEnemy = {
         health = 7,
         walkSpeed = 1200,
@@ -31,13 +45,13 @@ return {
         price = 2
     },
 
-
     -- ──────────────────────────────────────────────────────────────────────
     -- ╭─────────────────────────────────────────────────────────╮
     -- │ Player pawn stats:                                      │
     -- ╰─────────────────────────────────────────────────────────╯
     -- Lower attack speed = faster
     -- `toggleRanges` console command to view the ranges of each pawn.
+
     knight = {
         health = 10,
         walkSpeed = 1200,

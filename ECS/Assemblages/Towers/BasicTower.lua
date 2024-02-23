@@ -11,12 +11,12 @@ local TowerAssemblage = require('ECS.Assemblages.Towers.Tower')
 return function (e, x, y)
     e
         :assemble(TowerAssemblage, x, y)
-        :give('health', 26)
+        :give('health', KNOBS.enemyTower.health)
         :give('color', 1, 0, 0)
         :give('renderRectangle', 50, 100)
         :give('dimensions', 50, 100)
         :give('pawnGeneration', {
             pawnTypes = {'RangedEnemy', 'LilMeleeEnemy'},
-            spawnRate = 10,
+            spawnRate = KNOBS.enemyTower.spawnRate,
         })
 end

@@ -5,7 +5,10 @@
 -- entities.
 --
 
+local Vec2 = require("Classes.Types.Vec2")
 local COLOR = { 0, 1, 0 }
+-- local image = love.graphics.newImage("assets/images/icons/selected.png")
+local scale
 
 
 return function (concord)

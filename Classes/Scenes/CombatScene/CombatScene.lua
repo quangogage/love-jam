@@ -124,6 +124,8 @@ function CombatScene:destroy()
     self:_destroySubscriptions()
 end
 function CombatScene:update(dt)
+    local pawnHovered = false
+    local powerupHovered = false
     if not self.disableWorldUpdate and not self.paused then
         self.world:emit('update', dt)
         if not self.disableCameraControls then
@@ -132,12 +134,17 @@ function CombatScene:update(dt)
         self.camera:update(dt)
     end
     if not self.paused then
-        self.pawnSelectionMenu:update(dt)
-        self.powerupSelectionMenu:update(dt)
+        pawnHovered = self.pawnSelectionMenu:update(dt)
+        powerupHovered = self.powerupSelectionMenu:update(dt)
         self.levelTransitionHandler:update(dt)
     end
     self.renderCanvas:update(dt)
     self.pauseMenu:update(dt)
+    if pawnHovered or powerupHovered then
+        cursor:set('hand')
+    else
+        cursor:set('arrow')
+    end
 end
 function CombatScene:draw()
     self.powerupSelectionMenu:drawBackground()

@@ -21,6 +21,7 @@ local TEXT_PADDING = 50
 ---@field height number
 ---@field animation table
 ---@field bgImage love.Image
+---@field hovered boolean
 local PowerupSelectionCard = Goop.Class({
     extends = Element,
     parameters = {
@@ -34,6 +35,7 @@ local PowerupSelectionCard = Goop.Class({
         animationOffset = 0,
         width           = 260,
         height          = 358,
+        hovered         = false,
         animation       = {
             y     = 50,
             speed = 2,
@@ -61,6 +63,7 @@ function PowerupSelectionCard:update(dt)
     self.timer = self.timer + dt
     Element.update(self)
     self:_updateAnimation(dt)
+    self:_checkHover()
 end
 function PowerupSelectionCard:draw()
     if self.position.x ~= 0 then
@@ -97,6 +100,14 @@ function PowerupSelectionCard:_printDescription()
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
     love.graphics.printf(self.description, self.position.x + TEXT_PADDING / 2, self.position.y + self.height - 115,
         self.width - TEXT_PADDING, 'center')
+end
+function PowerupSelectionCard:_checkHover()
+    local x, y = love.mouse.getPosition()
+    if x > self.position.x and x < self.position.x + self.width and y > self.position.y and y < self.position.y + self.height then
+        self.hovered = true
+    else
+        self.hovered = false
+    end
 end
 
 return PowerupSelectionCard

@@ -41,10 +41,16 @@ local PawnSelectionMenu = Goop.Class({
 function PawnSelectionMenu:init()
     self:_initCards()
 end
+---@return boolean If you are hovering over a card
 function PawnSelectionMenu:update()
+    local hovered = false
     for _, card in ipairs(self.cards) do
         card:update()
+        if card.hovered then
+            hovered = true
+        end
     end
+    return hovered
 end
 function PawnSelectionMenu:draw()
     self:_drawBackground()
@@ -63,8 +69,7 @@ end
 function PawnSelectionMenu:mousepressed(x, y, button)
     if button == 1 then
         for _, card in ipairs(self.cards) do
-            if x > card.position.x and x < card.position.x + card.width and
-            y > card.position.y and y < card.position.y + card.height then
+            if card.hovered then
                 -- Resolved in CombatScene.
                 self.eventManager:broadcast(
                     'interface_attemptSpawnPawn', card.assemblageName, card.name

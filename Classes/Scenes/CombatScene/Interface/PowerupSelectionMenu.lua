@@ -68,6 +68,7 @@ function PowerupSelectionMenu:close()
     self.selectedPowerupName = nil
     self.eventManager:broadcast('enableWorldUpdate')
     self.song:stop()
+    cursor:set('arrow')
 end
 
 --------------------------
@@ -79,9 +80,14 @@ end
 function PowerupSelectionMenu:destroy()
     self:_destroySubscriptions()
 end
+---@return boolean If you are hovering over a card.
 function PowerupSelectionMenu:update(dt)
+    local hovered = false
     for _, card in ipairs(self.cards) do
         card:update(dt)
+        if card.hovered then
+            hovered = true
+        end
     end
     if self.active then
         self.songWaitTime = self.songWaitTime + dt
@@ -91,6 +97,7 @@ function PowerupSelectionMenu:update(dt)
         end
     end
     self:_updateSpeechBubble(dt)
+    return hovered
 end
 function PowerupSelectionMenu:draw()
     self:_drawSpeechBubble()
@@ -138,8 +145,7 @@ end
 function PowerupSelectionMenu:_selectCard(x, y, button)
     if self.active and button == 1 then
         for _, card in ipairs(self.cards) do
-            if x > card.position.x and x < card.position.x + card.width and
-            y > card.position.y and y < card.position.y + card.height then
+            if card.hovered then
                 self:_unselectAllCards()
                 card:select()
                 self.selectedPowerupName = card.name

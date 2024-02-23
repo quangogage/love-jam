@@ -9,7 +9,6 @@ local Button = require('Classes.Elements.Button')
 ---@class MainMenuScene
 ---@field startGame function - Provided by creator.
 ---@field elements Button[] | table[]
----@field hoverCursor love.Cursor
 ---@field eventManager table
 ---@field song love.Source
 local MainMenuScene = Goop.Class({
@@ -19,7 +18,6 @@ local MainMenuScene = Goop.Class({
     },
     dynamic = {
         elements    = {},
-        hoverCursor = love.mouse.getSystemCursor('hand'),
         song = love.audio.newSource('assets/audio/songs/Fortunes-Misfavor.mp3', 'stream'),
     }
 })
@@ -45,11 +43,6 @@ function MainMenuScene:update(dt)
         if el.hovered then
             isHovered = true
         end
-    end
-    if isHovered then
-        love.mouse.setCursor(self.hoverCursor)
-    else
-        love.mouse.setCursor()
     end
 end
 function MainMenuScene:draw()
@@ -84,7 +77,6 @@ function MainMenuScene:_setMenu(name)
                 offset = { x = 100, y = 0 },
                 onClick = function ()
                     startGameSound:play()
-                    love.mouse.setCursor()
                     self.startGame()
                     self.song:stop()
                 end

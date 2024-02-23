@@ -19,6 +19,7 @@ local POWERUP_FONT         = love.graphics.newFont(fonts.sub, 16)
 ---@field assemblageName string
 ---@field width number
 ---@field height number
+---@field hovered boolean
 local PawnSelectionCard = Goop.Class({
     extends = Element,
     parameters = {
@@ -32,7 +33,8 @@ local PawnSelectionCard = Goop.Class({
     },
     dynamic = {
         width = 300,
-        height = 100
+        height = 100,
+        hovered = false
     }
 })
 
@@ -42,6 +44,7 @@ local PawnSelectionCard = Goop.Class({
 --------------------------
 function PawnSelectionCard:update(dt)
     Element.update(self)
+    self:_checkHover()
 end
 function PawnSelectionCard:draw()
     local y = TEXT_PADDING / 2
@@ -84,6 +87,14 @@ function PawnSelectionCard:_printPowerups(y)
             self.position.y + y
         )
         y = y + POWERUP_FONT:getHeight()
+    end
+end
+function PawnSelectionCard:_checkHover()
+    local x, y = love.mouse.getPosition()
+    if x > self.position.x and x < self.position.x + self.width and y > self.position.y and y < self.position.y + self.height then
+        self.hovered = true
+    else
+        self.hovered = false
     end
 end
 

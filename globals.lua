@@ -3,6 +3,7 @@ console             = require('libs.Console.Console')()
 settings            = require('Classes.Settings')()
 referenceResolution = { width = 1920, height = 1080 }
 KNOBS               = require('KNOBS')
+cursor              = require('Classes.Cursor')()
 fonts               = {
     -- title = 'assets/fonts/BebasNeue-Regular.ttf',
     -- sub   = 'assets/fonts/RobotoCondensed-Light.ttf',

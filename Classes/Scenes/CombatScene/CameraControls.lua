@@ -42,14 +42,14 @@ end
 ---@param dt number
 function CameraControls:_keyboardMovement(dt)
     local speed = settings.cameraWASDMoveSpeed * (1 / self.camera:getScale())
-    if love.keyboard.isDown('w') then
+    if love.keyboard.isDown('w') or love.keyboard.isDown('up') then
         self.camera.velocity.y = self.camera.velocity.y - speed * dt
-    elseif love.keyboard.isDown('s') then
+    elseif love.keyboard.isDown('s') or love.keyboard.isDown('down') then
         self.camera.velocity.y = self.camera.velocity.y + speed * dt
     end
-    if love.keyboard.isDown('a') then
+    if love.keyboard.isDown('a') or love.keyboard.isDown('left') then
         self.camera.velocity.x = self.camera.velocity.x - speed * dt
-    elseif love.keyboard.isDown('d') then
+    elseif love.keyboard.isDown('d') or love.keyboard.isDown('right') then
         self.camera.velocity.x = self.camera.velocity.x + speed * dt
     end
 end

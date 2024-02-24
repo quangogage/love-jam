@@ -129,7 +129,7 @@ function PowerupSelectionMenu:update(dt)
         end
         if self.timer >= self.highlightBar.waitTime then
             self.highlightBar.alpha = self.highlightBar.alpha +
-            (self.highlightBar.targetAlpha - self.highlightBar.alpha) * 5 * dt
+            (self.highlightBar.targetAlpha - self.highlightBar.alpha) * 13.5 * dt
         else
             self.highlightBar.alpha = 0
         end
@@ -249,7 +249,7 @@ function PowerupSelectionMenu:_updateSpeechBubble(dt)
     if self.active then
         self.speechBubble.alpha = math.min(self.speechBubble.alpha + dt * 2, 1)
     else
-        self.speechBubble.alpha = math.max(self.speechBubble.alpha - dt * 2, 0)
+        self.speechBubble.alpha = math.max(self.speechBubble.alpha - dt * 10, 0)
     end
     local currentAmt = self.speechBubble.wiggleIntensity * math.sin(self.speechBubble.wiggleSpeed * love.timer.getTime())
     self.speechBubble.animY = currentAmt

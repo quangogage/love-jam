@@ -119,7 +119,7 @@ function CombatScene:init()
     self.cameraControls         = CameraControls(self.camera, self.world)
     self.loseMenu               = LoseMenu(self.eventManager)
     self.pauseMenu              = PauseMenu(self, self.eventManager)
-    self.backgroundRenderer     = BackgroundRenderer()
+    self.backgroundRenderer     = BackgroundRenderer(self)
     self:_loadSystems()
     self:_initLevels()
     self.currentLevelIndex = 0

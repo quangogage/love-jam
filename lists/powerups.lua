@@ -81,7 +81,6 @@ return {
         -- Applied in DamageSystem (see DamageSystem.update).
         name = 'Soul Renewal',
         description = 'Chance to immediately respawn at your base upon death.',
-        count = 10,
         ---@param self Powerup
         getValue = function (self)
             -- See DamageSystem.

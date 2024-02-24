@@ -14,6 +14,6 @@ return function (concord)
         c.spawnAmount = data.spawnAmount or 1
         c.spawnRate  = data.spawnRate or 4
         c.spawnTimer = 0
-
+        c.idleTimer  = 0
     end)
 end

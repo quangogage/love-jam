@@ -39,6 +39,7 @@ return function (concord)
             for _, e in ipairs(self.entities) do
                 local gen = e.pawnGeneration
                 gen.spawnTimer = gen.spawnTimer + dt
+                self:_runIdleTimer(e, dt)
                 if gen.spawnTimer >= gen.spawnRate then
                     self:_spawnPawn(e)
                     gen.spawnTimer = 0
@@ -76,6 +77,19 @@ return function (concord)
     function PawnGenerationSystem:_spawnInitialPawns()
         for _, e in ipairs(self.entities) do
             self:_spawnPawn(e)
+        end
+    end
+
+    -- Run the idle timer.
+    -- Increase spawnrate over time to try to prevent cheese.
+    function PawnGenerationSystem:_runIdleTimer(e, dt)
+        e.pawnGeneration.idleTimer = e.pawnGeneration.idleTimer + dt
+        if e.pawnGeneration.idleTimer >= 1 then
+            e.pawnGeneration.spawnRate = e.pawnGeneration.spawnRate * KNOBS.enemyTower.spawnRateIncreaseIncrement
+            if e.pawnGeneration.spawnRate < KNOBS.enemyTower.spawnRateMax then
+                e.pawnGeneration.spawnRate = KNOBS.enemyTower.spawnRateMax
+            end
+            e.pawnGeneration.idleTimer = 0
         end
     end
 

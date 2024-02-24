@@ -7,16 +7,16 @@ return {
     -- ╰─────────────────────────────────────────────────────────╯
 
     -- Passive generation rate (generate a coin every 'passiveRate' seconds):
-    coinGenerationRate = 15,
+    coinGenerationRate = 10,
 
     -- How many coins you get at the start of a new level:
     newLevelCoinReward = 2,
 
     -- How much each one is worth.
     enemyCoinReward = {
-        tower = 1,
-        meleeEnemy = 0.75,
-        rangedEnemy = 0.75,
+        tower = 2,
+        meleeEnemy = 1.25,
+        rangedEnemy = 1.25,
     },
 
     -- ──────────────────────────────────────────────────────────────────────
@@ -27,7 +27,25 @@ return {
 
     enemyTower = {
         health = 35,
-        spawnRate = 5 * SPEED_MULTIPLIER,
+        spawnRate = 5 / SPEED_MULTIPLIER,
+
+        -- Every second the spawn rate will be multiplied by this.
+        -- For example,
+        -- 
+        -- If this is 0.5
+        --
+        -- Every second the spawn rate will double every second.
+        --
+        -- If it was 0.8, it would increase by 20% every second.
+        --
+        -- Higher number = slower increase over time.
+        spawnRateIncreaseIncrement = 0.5 / SPEED_MULTIPLIER,
+
+        -- The minimum spawn rate.
+        -- If this is 1, the minimum rate is 1 per second.
+        -- if it's 2, the minimum rate is 1 per 2 seconds.
+        -- Lower number = faster, higher number = slower.
+        minimumSpawnRate = 1,
     },
 
     -- ──────────────────────────────────────────────────────────────────────

@@ -94,7 +94,7 @@ return {
         walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 1,
         attackSpeed = 1 / SPEED_MULTIPLIER,
-        range = 60,
+        range = 105,
         price = 1
     },
     archer = {

@@ -5,9 +5,9 @@
 --
 
 return {
-    "toggleRanges",
+    -- "toggleRanges",
     -- "testRoom",
     -- "motherlode",
-    "toggleHitboxes",
+    -- "toggleHitboxes",
     -- "completeLevel"
 }

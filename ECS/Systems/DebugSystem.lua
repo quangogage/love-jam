@@ -99,8 +99,8 @@ return function (concord, camera, onLevelComplete, coinManager)
             love.graphics.setColor(1, 0, 1)
             love.graphics.rectangle(
                 'line',
-                hitbox.position.x - hitbox.dimensions.width / 2,
-                hitbox.position.y - hitbox.dimensions.height / 2,
+                hitbox.position.x - hitbox.dimensions.width / 2 - hitbox.dimensions.offsetX,
+                hitbox.position.y - hitbox.dimensions.height / 2 - hitbox.dimensions.offsetY,
                 hitbox.dimensions.width,
                 hitbox.dimensions.height
             )

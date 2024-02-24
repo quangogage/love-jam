@@ -26,29 +26,37 @@ return function (concord, camera)
     })
 
     function ClickHandlerSystem:mousepressed(_, _, button)
-        self:_handle(button,'pressed')
+        self:_handle(button, 'pressed')
     end
     function ClickHandlerSystem:mousereleased(_, _, button)
-        self:_handle(button,'released')
+        self:_handle(button, 'released')
     end
 
-    function ClickHandlerSystem:_handle(button,event)
+    function ClickHandlerSystem:_handle(button, event)
         local world = self:getWorld()
         if not world then return end
         local x, y = camera:getTranslatedMousePosition()
 
         local clickedEntities = {}
         for _, e in ipairs(self.entities) do
-            local pos = e.position
-            local dim = e.dimensions
-            if x > pos.x - dim.width / 2 and x < pos.x + dim.width / 2 and
-            y > pos.y - dim.height / 2 and y < pos.y + dim.height / 2 then
+            local eRect = self:_getEntityCollisionRect(e)
+            if x > eRect.x and x < eRect.x + eRect.width and
+            y > eRect.y and y < eRect.y + eRect.height then
                 table.insert(clickedEntities, e)
             end
         end
         world:emit('event_mouse' .. event,
             x, y, button, clickedEntities[1], clickedEntities
         )
+    end
+
+    function ClickHandlerSystem:_getEntityCollisionRect(e)
+        return {
+            x = e.position.x - e.dimensions.width / 2 - e.dimensions.offsetX,
+            y = e.position.y - e.dimensions.height / 2 - e.dimensions.offsetY,
+            width = e.dimensions.width,
+            height = e.dimensions.height
+        }
     end
 
     return ClickHandlerSystem

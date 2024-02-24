@@ -167,10 +167,14 @@ return function (concord, camera)
 
         -- Clicking on a hostile entity.
         for _, hostile in ipairs(self.hostileEntities) do
-            if x > hostile.position.x - hostile.dimensions.width / 2 and
-            x < hostile.position.x + hostile.dimensions.width / 2 and
-            y > hostile.position.y - hostile.dimensions.height / 2 and
-            y < hostile.position.y + hostile.dimensions.height / 2 then
+            local hostileRect = {
+                x = hostile.position.x - hostile.dimensions.width / 2 - hostile.dimensions.offsetX,
+                y = hostile.position.y - hostile.dimensions.height / 2 - hostile.dimensions.offsetY,
+                width = hostile.dimensions.width,
+                height = hostile.dimensions.height
+            }
+            if x > hostileRect.x and x < hostileRect.x + hostileRect.width and
+            y > hostileRect.y and y < hostileRect.y + hostileRect.height then
                 targetData = { entity = hostile }
             end
         end

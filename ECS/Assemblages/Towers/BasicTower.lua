@@ -49,7 +49,7 @@ return function (e, x, y, enemyType, spawnAmount)
     e
         :assemble(TowerAssemblage, x, y)
         :give('health', KNOBS.enemyTower.health)
-        :give('dimensions', 50, 100)
+        :give('dimensions', 170, 310, nil, 0, 80)
         :give('images', imageSet)
         :give('image',imageSet.idle)
         :give('pawnGeneration', {

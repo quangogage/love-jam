@@ -87,22 +87,22 @@ return {
             return 0.1 * self.count -- 10% chance per-stack.
         end,
     }),
-    Powerup({
-        -- Applied in DamageSystem (see DamageSystem.update).
-        name = "Shattering Impact",
-        description = "Knockback enemies on hit",
-        ---@param self Powerup
-        ---@param successfulAttack SuccessfulAttack
-        onSuccessfulAttack = function (self, successfulAttack)
-            local force = 150 * self.count
-            local dir = successfulAttack.direction
-            local target = successfulAttack.target
-            if target:get("physics") then
-                target.physics.velocity.x = target.physics.velocity.x + math.cos(dir) * force
-                target.physics.velocity.y = target.physics.velocity.y + math.sin(dir) * force
-            end
-        end
-    }),
+    -- Powerup({
+    --     -- Applied in DamageSystem (see DamageSystem.update).
+    --     name = "Shattering Impact",
+    --     description = "Knockback enemies on hit",
+    --     ---@param self Powerup
+    --     ---@param successfulAttack SuccessfulAttack
+    --     onSuccessfulAttack = function (self, successfulAttack)
+    --         local force = 150 * self.count
+    --         local dir = successfulAttack.direction
+    --         local target = successfulAttack.target
+    --         if target:get("physics") then
+    --             target.physics.velocity.x = target.physics.velocity.x + math.cos(dir) * force
+    --             target.physics.velocity.y = target.physics.velocity.y + math.sin(dir) * force
+    --         end
+    --     end
+    -- }),
     Powerup({
         -- Applied in DamageSystem
         name = "Shadow's Touch",

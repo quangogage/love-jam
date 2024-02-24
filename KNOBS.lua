@@ -1,4 +1,4 @@
-local SPEED_MULTIPLIER = 1.75
+local SPEED_MULTIPLIER = 1.25
 
 return {
     -- ──────────────────────────────────────────────────────────────────────
@@ -27,7 +27,7 @@ return {
 
     enemyTower = {
         health = 35,
-        spawnRate = 5 / SPEED_MULTIPLIER,
+        spawnRate = 15 / SPEED_MULTIPLIER,
 
         -- Every second the spawn rate will be multiplied by this.
         -- For example,
@@ -39,13 +39,13 @@ return {
         -- If it was 0.8, it would increase by 20% every second.
         --
         -- Higher number = slower increase over time.
-        spawnRateIncreaseIncrement = 0.5 / SPEED_MULTIPLIER,
+        spawnRateIncreaseIncrement = 0.95 / SPEED_MULTIPLIER,
 
         -- The minimum spawn rate.
         -- If this is 1, the minimum rate is 1 per second.
         -- if it's 2, the minimum rate is 1 per 2 seconds.
         -- Lower number = faster, higher number = slower.
-        minimumSpawnRate = 1,
+        minimumSpawnRate = 5,
     },
 
     -- ──────────────────────────────────────────────────────────────────────

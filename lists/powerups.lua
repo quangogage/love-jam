@@ -65,7 +65,7 @@ return {
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
             for _ = 1, self.count do
-                pawn.armor.value = math.min(1, pawn.armor.value + 0.10)
+                pawn.armor.value = math.min(0.9, pawn.armor.value + 0.10)
             end
         end
     }),
@@ -88,7 +88,7 @@ return {
         ---@param self Powerup
         getValue = function (self)
             -- See DamageSystem.
-            return 0.1 * self.count -- 10% chance per-stack.
+            return math.min(0.9,0.1 * self.count) -- 10% chance per-stack.
         end,
     }),
     -- Powerup({
@@ -115,7 +115,7 @@ return {
         ---@param self Powerup
         ---@return number
         getValue = function (self)
-            return self.count * 0.01
+            return math.min(0.9,self.count * 0.01)
         end
     })
 }

@@ -86,8 +86,8 @@ return function (concord)
         e.pawnGeneration.idleTimer = e.pawnGeneration.idleTimer + dt
         if e.pawnGeneration.idleTimer >= 1 then
             e.pawnGeneration.spawnRate = e.pawnGeneration.spawnRate * KNOBS.enemyTower.spawnRateIncreaseIncrement
-            if e.pawnGeneration.spawnRate < KNOBS.enemyTower.spawnRateMax then
-                e.pawnGeneration.spawnRate = KNOBS.enemyTower.spawnRateMax
+            if e.pawnGeneration.spawnRate < KNOBS.enemyTower.minimumSpawnRate then
+                e.pawnGeneration.spawnRate = KNOBS.enemyTower.minimumSpawnRate
             end
             e.pawnGeneration.idleTimer = 0
         end

@@ -60,9 +60,9 @@ local PowerupSelectionCard = Goop.Class({
         bgImage             = love.graphics.newImage('assets/images/ui/card.png'),
     }
 })
-PowerupSelectionCard.spawnSound:setVolume(settings:getVolume('sfx'))
-PowerupSelectionCard.hoverSound:setVolume(settings:getVolume('sfx'))
-PowerupSelectionCard.clickSound:setVolume(settings:getVolume('sfx'))
+PowerupSelectionCard.spawnSound:setVolume(settings:getVolume('interface'))
+PowerupSelectionCard.hoverSound:setVolume(settings:getVolume('interface'))
+PowerupSelectionCard.clickSound:setVolume(settings:getVolume('interface'))
 
 
 ----------------------------

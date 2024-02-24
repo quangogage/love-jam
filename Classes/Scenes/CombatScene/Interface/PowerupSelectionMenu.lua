@@ -77,8 +77,8 @@ local PowerupSelectionMenu = Goop.Class({
 })
 PowerupSelectionMenu.song:setVolume(settings:getVolume('music'))
 PowerupSelectionMenu.song:setLooping(true)
-PowerupSelectionMenu.closeSound:setVolume(settings:getVolume('sfx'))
-PowerupSelectionMenu.applyPowerupSound:setVolume(settings:getVolume('sfx'))
+PowerupSelectionMenu.closeSound:setVolume(settings:getVolume('interface'))
+PowerupSelectionMenu.applyPowerupSound:setVolume(settings:getVolume('interface'))
 
 ----------------------------
 -- [[ Public Functions ]] --

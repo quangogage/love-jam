@@ -25,9 +25,10 @@ local Settings = Goop.Class({
             { 3840, 2160 }
         },
         sound               = {
-            masterVolume = 1,
-            sfxVolume    = 0.15,
-            musicVolume  = 0.7
+            masterVolume    = 1,
+            sfxVolume       = 0.15,
+            interfaceVolume = 0.5,
+            musicVolume     = 0.7
         }
     }
 })

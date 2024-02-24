@@ -1,7 +1,7 @@
 ---@author Gage Henderson 2024-02-20 05:06
 --
 
-local WALKING_VELOCITY_THRESHOLD = 15 -- Only play walking animation if the pawn is moving faster than this.
+local WALKING_VELOCITY_THRESHOLD = 3 -- Only play walking animation if the pawn is moving faster than this.
 local TURNING_VELOCITY_THRESHOLD = 15 -- Only change the pawn's direction if it's moving faster than this (while walking only).
 local animationDirections = {
     right     = 0,

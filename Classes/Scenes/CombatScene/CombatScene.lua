@@ -25,6 +25,7 @@ local BackgroundRenderer     = require('Classes.Scenes.CombatScene.BackgroundRen
 local CoinManager            = require('Classes.Scenes.CombatScene.CoinManager')
 local RenderCanvas           = require('Classes.Scenes.CombatScene.RenderCanvas')
 local LoseMenu               = require('Classes.Scenes.CombatScene.Interface.LoseMenu')
+local LoopStateManager       = require('Classes.Scenes.CombatScene.LoopStateManager')
 
 ---@class CombatScene
 ---@field camera Camera
@@ -50,6 +51,7 @@ local LoseMenu               = require('Classes.Scenes.CombatScene.Interface.Los
 ---@field ambienceTrack love.Source
 ---@field victoryJingle love.Source
 ---@field loseMenu LoseMenu
+---@field loopStateManager LoopStateManager
 local CombatScene            = Goop.Class({
     arguments = { 'eventManager' },
     static = {
@@ -74,6 +76,7 @@ function CombatScene:loadNextLevel()
 
     -- TODO: Loop properly if no more levels. (new game+ stuff...)
     if self.currentLevelIndex > #self.levels then
+        self.loopStateManager:addLoop()
         self.currentLevelIndex = 1
     end
 
@@ -104,6 +107,7 @@ function CombatScene:init()
     self.camera               = Camera()
     self.coinManager          = CoinManager()
     self.powerupStateManager  = PowerupStateManager(self.eventManager)
+    self.loopStateManager     = LoopStateManager()
     self.pawnSelectionMenu    = PawnSelectionMenu(self.eventManager, self.powerupStateManager, self.coinManager)
     self.powerupSelectionMenu = PowerupSelectionMenu(self.eventManager, self)
     self.friendlySpawnHandler = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self,
@@ -114,7 +118,7 @@ function CombatScene:init()
     self.backgroundRenderer   = BackgroundRenderer()
     self:_loadSystems()
     self:_initLevels()
-    self.currentLevelIndex = 0
+    self.currentLevelIndex = 9
     self:loadNextLevel()
     self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self, self.renderCanvas)
     self.levelTransitionHandler:setState('scene-starting')
@@ -177,6 +181,7 @@ function CombatScene:draw()
     love.graphics.setColor(1,1,1)
     love.graphics.setFont(self.devLevelPrintFont)
     love.graphics.print("Level " .. self.currentLevelIndex, 10, 10)
+    love.graphics.print("Loop " .. self.loopStateManager.loop, 10, 30)
 end
 function CombatScene:keypressed(key)
     if not self.paused and not self.lost then
@@ -247,7 +252,7 @@ function CombatScene:_loadSystems()
     loadSystem('Pawn.PawnAttackSystem')
     loadSystem('DamageOnContactSystem')
     loadSystem('Pawn.PawnPushSystem')
-    loadSystem('PawnGenerationSystem')
+    loadSystem('PawnGenerationSystem', self.loopStateManager)
     loadSystem('HealthBarSystem')
     loadSystem('Pawn.RetaliationSystem')
     loadSystem('AnimationSystem')

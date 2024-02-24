@@ -12,7 +12,8 @@ local Powerup = Goop.Class({
         {'description', 'string'},
     },
     dynamic = {
-        count = 0
+        count = 0,
+        hostileCount = 0
     }
 })
 

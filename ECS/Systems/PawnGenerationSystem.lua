@@ -11,7 +11,8 @@
 
 local util = require('util')({ 'entityAssembler' })
 
-return function (concord)
+---@param loopStateManager LoopStateManager
+return function (concord, loopStateManager)
     ---@class PawnGenerationSystem : System
     ---@field entities Tower[] | table[]
     ---@field playerHasCommanded boolean
@@ -48,7 +49,6 @@ return function (concord)
         end
     end
 
-
     -----------------------------
     -- [[ Private Functions ]] --
     -----------------------------
@@ -66,7 +66,7 @@ return function (concord)
                     pawnType,
                     e.position.x + math.cos(angle) * distance,
                     e.position.y + math.sin(angle) * distance,
-                    e.friendly
+                    e.friendly, loopStateManager:getPowerups()
                 )
                 world:emit("event_pawnSpawned", newPawn)
             end

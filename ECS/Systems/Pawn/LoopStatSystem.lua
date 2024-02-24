@@ -9,7 +9,7 @@
 ---@param loopStateManager LoopStateManager
 return function(concord, loopStateManager)
     local LoopStatSystem = concord.system({
-        hostileEntities = { "hostile", "health" }
+        hostileEntities = { "hostile", "health", "combatProperties" }
     })
 
     function LoopStatSystem:update()
@@ -18,6 +18,7 @@ return function(concord, loopStateManager)
                 local loop = loopStateManager.loop
                 for _=1,loop do
                     entity.health.max = entity.health.max * KNOBS.loop.healthMultiplier
+                    entity.combatProperties.damageAmount = entity.combatProperties.damageAmount * KNOBS.loop.damageMultiplier
                 end
                 entity.health.value = entity.health.max
                 entity.hostile.loopStatsApplied = true

@@ -36,6 +36,7 @@ local PowerupSelectionCard = Goop.Class({
         { 'offset',      'table' },
         { 'name',        'string' },
         { 'description', 'string' },
+        'icon'
     },
     dynamic = {
         spawnSound          = love.audio.newSource('assets/audio/sfx/cards/deal.mp3', 'static'),
@@ -50,6 +51,7 @@ local PowerupSelectionCard = Goop.Class({
         liftAmount          = 25,
         liftSpeed           = 15,
         liftShadowInfluence = 0.002,
+        iconSize            = 50,
         animation           = {
             y     = 50,
             speed = 2,
@@ -92,6 +94,7 @@ function PowerupSelectionCard:draw()
     if self.position.x ~= 0 then
         self:_drawShadow()
         self:_drawBackground()
+        self:_drawIcon()
         self:_printName()
         self:_printDescription()
     end
@@ -122,6 +125,16 @@ function PowerupSelectionCard:_drawBackground()
     end
     love.graphics.draw(self.bgImage, self.position.x, self.position.y - self.lift, 0, scale.x, scale.y)
 end
+function PowerupSelectionCard:_drawIcon()
+    local scale = util.graphics.getScaleForDimensions(self.icon, self.iconSize, self.iconSize)
+    love.graphics.setColor(1,1,1, self.animation.alpha)
+    love.graphics.draw(self.icon,
+        self.position.x + self.width / 2,
+        self.position.y + self.height * 0.45 - self.lift,
+        0, scale.x, scale.x,
+        self.icon:getWidth() / 2, self.icon:getHeight() / 2
+    )
+end
 function PowerupSelectionCard:_printName()
     love.graphics.setFont(NAME_FONT)
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
@@ -136,7 +149,7 @@ function PowerupSelectionCard:_printDescription()
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
     love.graphics.printf(self.description,
         self.position.x + TEXT_PADDING / 2,
-        self.position.y + self.height - 115 - self.lift,
+        self.position.y + self.height - 105 - self.lift,
         self.width - TEXT_PADDING, 'center'
     )
 end

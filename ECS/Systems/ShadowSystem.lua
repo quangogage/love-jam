@@ -15,7 +15,7 @@ return function(concord)
     function ShadowSystem:drawBelow()
         for _,e in ipairs(self.entities) do
             love.graphics.setColor(0,0,0,ALPHA)
-            love.graphics.circle('fill', e.groundPosition.x, e.groundPosition.y, e.shadow.size)
+            love.graphics.circle('fill', e.groundPosition.x, e.groundPosition.y + 2, e.shadow.size)
         end
     end
 

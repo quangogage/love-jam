@@ -34,6 +34,7 @@ return {
         -- Applied in PowerupSetupSystem.
         name = 'Fast Walker',
         description = 'Move 15% faster',
+        image = love.graphics.newImage("assets/images/icon/increase_speed.png"),
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
@@ -47,6 +48,7 @@ return {
         -- Applied in DamageSystem.
         name = 'Bloodlust',
         description = 'Deal 15% more damage',
+        image = love.graphics.newImage("assets/images/icon/increase_damage.png"),
         ---@param self Powerup
         ---@param value number
         getValue = function (self, value)
@@ -58,6 +60,7 @@ return {
         -- Applied in PowerupSetupSystem.
         name = 'Shield of Fortitude',
         description = 'Take 15% less damage',
+        image = love.graphics.newImage("assets/images/icon/shield_of_fortitude.png"),
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
@@ -70,6 +73,7 @@ return {
         -- Applied in PawnAttackSystem
         name = 'Quickening Quiver',
         description = 'Attack 15% faster',
+        image = love.graphics.newImage("assets/images/icon/quiver_agile.png"),
         ---@param self Powerup
         ---@param value number
         getValue = function (self, value)
@@ -107,8 +111,8 @@ return {
         -- Applied in DamageSystem
         name = "Shadow's Touch",
         description = "+1% chance to instantly kill a target when you attack them.",
+        image = love.graphics.newImage("assets/images/icon/shadows_touch.png"),
         ---@param self Powerup
-        ---@param value number
         ---@return number
         getValue = function (self)
             return self.count * 0.01

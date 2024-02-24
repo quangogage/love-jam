@@ -183,7 +183,8 @@ function PowerupSelectionMenu:_generateCards()
             offset          = { x = 0, y = 0 },
             name            = powerupDef.name,
             description     = powerupDef.description,
-            animationOffset = CARD_ANIMATION_OFFSET * i
+            animationOffset = CARD_ANIMATION_OFFSET * i,
+            icon            = powerupDef.image
         })
         card.offset.x = -card.width / 2
         card.offset.y = -card.height / 2
@@ -260,7 +261,6 @@ function PowerupSelectionMenu:_drawDescription()
         love.graphics.getHeight() * self.description.anchor.y + self.description.offset.y,
         0, 0.5, 0.5
     )
-
 
     love.graphics.setColor(0, 0, 0, self.speechBubble.alpha)
     love.graphics.setFont(self.description.font)

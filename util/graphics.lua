@@ -5,6 +5,7 @@ local graphics = {}
 ---@param image any
 ---@param width number
 ---@param height number
+---@return {x: number, y: number}
 function graphics.getScaleForDimensions(image, width, height)
     local imageWidth, imageHeight = image:getDimensions()
     return {x = width / imageWidth, y = height / imageHeight}

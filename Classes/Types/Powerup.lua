@@ -13,7 +13,9 @@ local Powerup = Goop.Class({
     },
     dynamic = {
         count = 0,
-        hostileCount = 0
+        hostileCount = 0,
+        -- Default image.
+        image = love.graphics.newImage("assets/images/icon/fateful_fury.png")
     }
 })
 

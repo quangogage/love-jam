@@ -9,5 +9,5 @@ return {
     -- "testRoom",
     -- "motherlode",
     -- "toggleHitboxes",
-    -- "completeLevel"
+    "completeLevel"
 }

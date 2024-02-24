@@ -10,6 +10,9 @@
 ---@field unselectable Unselectable
 ---@field isBase IsBase
 
+local friendlyImage = love.graphics.newImage('assets/images/friendly_base/idle.png')
+local enemyImage = love.graphics.newImage('assets/images/enemy_base/idle.png')
+
 ---@param e Entity
 ---@param x number
 ---@param y number
@@ -17,18 +20,19 @@
 return function (e, x, y, friendly)
     e
         :give('position', x, y)
-        :give('dimensions', 60, 30)
+        :give('dimensions', 205, 170, nil, nil, 32)
         :give('health', 50)
-        :give('renderRectangle', 60, 30)
+        -- :give('renderRectangle', 60, 30)
         :give("unselectable")
         :give("isBase")
-        :give("groundPosition")
+        :give("groundPosition", 0, 100)
+        :give('scale', 0.5, 0.5)
 
     if friendly then
         e:give('friendly')
-        :give("color",1,1,1)
+        :give('image', friendlyImage)
     else
         e:give('hostile')
-        :give("color",1,0,0)
+        :give('image', enemyImage)
     end
 end

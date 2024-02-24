@@ -8,27 +8,50 @@
 
 local TowerAssemblage = require('ECS.Assemblages.Towers.Tower')
 
+local imageSets = {
+    melee = {
+        idle = love.graphics.newImage("assets/images/tower/tower_sm/idle.png"),
+        dead = love.graphics.newImage("assets/images/tower/tower_sm/dead.png"),
+        damage = {
+            love.graphics.newImage("assets/images/tower/tower_sm/damage/1.png"),
+            love.graphics.newImage("assets/images/tower/tower_sm/damage/2.png"),
+            love.graphics.newImage("assets/images/tower/tower_sm/damage/3.png"),
+            love.graphics.newImage("assets/images/tower/tower_sm/damage/4.png"),
+        }
+    },
+    ranged = {
+        idle = love.graphics.newImage("assets/images/tower/tower_md/idle.png"),
+        dead = love.graphics.newImage("assets/images/tower/tower_md/dead.png"),
+        damage = {
+            love.graphics.newImage("assets/images/tower/tower_md/damage/1.png"),
+            love.graphics.newImage("assets/images/tower/tower_md/damage/2.png"),
+            love.graphics.newImage("assets/images/tower/tower_md/damage/3.png"),
+            love.graphics.newImage("assets/images/tower/tower_md/damage/4.png"),
+        }
+    }
+}
+
 return function (e, x, y, enemyType, spawnAmount)
-    local color
+    local imageSet
     enemyType = enemyType or 'melee'
     spawnAmount = spawnAmount or 1
     local pawnTypes = {}
     if enemyType == 'melee' then
-        color = {1, 0, 0}
         pawnTypes = {'LilMeleeEnemy'}
+        imageSet = imageSets.melee
     elseif enemyType == 'ranged' then
-        color = {1, 0.45, 0.45}
         pawnTypes = {'RangedEnemy'}
+        imageSet = imageSets.ranged
     else
-        color = {1, 0.45, 0}
         pawnTypes = {'RangedEnemy', 'LilMeleeEnemy'}
+        imageSet = imageSets.ranged
     end
     e
         :assemble(TowerAssemblage, x, y)
         :give('health', KNOBS.enemyTower.health)
-        :give('color', color[1], color[2], color[3])
-        :give('renderRectangle', 50, 100)
         :give('dimensions', 50, 100)
+        :give('images', imageSet)
+        :give('image',imageSet.idle)
         :give('pawnGeneration', {
             pawnTypes = pawnTypes,
             spawnRate = KNOBS.enemyTower.spawnRate,

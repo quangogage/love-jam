@@ -62,6 +62,17 @@ return function (concord)
             )
         end
     end
+    
+    ---@param e BasicTower | Entity | table
+    function CorpseSystem:entity_createTowerCorpse(e)
+        if e.isTower then
+            local storedCanvas = love.graphics.getCanvas()
+            love.graphics.setCanvas(self.canvas)
+            e.image.value = e.images.dead
+            self:getWorld():emit("entity_render", e)
+            love.graphics.setCanvas(storedCanvas)
+        end
+    end
 
 
     --------------------------

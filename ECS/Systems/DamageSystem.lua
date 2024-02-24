@@ -140,6 +140,7 @@ return function (concord, onLevelComplete, playerLost)
 
                     if shouldStillDie then -- The powerup did not prevent death... (see above).
                         world:emit("entity_createCorpse", entity)
+                        world:emit("entity_createTowerCorpse", entity)
                         entity:destroy()
                     end
                 end

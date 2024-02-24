@@ -35,6 +35,7 @@ local PowerupSelectionMenu = Goop.Class({
         songWaitTime = 0,
         song         = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream'),
         closeSound   = love.audio.newSource('assets/audio/sfx/exit-powerup-menu.mp3', 'static'),
+        applyPowerupSound = love.audio.newSource('assets/audio/sfx/apply-powerup.wav', 'static'),
         bgImage      = love.graphics.newImage('assets/images/ui/bg.png'),
         highlightBar = {
             image = love.graphics.newImage('assets/images/ui/yellow_gradient.png'),
@@ -98,6 +99,8 @@ local PowerupSelectionMenu = Goop.Class({
 })
 PowerupSelectionMenu.song:setVolume(settings:getVolume('music'))
 PowerupSelectionMenu.song:setLooping(true)
+PowerupSelectionMenu.closeSound:setVolume(settings:getVolume('sfx'))
+PowerupSelectionMenu.applyPowerupSound:setVolume(settings:getVolume('sfx'))
 
 ----------------------------
 -- [[ Public Functions ]] --
@@ -118,6 +121,7 @@ function PowerupSelectionMenu:close()
     self.eventManager:broadcast('enableWorldUpdate')
     self.song:stop()
     self.closeSound:play()
+    self.cards = {}
     cursor:set('arrow')
 end
 
@@ -238,6 +242,7 @@ function PowerupSelectionMenu:_createSubscriptions()
             if self.active and self.selectedPowerupName and not self.hasSelected then
                 self.eventManager:broadcast('interface_addPowerupToType', pawnType, self.selectedPowerupName)
                 self.hasSelected = true
+                self.applyPowerupSound:play()
                 self.eventManager:broadcast('endPowerupSelection')
             end
         end)
@@ -302,6 +307,9 @@ function PowerupSelectionMenu:_setFingerState(state)
 end
 
 function PowerupSelectionMenu:_drawFinger()
+    if self.selectedPowerupName then
+        return
+    end
     love.graphics.setColor(1, 1, 1, self.speechBubble.alpha)
     love.graphics.draw(self.finger.image,
         love.graphics.getWidth() * self.finger.anchor.x + self.finger.offset.x + self.finger.animX,

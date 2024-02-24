@@ -26,6 +26,9 @@ local TEXT_PADDING = 35
 ---@field liftAmount number
 ---@field liftSpeed number
 ---@field liftShadowInfluence number
+---@field spawnSound love.Source
+---@field hoverSound love.Source
+---@field clickSound love.Source
 local PowerupSelectionCard = Goop.Class({
     extends = Element,
     parameters = {
@@ -35,29 +38,40 @@ local PowerupSelectionCard = Goop.Class({
         { 'description', 'string' },
     },
     dynamic = {
-        timer           = 0,
-        animationOffset = 0,
-        width           = 260 * 0.85,
-        height          = 358 * 0.85,
-        hovered         = false,
-        lift            = 0,
-        liftAmount      = 25,
-        liftSpeed       = 15,
+        spawnSound          = love.audio.newSource('assets/audio/sfx/cards/deal.mp3', 'static'),
+        hoverSound          = love.audio.newSource('assets/audio/sfx/cards/hover.mp3', 'static'),
+        clickSound          = love.audio.newSource('assets/audio/sfx/cards/click.mp3', 'static'),
+        timer               = 0,
+        animationOffset     = 0,
+        width               = 260 * 0.85,
+        height              = 358 * 0.85,
+        hovered             = false,
+        lift                = 0,
+        liftAmount          = 25,
+        liftSpeed           = 15,
         liftShadowInfluence = 0.002,
-        animation       = {
+        animation           = {
             y     = 50,
             speed = 2,
             alpha = 0
         },
-        bgImage         = love.graphics.newImage('assets/images/ui/card.png'),
+        bgImage             = love.graphics.newImage('assets/images/ui/card.png'),
     }
 })
+PowerupSelectionCard.spawnSound:setVolume(settings:getVolume('sfx'))
+PowerupSelectionCard.hoverSound:setVolume(settings:getVolume('sfx'))
+PowerupSelectionCard.clickSound:setVolume(settings:getVolume('sfx'))
 
 
 ----------------------------
 -- [[ Public Functions ]] --
 ----------------------------
 function PowerupSelectionCard:select()
+    local sound = self.clickSound
+    if sound:isPlaying() then
+        sound = sound:clone()
+    end
+    sound:play()
     self.selected = true
 end
 function PowerupSelectionCard:unselect()
@@ -89,6 +103,10 @@ end
 -----------------------------
 function PowerupSelectionCard:_updateAnimation(dt)
     if self.timer > self.animationOffset then
+        if not self.spawnSoundPlayed then
+            self.spawnSound:play()
+            self.spawnSoundPlayed = true
+        end
         self.animation.y = self.animation.y - self.animation.y * self.animation.speed * dt
         if self.animation.alpha < 1 then
             self.animation.alpha = self.animation.alpha + self.animation.speed * dt
@@ -100,7 +118,7 @@ function PowerupSelectionCard:_drawBackground()
     local scale = util.graphics.getScaleForDimensions(self.bgImage, self.width, self.height)
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
     if self.selected then
-        love.graphics.setColor(0,1,0, self.animation.alpha)
+        love.graphics.setColor(0, 1, 0, self.animation.alpha)
     end
     love.graphics.draw(self.bgImage, self.position.x, self.position.y - self.lift, 0, scale.x, scale.y)
 end
@@ -124,8 +142,16 @@ function PowerupSelectionCard:_printDescription()
 end
 function PowerupSelectionCard:_checkHover()
     local x, y = love.mouse.getPosition()
-    if x > self.position.x and x < self.position.x + self.width and y > self.position.y and y < self.position.y + self.height then
-        self.hovered = true
+    if x > self.position.x and x < self.position.x + self.width and 
+    y > self.position.y and y < self.position.y + self.height then
+        if not self.hovered then
+            local sound = self.hoverSound
+            if sound:isPlaying() then
+                sound = sound:clone()
+            end
+            sound:play()
+            self.hovered = true
+        end
     else
         self.hovered = false
     end

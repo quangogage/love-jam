@@ -46,13 +46,18 @@ local PowerupSelectionMenu = Goop.Class({
             wiggleIntensity = 5,
             wiggleSpeed = 2.2,
             text   = '',
-            font   = love.graphics.newFont(fonts.speechBubble, 30),
+            font   = love.graphics.newFont(fonts.speechBubble, 26),
             image  = love.graphics.newImage('assets/images/ui/chat.png'),
-            padding = 100,
+            padding = 75,
             prompts = {
-                "Choose wisely.",
-                "The battle is won before it begins.",
-                "It seems you will do well.",
+                -- Would've used gpt to generate some of these, but wow is it bad right now.
+                "So another battle will be won.",
+                "I still see fear in you. Do not let it taint your judgement.",
+                "The cards whisper of great powers, yet your wisdom will ultimately decide your future.",
+                "We cannot fight our destiny, but we can shape it.",
+                "The fate of your men is in your hands.",
+                "You fear the unknown, yet within it lie many paths to certainty.",
+                "Victory is often the result of many decisions - Defeat may be the result of just one.",
             },
             anchor = { x = 0.25, y = 0 },
             offset = { x = 0, y = 20 }
@@ -247,7 +252,7 @@ function PowerupSelectionMenu:_drawSpeechBubble()
     love.graphics.setColor(1, 0, 1, self.speechBubble.alpha)
     love.graphics.printf(self.speechBubble.text,
         love.graphics.getWidth() * self.speechBubble.anchor.x + self.speechBubble.offset.x + self.speechBubble.padding / 2,
-        love.graphics.getHeight() * self.speechBubble.anchor.y + self.speechBubble.offset.y + 20 + self.speechBubble.animY,
+        love.graphics.getHeight() * self.speechBubble.anchor.y + self.speechBubble.offset.y + 10 + self.speechBubble.animY,
         self.speechBubble.image:getWidth() - self.speechBubble.padding,
         'left'
     )

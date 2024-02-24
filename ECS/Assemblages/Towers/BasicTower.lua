@@ -33,6 +33,7 @@ local imageSets = {
 
 return function (e, x, y, enemyType, spawnAmount)
     local imageSet
+    local collisionRadius = 95
     enemyType = enemyType or 'melee'
     spawnAmount = spawnAmount or 1
     local pawnTypes = {}
@@ -42,9 +43,11 @@ return function (e, x, y, enemyType, spawnAmount)
     elseif enemyType == 'ranged' then
         pawnTypes = {'RangedEnemy'}
         imageSet = imageSets.ranged
+        collisionRadius = 134
     else
         pawnTypes = {'RangedEnemy', 'LilMeleeEnemy'}
         imageSet = imageSets.ranged
+        collisionRadius = 134
     end
     e
         :assemble(TowerAssemblage, x, y)
@@ -52,6 +55,7 @@ return function (e, x, y, enemyType, spawnAmount)
         :give('dimensions', 170, 310, nil, 0, 80)
         :give('images', imageSet)
         :give('image',imageSet.idle)
+        :give("collision", {radius = collisionRadius})
         :give('pawnGeneration', {
             pawnTypes = pawnTypes,
             spawnRate = KNOBS.enemyTower.spawnRate,

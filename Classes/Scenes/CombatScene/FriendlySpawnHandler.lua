@@ -32,7 +32,7 @@ local coinSounds = {
     love.audio.newSource('assets/audio/sfx/coins/3.mp3', 'static'),
 }
 for _, sound in ipairs(coinSounds) do
-    sound:setVolume(settings:getVolume('sfx'))
+    sound:setVolume(settings:getVolume('interface') * 0.4)
 end
 
 ----------------------------

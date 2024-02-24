@@ -74,7 +74,7 @@ local RenderCanvas = Goop.Class({
         positionTargetSpeed       = 4,
         scaleTargetSpeed          = 3,
         shaderTargetSpeed         = 0.5,
-        shaderZoomInSpeed         = 8,
+        shaderZoomInSpeed         = 6,
         state                     = 'zoomedIn'
     }
 })

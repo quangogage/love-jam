@@ -25,68 +25,72 @@ local CARD_ANIMATION_OFFSET = 0.5
 ---@field description table
 ---@field finger table
 ---@field highlightBar table
+---@field closeSound love.Source
 local PowerupSelectionMenu = Goop.Class({
     arguments = { 'eventManager', 'combatScene' },
     dynamic = {
-        timer = 0,
-        active        = false,
-        cards         = {},
-        songWaitTime  = 0,
-        song          = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream'),
-        bgImage       = love.graphics.newImage('assets/images/ui/bg.png'),
+        timer        = 0,
+        active       = false,
+        cards        = {},
+        songWaitTime = 0,
+        song         = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream'),
+        closeSound   = love.audio.newSource('assets/audio/sfx/exit-powerup-menu.mp3', 'static'),
+        bgImage      = love.graphics.newImage('assets/images/ui/bg.png'),
         highlightBar = {
             image = love.graphics.newImage('assets/images/ui/yellow_gradient.png'),
             scale = { x = 1, y = 0.85 },
             anchor = { x = 0, y = 0.5 },
             alpha = 0,
             waitTime = 1,
+            targetAlpha = 0.5
         },
-        speechBubble  = {
-            alpha  = 0,
+        speechBubble = {
+            alpha           = 0,
             wiggleIntensity = 5,
-            wiggleSpeed = 2.2,
-            text   = '',
-            font   = love.graphics.newFont(fonts.speechBubble, 26),
-            image  = love.graphics.newImage('assets/images/ui/chat.png'),
-            padding = 75,
-            prompts = {
+            wiggleSpeed     = 2.2,
+            text            = '',
+            font            = love.graphics.newFont(fonts.speechBubble, 26),
+            image           = love.graphics.newImage('assets/images/ui/chat.png'),
+            padding         = 75,
+            prompts         = {
                 -- Would've used gpt to generate some of these, but wow is it bad right now.
-                "So another battle will be won.",
-                "I still see fear in you. Do not let it taint your judgement.",
-                "The cards whisper of great powers, yet your wisdom will ultimately decide your future.",
-                "We cannot fight our destiny, but we can shape it.",
-                "The fate of your men is in your hands.",
-                "You fear the unknown, yet within it lie many paths to certainty.",
-                "Victory is often the result of many decisions - Defeat may be the result of just one.",
+                'So another battle will be won.',
+                'I still see fear in you. Do not let it taint your judgement.',
+                'The cards whisper of great powers, yet your wisdom will ultimately decide your future.',
+                'We cannot fight our destiny, but we can shape it.',
+                'The fate of your men is in your hands.',
+                'You fear the unknown, yet within it lie many paths to certainty.',
+                'Victory is often the result of many decisions - Defeat may be the result of just one.',
             },
-            anchor = { x = 0.25, y = 0 },
-            offset = { x = 0, y = 20 }
+            anchor          = { x = 0.25, y = 0 },
+            offset          = { x = 0, y = 20 }
         },
-        description = {
-            text = "Choose a powerup to take, then click on a pawn to give it to them.",
+        description  = {
+            text = 'Choose a powerup to take, then click on a pawn to give it to them.',
             font = love.graphics.newFont(fonts.speechBubble, 25),
             image = love.graphics.newImage('assets/images/ui/info.png'),
             anchor = { x = 1, y = 0 },
             offset = { x = -400, y = 20 },
             padding = 65
         },
-        finger = {
-            animX    = 0, animY = 0,
-            image    = love.graphics.newImage('assets/images/icons/finger.png'),
-            anchor   = { x = 0, y = 0 },
-            offset   = { x = 0, y = 0 },
-            rotation = 0,
-            scale    = { x = -0.9, y = 0.9 },
-            wiggleIntensity = 10,
-            wiggleSpeed = 8.5,
+        finger       = {
+            animX = 0,
+            animY = 0,
+            image            = love.graphics.newImage('assets/images/icons/finger.png'),
+            anchor           = { x = 0, y = 0 },
+            offset           = { x = 0, y = 0 },
+            rotation         = 0,
+            scale            = { x = -0.9, y = 0.9 },
+            wiggleIntensity  = 10,
+            wiggleSpeed      = 8.5,
             selectingPowerup = {
-                anchor = {x = 0.18, y = 0.5},
-                offset = {x = -185, y = 0},
-                rotation = -math.pi/2
+                anchor = { x = 0.18, y = 0.5 },
+                offset = { x = -185, y = 0 },
+                rotation = -math.pi / 2
             },
-            selectingPawn = {
-                anchor = {x = 0.18, y = 1},
-                offset = {x = -185, y = -200},
+            selectingPawn    = {
+                anchor = { x = 0.18, y = 1 },
+                offset = { x = -185, y = -200 },
                 rotation = 0
             }
         }
@@ -113,6 +117,7 @@ function PowerupSelectionMenu:close()
     self.selectedPowerupName = nil
     self.eventManager:broadcast('enableWorldUpdate')
     self.song:stop()
+    self.closeSound:play()
     cursor:set('arrow')
 end
 
@@ -141,7 +146,8 @@ function PowerupSelectionMenu:update(dt)
             self.playedSong = true
         end
         if self.timer >= self.highlightBar.waitTime then
-            self.highlightBar.alpha = self.highlightBar.alpha + (1 - self.highlightBar.alpha) * 5 * dt
+            self.highlightBar.alpha = self.highlightBar.alpha +
+            (self.highlightBar.targetAlpha - self.highlightBar.alpha) * 5 * dt
         else
             self.highlightBar.alpha = 0
         end
@@ -152,10 +158,10 @@ function PowerupSelectionMenu:update(dt)
     self:_updateSpeechBubble(dt)
 
     if not self.selectedPowerupName then
-        self:_setFingerState("selectingPowerup")
+        self:_setFingerState('selectingPowerup')
         self.highlightBar.anchor.y = 0.5
     else
-        self:_setFingerState("selectingPawn")
+        self:_setFingerState('selectingPawn')
         self.highlightBar.anchor.y = 1
     end
     return hovered
@@ -251,8 +257,10 @@ function PowerupSelectionMenu:_drawSpeechBubble()
     love.graphics.setFont(self.speechBubble.font)
     love.graphics.setColor(1, 0, 1, self.speechBubble.alpha)
     love.graphics.printf(self.speechBubble.text,
-        love.graphics.getWidth() * self.speechBubble.anchor.x + self.speechBubble.offset.x + self.speechBubble.padding / 2,
-        love.graphics.getHeight() * self.speechBubble.anchor.y + self.speechBubble.offset.y + 10 + self.speechBubble.animY,
+        love.graphics.getWidth() * self.speechBubble.anchor.x + self.speechBubble.offset.x +
+        self.speechBubble.padding / 2,
+        love.graphics.getHeight() * self.speechBubble.anchor.y + self.speechBubble.offset.y + 10 +
+        self.speechBubble.animY,
         self.speechBubble.image:getWidth() - self.speechBubble.padding,
         'left'
     )
@@ -294,7 +302,7 @@ function PowerupSelectionMenu:_setFingerState(state)
 end
 
 function PowerupSelectionMenu:_drawFinger()
-    love.graphics.setColor(1,1,1,self.speechBubble.alpha)
+    love.graphics.setColor(1, 1, 1, self.speechBubble.alpha)
     love.graphics.draw(self.finger.image,
         love.graphics.getWidth() * self.finger.anchor.x + self.finger.offset.x + self.finger.animX,
         love.graphics.getHeight() * self.finger.anchor.y + self.finger.offset.y + self.finger.animY,

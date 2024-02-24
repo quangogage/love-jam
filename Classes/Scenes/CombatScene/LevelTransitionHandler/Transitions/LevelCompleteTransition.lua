@@ -22,19 +22,25 @@ local LevelCompleteTransition = Goop.Class({
         timer = 0,
         zoomWaitTime = 1,
         openMenuWaitTime = 3,
+        zoomOutSound = love.audio.newSource('assets/audio/sfx/enter-powerup-menu.mp3', 'static'),
     }
 })
 
+LevelCompleteTransition.zoomOutSound:setVolume(settings:getVolume('sfx'))
 
 --------------------------
 -- [[ Core Functions ]] --
 --------------------------
 function LevelCompleteTransition:init()
-    self.eventManager:broadcast("disableWorldUpdate")
+    self.eventManager:broadcast('disableWorldUpdate')
 end
 function LevelCompleteTransition:update(dt)
     self.timer = self.timer + dt
     -- Wait a moment before zooming out.
+    if self.timer >= self.zoomWaitTime * 0.5 and not self.playedSound then
+        self.zoomOutSound:play()
+        self.playedSound = true
+    end
     if self.timer >= self.zoomWaitTime and not self.zoomedOut then
         self.renderCanvas:beginZoomOut()
         self.zoomedOut = true
@@ -42,7 +48,7 @@ function LevelCompleteTransition:update(dt)
 
     -- Wait to actually open the powerup menu.
     if self.timer >= self.openMenuWaitTime then
-        self.eventManager:broadcast("openPowerupSelectionMenu")
+        self.eventManager:broadcast('openPowerupSelectionMenu')
         self.transitionHandler:setIdle()
     end
 end

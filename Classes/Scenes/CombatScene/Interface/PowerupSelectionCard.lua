@@ -99,6 +99,9 @@ end
 function PowerupSelectionCard:_drawBackground()
     local scale = util.graphics.getScaleForDimensions(self.bgImage, self.width, self.height)
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
+    if self.selected then
+        love.graphics.setColor(0,1,0, self.animation.alpha)
+    end
     love.graphics.draw(self.bgImage, self.position.x, self.position.y - self.lift, 0, scale.x, scale.y)
 end
 function PowerupSelectionCard:_printName()

@@ -1,3 +1,6 @@
+
+local SPEED_MULTIPLIER = 1.5
+
 return {
     -- ──────────────────────────────────────────────────────────────────────
     -- ╭─────────────────────────────────────────────────────────╮
@@ -25,7 +28,7 @@ return {
 
     enemyTower = {
         health = 26,
-        spawnRate = 10
+        spawnRate = 10 * SPEED_MULTIPLIER,
     },
 
     -- ──────────────────────────────────────────────────────────────────────
@@ -37,17 +40,17 @@ return {
 
     meleeEnemy = {
         health = 7,
-        walkSpeed = 1200,
+        walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 1,
-        attackSpeed = 1,
+        attackSpeed = 1 / SPEED_MULTIPLIER,
         range = 120,
         price = 1
     },
     rangedEnemy = {
         health = 5,
-        walkSpeed = 1000,
+        walkSpeed = 1000 * SPEED_MULTIPLIER,
         damageAmount = 1,
-        attackSpeed = 1.2,
+        attackSpeed = 1.2 / SPEED_MULTIPLIER,
         range = 420.69,
         price = 2
     },
@@ -61,33 +64,33 @@ return {
 
     knight = {
         health = 10,
-        walkSpeed = 1200,
+        walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 1,
-        attackSpeed = 1,
+        attackSpeed = 1 / SPEED_MULTIPLIER,
         range = 120,
         price = 1
     },
     archer = {
         health = 7,
-        walkSpeed = 1000,
+        walkSpeed = 1000 * SPEED_MULTIPLIER,
         damageAmount = 1,
-        attackSpeed = 1.2,
+        attackSpeed = 1.2 / SPEED_MULTIPLIER,
         range = 420.69,
         price = 2
     },
     mage = {
         health = 22,
-        walkSpeed = 1200,
+        walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 2.8,
-        attackSpeed = 1,
+        attackSpeed = 1 / SPEED_MULTIPLIER,
         range = 370,
         price = 3
     },
     heavy = {
         health = 40,
-        walkSpeed = 900,
+        walkSpeed = 900 * SPEED_MULTIPLIER,
         damageAmount = 2.5,
-        attackSpeed = 1.87,
+        attackSpeed = 1.87 / SPEED_MULTIPLIER,
         range = 160,
         price = 6
     },

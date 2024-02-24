@@ -282,8 +282,9 @@ function CombatScene:_generateLevel(index)
             self.world.enemyBase = self.enemyBase
         elseif e.className == 'EnemyTower' then
             util.entityAssembler.assemble(
-                self.world, e.type,
-                e.position.x, e.position.y
+                self.world, 'BasicTower',
+                e.position.x, e.position.y,
+                e.enemyType, e.spawnAmount
             )
         elseif e.className == 'FriendlyBase' then
             self.friendlyBase = util.entityAssembler.assemble(

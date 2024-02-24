@@ -11,7 +11,9 @@ return function (concord)
     concord.component('pawnGeneration', function (c, data)
         data         = data or {}
         c.pawnTypes   = data.pawnTypes or {'BasicPawn'}
+        c.spawnAmount = data.spawnAmount or 1
         c.spawnRate  = data.spawnRate or 4
         c.spawnTimer = 0
+
     end)
 end

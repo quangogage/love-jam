@@ -1,5 +1,5 @@
 
-local SPEED_MULTIPLIER = 1.5
+local SPEED_MULTIPLIER = 1.15
 
 return {
     -- ──────────────────────────────────────────────────────────────────────

@@ -43,8 +43,8 @@ local RenderCanvas = Goop.Class({
         canvasDimensionMultiplier = 2,
         zoomedOut                 = {
             tellerScale      = Vec2(1, 1),
-            distortionAmount = 6.5,
-            refractionAmount = 15,
+            distortionAmount = 10,
+            refractionAmount = 25,
             scale            = Vec2(0.5, 0.5),
             position         = Vec2(love.graphics.getWidth() * 0.25, love.graphics.getHeight() * 0.25),
             overlayAlpha     = 1
@@ -72,8 +72,9 @@ local RenderCanvas = Goop.Class({
         overlayAlphaTarget        = 0,
         overlayAlphaSpeed         = 2,
         positionTargetSpeed       = 4,
-        scaleTargetSpeed          = 2,
-        shaderTargetSpeed         = 1,
+        scaleTargetSpeed          = 3,
+        shaderTargetSpeed         = 0.5,
+        shaderZoomInSpeed         = 8,
         state                     = 'zoomedIn'
     }
 })
@@ -171,12 +172,12 @@ function RenderCanvas:_updateTargetValues(dt)
     self.position.y = util.math.lerp(self.position.y, targetValues.position.y, self.positionTargetSpeed * dt)
     self.scale.x = util.math.lerp(self.scale.x, targetValues.scale.x, self.scaleTargetSpeed * dt)
     self.scale.y = util.math.lerp(self.scale.y, targetValues.scale.y, self.scaleTargetSpeed * dt)
-    self.distortionAmount = util.math.lerp(self.distortionAmount, targetValues.distortionAmount, self.shaderTargetSpeed * dt)
-    self.refractionAmount = util.math.lerp(self.refractionAmount, targetValues.refractionAmount, self.shaderTargetSpeed * dt)
     self.overlayAlpha = util.math.lerp(self.overlayAlpha, targetValues.overlayAlpha, self.overlayAlphaSpeed * dt)
     self.teller.scale.x = util.math.lerp(self.teller.scale.x, targetValues.tellerScale.x, self.teller.zoomSpeed * dt)
     self.teller.scale.y = util.math.lerp(self.teller.scale.y, targetValues.tellerScale.y, self.teller.zoomSpeed * dt)
-
+    local speed = self.state == 'zoomedIn' and self.shaderZoomInSpeed or self.shaderTargetSpeed
+    self.distortionAmount = util.math.lerp(self.distortionAmount, targetValues.distortionAmount, speed * dt)
+    self.refractionAmount = util.math.lerp(self.refractionAmount, targetValues.refractionAmount, speed * dt)
 end
 
 function RenderCanvas:_stencilFunction()

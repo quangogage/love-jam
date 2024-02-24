@@ -12,7 +12,6 @@ return function (e, x, y, enemyType, spawnAmount)
     local color
     enemyType = enemyType or 'melee'
     spawnAmount = spawnAmount or 1
-    console:log(spawnAmount)
     local pawnTypes = {}
     if enemyType == 'melee' then
         color = {1, 0, 0}

@@ -87,7 +87,9 @@ return function (concord, onLevelComplete, playerLost)
                 -- Chance to insta-kill.
                 if attacker:get('powerups') then
                     if love.math.random() <= attacker.powerups.list["Shadow's Touch"]:getValue() then
+                        local color = attacker.hostile and { 1, 0, 0, 1 } or { 0, 1, 0, 1 }
                         target.health.value = 0
+                        util.entityAssembler.assemble(world, 'FadingText', 'Shadow\'s touch: Insta-kill!', attacker.position.x, attacker.position.y, color)
                     end
                 end
             end
@@ -135,7 +137,7 @@ return function (concord, onLevelComplete, playerLost)
                             if entity:get('hostile') then
                                 x, y = world.enemyBase.position.x, world.enemyBase.position.y
                             end
-                            util.entityAssembler.assemble(world, 'FadingText', 'Respawned!', entity.position.x, entity.position.y, color)
+                            util.entityAssembler.assemble(world, 'FadingText', 'Soul Renewed!', entity.position.x, entity.position.y, color)
                             entity.position.x = x
                             entity.position.y = y
                         end

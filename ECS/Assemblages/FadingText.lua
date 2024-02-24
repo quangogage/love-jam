@@ -12,4 +12,6 @@ return function(e, text, x, y, color)
         :give("color", color[1], color[2], color[3])
         :give("alpha", 1)
         :give("isFadingText")
+
+    e.position.x = x - e.text.font:getWidth(text) / 2
 end

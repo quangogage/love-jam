@@ -4,15 +4,16 @@
 -- Render behavior / what is rendered will depend on what other components the
 -- entity may have.
 
-local Vec2 = require("Classes.Types.Vec2")
-local selectedIcon = love.graphics.newImage("assets/images/icons/pointer.png")
+local Vec2 = require('Classes.Types.Vec2')
+local selectedIcon = love.graphics.newImage('assets/images/icons/pointer.png')
 local selectedIconOffset = Vec2(0, -30)
 
 return function (concord)
     ---@class RenderSystem : System
     ---@field entities table[]
     local RenderSystem = concord.system({
-        entities = { 'position' }
+        entities = { 'position' },
+        text = { 'position', 'text' }
     })
 
 
@@ -36,6 +37,13 @@ return function (concord)
             self:_renderEntity(entity)
         end
     end
+    function RenderSystem:drawOnTop()
+        for _, entity in ipairs(self.text) do
+            if entity:get('text') then
+                self:_renderText(entity)
+            end
+        end
+    end
 
 
     -----------------------------
@@ -57,7 +65,7 @@ return function (concord)
     ---@param entity table
     function RenderSystem:_renderRectangle(entity)
         local color     = entity:get('color') or { r = 1, g = 1, b = 1 }
-        local alpha     = entity:get('alpha') or 1
+        local alpha     = self:_getAlpha(entity)
         local rectangle = entity:get('renderRectangle')
         love.graphics.setColor(color.r, color.g, color.b, alpha)
         love.graphics.rectangle('fill',
@@ -70,18 +78,29 @@ return function (concord)
     -- Render an image at the entity position.
     ---@param entity table
     function RenderSystem:_renderImage(entity)
-        local color     = entity:get('color') or { r = 1, g = 1, b = 1 }
-        local alpha     = entity:get('alpha') or 1
-        local image     = entity:get('image').value
-        local offset    = entity:get('offset') or { x = 0.5, y = 0.5 }
-        local scale     = entity:get('scale') or { x = 1, y = 1 }
-        local rotation  = self:_getRotation(entity)
+        local color    = entity:get('color') or { r = 1, g = 1, b = 1 }
+        local alpha    = self:_getAlpha(entity)
+        local image    = entity:get('image').value
+        local offset   = entity:get('offset') or { x = 0.5, y = 0.5 }
+        local scale    = entity:get('scale') or { x = 1, y = 1 }
+        local rotation = self:_getRotation(entity)
         love.graphics.setColor(color.r, color.g, color.b, alpha)
         love.graphics.draw(image,
             entity.position.x, entity.position.y - entity.position.z,
             rotation, scale.x, scale.y,
             image:getWidth() * offset.x, image:getHeight() * offset.y
         )
+    end
+
+    -- Render text at the entity position.
+    ---@param entity table
+    function RenderSystem:_renderText(entity)
+        local color = entity:get('color') or { r = 1, g = 1, b = 1 }
+        local alpha = self:_getAlpha(entity)
+        local c = entity:get('text')
+        love.graphics.setColor(color.r, color.g, color.b, alpha)
+        love.graphics.setFont(c.font)
+        love.graphics.print(c.value, entity.position.x, entity.position.y)
     end
 
     -- z-index emulation.
@@ -105,13 +124,23 @@ return function (concord)
         return 0
     end
 
+    -- Get the alpha of the entity.
+    ---@param entity table
+    ---@return number
+    function RenderSystem:_getAlpha(entity)
+        if entity:get('alpha') then
+            return entity:get('alpha').value
+        end
+        return 1
+    end
+
     -- Draw a red arrow above the entity if they are selected.
     ---@param e BasicPawn | Pawn | Entity | table
     function RenderSystem:_drawSelectedIcon(e)
-        if e:get("selected") then
+        if e:get('selected') then
             local dimensions = e.dimensions
             local position = e.position
-            love.graphics.draw(selectedIcon, 
+            love.graphics.draw(selectedIcon,
                 position.x + selectedIconOffset.x,
                 position.y - dimensions.height / 2 + selectedIconOffset.y,
                 0, 1, 1,

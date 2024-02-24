@@ -3,6 +3,7 @@
 -- Handles inflicting and receiving damage.
 --
 
+local util = require('util')({ 'entityAssembler' })
 local SuccessfulAttack = require('Classes.Types.SuccessfulAttack')
 
 local hitSounds = {
@@ -126,6 +127,7 @@ return function (concord, onLevelComplete, playerLost)
                         -- name = 'Soul Renewal',
                         -- description = 'Immediately respawn at your base upon death.',
                         if love.math.random() <= entity.powerups.list['Soul Renewal']:getValue() then
+                            local color = entity.hostile and { 1, 0, 0, 1 } or { 0, 1, 0, 1 }
                             local x, y = world.friendlyBase.position.x, world.friendlyBase.position.y
                             shouldStillDie = false
                             entity:remove('isDead')
@@ -133,14 +135,15 @@ return function (concord, onLevelComplete, playerLost)
                             if entity:get('hostile') then
                                 x, y = world.enemyBase.position.x, world.enemyBase.position.y
                             end
+                            util.entityAssembler.assemble(world, 'FadingText', 'Respawned!', entity.position.x, entity.position.y, color)
                             entity.position.x = x
                             entity.position.y = y
                         end
                     end
 
                     if shouldStillDie then -- The powerup did not prevent death... (see above).
-                        world:emit("entity_createCorpse", entity)
-                        world:emit("entity_createTowerCorpse", entity)
+                        world:emit('entity_createCorpse', entity)
+                        world:emit('entity_createTowerCorpse', entity)
                         entity:destroy()
                     end
                 end

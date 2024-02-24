@@ -24,7 +24,7 @@ return function (e, x, y, friendly, powerups)
         })
         :give('pawnAnimations', 'enemy_knight')
         :give('pushbackRadius', 35)
-        :give('groundPosition', 0, 30)
+        :give('groundPosition', 0, 20)
         :give('coinValue', KNOBS.enemyCoinReward.meleeEnemy)
         :give('movement', {
             walkSpeed = KNOBS.meleeEnemy.walkSpeed

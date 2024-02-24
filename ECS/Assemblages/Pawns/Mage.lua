@@ -49,7 +49,7 @@ return function (e, x, y, friendly, powerups)
         })
         :give('pawnAnimations', 'mage')
         :give('pushbackRadius', 35)
-        :give('groundPosition', 0, 30)
+        :give('groundPosition', 0, 20)
         :give('scale', scale.x, scale.y)
         :give('movement', {
             walkSpeed = KNOBS.mage.walkSpeed

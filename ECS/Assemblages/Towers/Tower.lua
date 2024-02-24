@@ -15,5 +15,7 @@ return function (e, x, y)
         :give("pawnGeneration")
         :give("groundPosition", 0, 0)
         :give("isTower")
+        :give("collision", {radius = 100})
+        :give("staticCollisionBehavior")
         :give("coinValue", KNOBS.enemyCoinReward.tower)
 end

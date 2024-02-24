@@ -101,12 +101,12 @@ return function (concord, camera, onLevelComplete, coinManager)
                 position = hitbox.position,
                 dimensions = hitbox.dimensions
             })
-            if hitbox.pushbackRadius then
+            if hitbox.collision then
                 love.graphics.circle(
                     'line',
                     hitbox.groundPosition.x,
                     hitbox.groundPosition.y,
-                    hitbox.pushbackRadius.value
+                    hitbox.collision.radius
                 )
             end
         end

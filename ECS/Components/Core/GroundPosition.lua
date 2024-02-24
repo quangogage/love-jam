@@ -13,8 +13,8 @@
 
 return function (concord)
     concord.component('groundPosition', function (c, x, y)
-        c.x = x or 0
-        c.y = y or 0
+        c.x = 0
+        c.y = 0
         c.offsetX = x or 0
         c.offsetY = y or 0
     end)

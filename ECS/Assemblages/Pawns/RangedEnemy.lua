@@ -32,7 +32,7 @@ return function (e, x, y, friendly, powerups)
         })
         :give('pawnAnimations', 'enemy_ranger')
         :give('pushbackRadius', 35)
-        :give('groundPosition', 0, 30)
+        :give('groundPosition', 0, 20)
         :give('movement', {
             walkSpeed = KNOBS.rangedEnemy.walkSpeed
         })

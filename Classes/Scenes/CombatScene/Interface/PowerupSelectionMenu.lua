@@ -23,7 +23,6 @@ local CARD_ANIMATION_OFFSET = 0.5
 ---@field teller table
 ---@field speechBubble table
 ---@field description table
----@field finger table
 ---@field highlightBar table
 ---@field closeSound love.Source
 local PowerupSelectionMenu = Goop.Class({
@@ -35,7 +34,7 @@ local PowerupSelectionMenu = Goop.Class({
         songWaitTime = 0,
         song         = love.audio.newSource('assets/audio/songs/Fortune-Teller.mp3', 'stream'),
         closeSound   = love.audio.newSource('assets/audio/sfx/exit-powerup-menu.mp3', 'static'),
-        applyPowerupSound = love.audio.newSource('assets/audio/sfx/apply-powerup.wav', 'static'),
+        applyPowerupSound = love.audio.newSource('assets/audio/sfx/apply-powerup.mp3', 'static'),
         bgImage      = love.graphics.newImage('assets/images/ui/bg.png'),
         highlightBar = {
             image = love.graphics.newImage('assets/images/ui/yellow_gradient.png'),
@@ -74,27 +73,6 @@ local PowerupSelectionMenu = Goop.Class({
             offset = { x = -400, y = 20 },
             padding = 65
         },
-        finger       = {
-            animX = 0,
-            animY = 0,
-            image            = love.graphics.newImage('assets/images/icons/finger.png'),
-            anchor           = { x = 0, y = 0 },
-            offset           = { x = 0, y = 0 },
-            rotation         = 0,
-            scale            = { x = -0.9, y = 0.9 },
-            wiggleIntensity  = 10,
-            wiggleSpeed      = 8.5,
-            selectingPowerup = {
-                anchor = { x = 0.18, y = 0.5 },
-                offset = { x = -185, y = 0 },
-                rotation = -math.pi / 2
-            },
-            selectingPawn    = {
-                anchor = { x = 0.18, y = 1 },
-                offset = { x = -185, y = -200 },
-                rotation = 0
-            }
-        }
     }
 })
 PowerupSelectionMenu.song:setVolume(settings:getVolume('music'))
@@ -113,7 +91,6 @@ function PowerupSelectionMenu:open()
     self.timer = 0
     self.playedSong = false
     self.speechBubble.text = self.speechBubble.prompts[love.math.random(1, #self.speechBubble.prompts)]
-    self:_setFingerState('selectingPowerup')
 end
 function PowerupSelectionMenu:close()
     self.active = false
@@ -158,14 +135,11 @@ function PowerupSelectionMenu:update(dt)
     else
         self.highlightBar.alpha = 0
     end
-    self:_updateFinger(dt)
     self:_updateSpeechBubble(dt)
 
     if not self.selectedPowerupName then
-        self:_setFingerState('selectingPowerup')
         self.highlightBar.anchor.y = 0.5
     else
-        self:_setFingerState('selectingPawn')
         self.highlightBar.anchor.y = 1
     end
     return hovered
@@ -174,7 +148,6 @@ function PowerupSelectionMenu:draw()
     self:_drawHighlightBar()
     self:_drawSpeechBubble()
     self:_drawDescription()
-    self:_drawFinger()
     if self.active then
         for _, card in ipairs(self.cards) do
             card:draw()
@@ -298,33 +271,7 @@ function PowerupSelectionMenu:_drawDescription()
     )
 end
 
-function PowerupSelectionMenu:_setFingerState(state)
-    self.finger.anchor.x = self.finger[state].anchor.x
-    self.finger.anchor.y = self.finger[state].anchor.y
-    self.finger.offset.x = self.finger[state].offset.x
-    self.finger.offset.y = self.finger[state].offset.y
-    self.finger.rotation = self.finger[state].rotation
-end
 
-function PowerupSelectionMenu:_drawFinger()
-    if self.selectedPowerupName then
-        return
-    end
-    love.graphics.setColor(1, 1, 1, self.speechBubble.alpha)
-    love.graphics.draw(self.finger.image,
-        love.graphics.getWidth() * self.finger.anchor.x + self.finger.offset.x + self.finger.animX,
-        love.graphics.getHeight() * self.finger.anchor.y + self.finger.offset.y + self.finger.animY,
-        self.finger.rotation,
-        self.finger.scale.x, self.finger.scale.y,
-        self.finger.image:getWidth() / 2, self.finger.image:getHeight() / 2
-    )
-end
-function PowerupSelectionMenu:_updateFinger(dt)
-    local currentAmt = self.finger.wiggleIntensity * math.sin(love.timer.getTime() * self.finger.wiggleSpeed)
-    local direction = self.finger.rotation + math.pi / 2
-    self.finger.animX = math.cos(direction) * currentAmt
-    self.finger.animY = math.sin(direction) * currentAmt
-end
 function PowerupSelectionMenu:_drawHighlightBar()
     love.graphics.setColor(1, 1, 1, self.highlightBar.alpha)
     love.graphics.draw(self.highlightBar.image,

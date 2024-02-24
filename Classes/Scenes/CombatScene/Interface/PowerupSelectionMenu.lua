@@ -109,6 +109,7 @@ function PowerupSelectionMenu:init()
     self:_createSubscriptions()
 end
 function PowerupSelectionMenu:destroy()
+    self.song:stop()
     self:_destroySubscriptions()
 end
 ---@return boolean If you are hovering over a card.

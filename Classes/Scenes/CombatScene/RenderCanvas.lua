@@ -43,8 +43,8 @@ local RenderCanvas = Goop.Class({
         canvasDimensionMultiplier = 2,
         zoomedOut                 = {
             tellerScale      = Vec2(1, 1),
-            distortionAmount = 5,
-            refractionAmount = 5,
+            distortionAmount = 6.5,
+            refractionAmount = 15,
             scale            = Vec2(0.5, 0.5),
             position         = Vec2(love.graphics.getWidth() * 0.25, love.graphics.getHeight() * 0.25),
             overlayAlpha     = 1
@@ -71,9 +71,9 @@ local RenderCanvas = Goop.Class({
         overlayAlpha              = 0,
         overlayAlphaTarget        = 0,
         overlayAlphaSpeed         = 2,
-        positionTargetSpeed       = 2,
+        positionTargetSpeed       = 4,
         scaleTargetSpeed          = 2,
-        shaderTargetSpeed         = 1.5,
+        shaderTargetSpeed         = 1,
         state                     = 'zoomedIn'
     }
 })

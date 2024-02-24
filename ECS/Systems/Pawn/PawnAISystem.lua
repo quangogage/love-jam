@@ -39,18 +39,16 @@ return function (concord)
         local world = self:getWorld()
         if world then
             local distance = self:_getDistanceToTarget(e)
-            local arrivalThreshold
+            local arrivalThreshold = self:_getArrivalThreshold(e)
             local x, y
+
 
             -- Are we targeting a position or an entity?
             if e.target.position then
                 x, y = e.target.position.x, e.target.position.y
-                arrivalThreshold = DEFAULT_ARRIVAL_THRESHOLD
             elseif e.target.entity then
                 x, y = e.target.entity.groundPosition.x, e.target.entity.groundPosition.y
-                arrivalThreshold = e.combatProperties.range * 0.85 -- Get a little closer than the attack range.
             end
-
 
             if distance >= arrivalThreshold then
                 local direction = math.atan2(
@@ -91,7 +89,22 @@ return function (concord)
         )
     end
 
-
+    function PawnAISystem:_getArrivalThreshold(e)
+        if e.target.entity then
+            local threshold = 0
+            if e.combatProperties.range then
+                threshold = threshold + e.combatProperties.range * 0.85
+            end
+            if e.target.entity.collision then
+                threshold = threshold + e.target.entity.collision.radius
+            end
+            if e.collision then
+                threshold = threshold + e.collision.radius
+            end
+            return threshold
+        end
+        return DEFAULT_ARRIVAL_THRESHOLD
+    end
 
     return PawnAISystem
 end

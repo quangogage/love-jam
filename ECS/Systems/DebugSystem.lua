@@ -5,7 +5,7 @@
 -- Some functions can be called via console commands.
 --
 
-local util = require("util")({ "entityAssembler" })
+local util = require('util')({ 'entityAssembler' })
 
 return function (concord, camera, onLevelComplete, coinManager)
     local DebugSystem = concord.system({
@@ -75,13 +75,22 @@ return function (concord, camera, onLevelComplete, coinManager)
             local position = entity:get('groundPosition')
             local dimensions = entity:get('dimensions')
             love.graphics.setLineWidth(2)
-            love.graphics.setColor(1, 0, 0)
+            love.graphics.setColor(1, 0, 0, 0.2)
             love.graphics.circle(
                 'line',
                 position.x,
                 position.y,
                 combatProperties.range
             )
+
+            if entity.collision then
+                love.graphics.setLineWidth(1)
+                love.graphics.setColor(0.5, 0, 0, 0.2)
+                love.graphics.circle('line',
+                    position.x, position.y,
+                    entity.collision.radius + combatProperties.range
+                )
+            end
         end
     end
     function DebugSystem:_drawHitboxes()
@@ -113,11 +122,17 @@ return function (concord, camera, onLevelComplete, coinManager)
     end
     function DebugSystem:_spawnPawnsInTestRoom(key)
         if self.testRoom then
-            local x,y = camera:getTranslatedMousePosition()
-            if key == "t" then
+            local x, y = camera:getTranslatedMousePosition()
+            if key == 't' then
                 util.entityAssembler.assemble(
                     self:getWorld(),
                     'LilMeleeEnemy',
+                    x, y
+                )
+            elseif key == 'y' then
+                util.entityAssembler.assemble(
+                    self:getWorld(),
+                    'BasicTower',
                     x, y
                 )
             end
@@ -126,14 +141,14 @@ return function (concord, camera, onLevelComplete, coinManager)
 
     function DebugSystem:_drawFriendlyTargets()
         if self.showFriendlyTargets then
-            for _,e in ipairs(self.targetingEntities) do
+            for _, e in ipairs(self.targetingEntities) do
                 if e.target and e.friendly then
                     if e.target.entity then
-                        love.graphics.setColor(0,0,1,0.5)
-                        love.graphics.circle("fill",
+                        love.graphics.setColor(0, 0, 1, 0.5)
+                        love.graphics.circle('fill',
                             e.position.x, e.position.y, 75
                         )
-                        love.graphics.setColor(1,0,1)
+                        love.graphics.setColor(1, 0, 1)
                         love.graphics.line(
                             e.position.x, e.position.y,
                             e.target.entity.position.x, e.target.entity.position.y

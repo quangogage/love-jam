@@ -8,7 +8,7 @@
 --
 -- See `ECS.Systems.DamageSystem` for attack resolution.
 
-local util = require('util')({ 'entityAssembler' })
+local util = require('util')({ 'entityAssembler', 'math' })
 
 return function (concord)
     ---@class PawnAttackSystem : System
@@ -31,16 +31,12 @@ return function (concord)
             if e.target then
                 local targetEntity = e.target.entity
                 if targetEntity then
-                    local distance = math.sqrt(
-                        (e.groundPosition.x - targetEntity.groundPosition.x) ^ 2 +
-                        (e.groundPosition.y - targetEntity.groundPosition.y) ^ 2
-                    )
                     local attackSpeed = e.combatProperties.attackSpeed
                     if e.powerups then
                         attackSpeed = e.powerups.list['Quickening Quiver']:getValue(attackSpeed)
                     end
 
-                    if distance <= e.combatProperties.range and
+                    if self:_isInRange(e, targetEntity) and
                     e.combatProperties.attackTimer >= attackSpeed then
                         if e.combatProperties.type == 'melee' then
                             self:_meleeAttack(e)
@@ -119,6 +115,30 @@ return function (concord)
         )
 
         world:emit("pawn_playAnimationOnce", e, "attack", direction)
+    end
+
+    -- Check if a pawn is in range of its target.
+    ---@param pawn Pawn | table
+    ---@param targetEntity table
+    function PawnAttackSystem:_isInRange(pawn, targetEntity)
+        if pawn.groundPosition and targetEntity.groundPosition then
+            local distance = util.math.getDistance(
+                pawn.groundPosition.x, pawn.groundPosition.y,
+                targetEntity.groundPosition.x, targetEntity.groundPosition.y
+            )
+
+            if not targetEntity.collision then
+                if distance <= pawn.combatProperties.range then
+                    return true
+                end
+            elseif targetEntity.collision and pawn.collision then
+                local totalRadius = pawn.collision.radius + targetEntity.collision.radius
+                if distance <= totalRadius + pawn.combatProperties.range then
+                    return true
+                end
+            end
+        end
+        return false
     end
 
     return PawnAttackSystem

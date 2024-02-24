@@ -27,7 +27,7 @@ return function (concord)
         c.damageAmount        = data.damageAmount or 1
         c.attackSpeed         = data.attackSpeed or 1
         c.attackTimer         = 0
-        c.range               = data.range or 150
+        c.range               = data.range or 100
         c.attackSpawnDistance = data.attackSpawnDistance or 30
         c.meleeHitboxSize     = data.meleeHitboxSize or 30
         -- Default to sword sounds.

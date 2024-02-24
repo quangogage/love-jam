@@ -70,7 +70,7 @@ return {
         walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 1,
         attackSpeed = 1 / SPEED_MULTIPLIER,
-        range = 120,
+        range = 60,
         price = 1
     },
     rangedEnemy = {
@@ -94,7 +94,7 @@ return {
         walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 1,
         attackSpeed = 1 / SPEED_MULTIPLIER,
-        range = 120,
+        range = 60,
         price = 1
     },
     archer = {

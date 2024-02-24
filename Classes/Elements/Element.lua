@@ -32,6 +32,11 @@ function Element:setPosition()
     self.position.y = love.graphics.getHeight() * self.anchor.y + self.offset.y
 end
 
+function Element:center()
+    self.offset.x = self.offset.x - self.dimensions.width / 2
+    self.offset.y = self.offset.y - self.dimensions.height / 2
+end
+
 function Element:update()
     self:setPosition()
 end

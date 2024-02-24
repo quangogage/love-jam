@@ -18,7 +18,7 @@ end
 
 ---@param concord Concord | table
 ---@param onLevelComplete function
-return function (concord, onLevelComplete)
+return function (concord, onLevelComplete, playerLost)
 
     ---@class DamageSystem : System
     ---@field healthEntities Pawn[] | table[]
@@ -29,7 +29,8 @@ return function (concord, onLevelComplete)
         targetingEntities = { 'target' },
         enemyBases        = { 'isBase', 'hostile' },
         enemyTowers       = { 'isTower', 'hostile' },
-        enemies           = { 'hostile', 'isPawn' }
+        enemies           = { 'hostile', 'isPawn' },
+        friendlyBases     = { 'isBase', 'friendly' },
     })
 
 
@@ -145,6 +146,7 @@ return function (concord, onLevelComplete)
             end
         end
         self:_checkLevelComplete()
+        self:_checkPlayerLost()
     end
 
 
@@ -158,6 +160,13 @@ return function (concord, onLevelComplete)
             if #self.enemyBases == 0 or #self.enemies == 0 and #self.enemyTowers == 0 then
                 onLevelComplete()
             end
+        end
+    end
+
+    -- Check if the player lost (their base was destroyed).
+    function DamageSystem:_checkPlayerLost()
+        if #self.friendlyBases == 0 then
+            playerLost()
         end
     end
 

@@ -24,6 +24,7 @@ local PauseMenu              = require('Classes.Scenes.CombatScene.Interface.Pau
 local BackgroundRenderer     = require('Classes.Scenes.CombatScene.BackgroundRenderer')
 local CoinManager            = require('Classes.Scenes.CombatScene.CoinManager')
 local RenderCanvas           = require('Classes.Scenes.CombatScene.RenderCanvas')
+local LoseMenu               = require('Classes.Scenes.CombatScene.Interface.LoseMenu')
 
 ---@class CombatScene
 ---@field camera Camera
@@ -48,6 +49,7 @@ local RenderCanvas           = require('Classes.Scenes.CombatScene.RenderCanvas'
 ---@field songs love.Source[]
 ---@field ambienceTrack love.Source
 ---@field victoryJingle love.Source
+---@field loseMenu LoseMenu
 local CombatScene            = Goop.Class({
     arguments = { 'eventManager' },
     static = {
@@ -58,6 +60,7 @@ local CombatScene            = Goop.Class({
         },
         victoryJingle = love.audio.newSource('assets/audio/songs/victory.wav', 'stream'),
         ambienceTrack = love.audio.newSource('assets/audio/sfx/battle-ambience.mp3', 'stream'),
+        lost = false
     }
 })
 
@@ -104,6 +107,7 @@ function CombatScene:init()
     self.friendlySpawnHandler = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self,
         self.coinManager)
     self.cameraControls       = CameraControls(self.camera, self.world)
+    self.loseMenu             = LoseMenu(self.eventManager)
     self.pauseMenu            = PauseMenu(self, self.eventManager)
     self.backgroundRenderer   = BackgroundRenderer()
     self:_loadSystems()
@@ -126,21 +130,23 @@ end
 function CombatScene:update(dt)
     local pawnHovered = false
     local powerupHovered = false
-    if not self.disableWorldUpdate and not self.paused then
+    local lostHovered = false
+    if not self.disableWorldUpdate and not self.paused and not self.lost then
         self.world:emit('update', dt)
         if not self.disableCameraControls then
             self.cameraControls:update(dt)
         end
         self.camera:update(dt)
     end
-    if not self.paused then
+    if not self.paused and not self.lost then
         pawnHovered = self.pawnSelectionMenu:update(dt)
         powerupHovered = self.powerupSelectionMenu:update(dt)
         self.levelTransitionHandler:update(dt)
     end
     self.renderCanvas:update(dt)
     self.pauseMenu:update(dt)
-    if pawnHovered or powerupHovered then
+    self.loseMenu:update(dt)
+    if pawnHovered or powerupHovered or lostHovered then
         cursor:set('hand')
     else
         cursor:set('arrow')
@@ -163,14 +169,17 @@ function CombatScene:draw()
     self.pawnSelectionMenu:draw()
     self.levelTransitionHandler:draw()
     self.pauseMenu:draw()
+    self.loseMenu:draw()
 end
 function CombatScene:keypressed(key)
-    if not self.paused then
+    if not self.paused and not self.lost then
         self.world:emit('keypressed', key)
         self.pawnSelectionMenu:keypressed(key)
         self.levelTransitionHandler:keypressed(key)
     end
-    self.pauseMenu:keypressed(key)
+    if not self.lost then
+        self.pauseMenu:keypressed(key)
+    end
 end
 function CombatScene:mousepressed(x, y, button)
     local didClickInterface = self.pawnSelectionMenu:mousepressed(x, y, button)
@@ -182,14 +191,15 @@ function CombatScene:mousepressed(x, y, button)
         self.powerupSelectionMenu:mousepressed(x, y, button)
     end
     self.pauseMenu:mousepressed(x, y, button)
+    self.loseMenu:mousepressed(x, y, button)
 end
 function CombatScene:mousereleased(x, y, button)
-    if not self.paused and not self.disableWorldUpdate then
+    if not self.paused and not self.disableWorldUpdate and not self.lost then
         self.world:emit('mousereleased', x, y, button)
     end
 end
 function CombatScene:wheelmoved(x, y)
-    if not self.paused and not self.disableWorldUpdate then
+    if not self.paused and not self.disableWorldUpdate and not self.lost then
         self.cameraControls:wheelmoved(x, y)
     end
 end
@@ -225,7 +235,7 @@ function CombatScene:_loadSystems()
     loadSystem('GroundPositionSystem')
     loadSystem('Pawn.EnemyPawnTargetSystem')
     loadSystem('CorpseSystem')
-    loadSystem('DamageSystem', function () self:completeLevel() end)
+    loadSystem('DamageSystem', function () self:completeLevel() end, function() self.eventManager:broadcast("event_playerLost") end)
     loadSystem('Pawn.PawnAISystem')
     loadSystem('Pawn.PawnAttackSystem')
     loadSystem('DamageOnContactSystem')
@@ -331,6 +341,11 @@ function CombatScene:_createSubscriptions()
         end)
     self.subscriptions['loadNextLevel'] = self.eventManager:subscribe('loadNextLevel', function ()
         self:loadNextLevel()
+    end)
+    self.subscriptions['event_playerLost'] = self.eventManager:subscribe('event_playerLost', function ()
+        self:_stopCombatAudio()
+        self.loseMenu:open()
+        self.lost = true
     end)
 end
 function CombatScene:_destroySubscriptions()

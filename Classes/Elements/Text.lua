@@ -21,6 +21,7 @@ local Text = Goop.Class({
         { 'text',   'string' }, -- The text to be displayed. It's a string as state above. See below for it getting rendered. Rendering logic below. See how the string/text gets draw onto the screen/canvas below via this class.
     },
     dynamic = {
+        type = "Text",
         font = love.graphics.newFont(fonts.button, 24),
         color = { 1,1,1 }
     }

@@ -60,7 +60,9 @@ local CombatScene            = Goop.Class({
         },
         victoryJingle = love.audio.newSource('assets/audio/songs/victory.wav', 'stream'),
         ambienceTrack = love.audio.newSource('assets/audio/sfx/battle-ambience.mp3', 'stream'),
-        lost = false
+        lost = false,
+
+        devLevelPrintFont = love.graphics.newFont(16)
     }
 })
 
@@ -170,6 +172,11 @@ function CombatScene:draw()
     self.levelTransitionHandler:draw()
     self.pauseMenu:draw()
     self.loseMenu:draw()
+
+    -- DEV:
+    love.graphics.setColor(1,1,1)
+    love.graphics.setFont(self.devLevelPrintFont)
+    love.graphics.print("Level " .. self.currentLevelIndex, 10, 10)
 end
 function CombatScene:keypressed(key)
     if not self.paused and not self.lost then

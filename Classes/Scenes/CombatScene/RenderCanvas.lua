@@ -117,14 +117,6 @@ end
 --------------------------
 function RenderCanvas:init()
     self:_initCanvas()
-    self.position = Vec2(
-        love.graphics.getWidth() * self.offset.x,
-        love.graphics.getHeight() * self.offset.y
-    )
-    self.zoomedIn.position = Vec2(
-        love.graphics.getWidth() * self.offset.x,
-        love.graphics.getHeight() * self.offset.y
-    )
 end
 function RenderCanvas:update(dt)
     self:_updateTargetValues(dt)
@@ -160,6 +152,9 @@ function RenderCanvas:draw()
         self.overlayImage:getWidth() * 0.5,
         self.overlayImage:getHeight() * 0.5
     )
+end
+function RenderCanvas:resize()
+    self:_initCanvas()
 end
 
 
@@ -207,6 +202,14 @@ function RenderCanvas:_initCanvas()
         x = self.teller.zoomedOutScale.x,
         y = self.teller.zoomedOutScale.y
     }
+    self.position = Vec2(
+        love.graphics.getWidth() * self.offset.x,
+        love.graphics.getHeight() * self.offset.y
+    )
+    self.zoomedIn.position = Vec2(
+        love.graphics.getWidth() * self.offset.x,
+        love.graphics.getHeight() * self.offset.y
+    )
 end
 
 return RenderCanvas

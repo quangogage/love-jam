@@ -58,4 +58,5 @@ function love.wheelmoved(x, y)
     game:wheelmoved(x, y)
 end
 function love.resize(w, h)
+    game:resize(w, h)
 end

@@ -224,6 +224,9 @@ function CombatScene:wheelmoved(x, y)
         self.cameraControls:wheelmoved(x, y)
     end
 end
+function CombatScene:resize(w, h)
+    self.renderCanvas:resize(w, h)
+end
 
 
 -----------------------------

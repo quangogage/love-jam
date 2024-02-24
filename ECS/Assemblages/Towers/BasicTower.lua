@@ -33,7 +33,7 @@ local imageSets = {
 
 return function (e, x, y, enemyType, spawnAmount)
     local imageSet
-    local collisionRadius = 95
+    local collisionRadius = 105
     enemyType = enemyType or 'melee'
     spawnAmount = spawnAmount or 1
     local pawnTypes = {}

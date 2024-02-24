@@ -17,4 +17,5 @@ return function(e, x, y)
         :give("image", images[love.math.random(1, #images)])
         :give('dimensions',image:getWidth(),image:getHeight())
         :give('image',image)
+        :give('unselectable')
 end

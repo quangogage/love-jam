@@ -109,7 +109,8 @@ return function (concord)
     ---@return boolean
     function RenderSystem._zIndexSort(a, b)
         if a.dimensions and b.dimensions then
-            return a.position.y + a.dimensions.height / 2 < b.position.y + b.dimensions.height / 2
+            return a.position.y - a.dimensions.offsetY + a.dimensions.height / 2 < 
+                b.position.y - b.dimensions.offsetY + b.dimensions.height / 2
         end
         return a.position.y < b.position.y
     end

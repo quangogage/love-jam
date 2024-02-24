@@ -65,6 +65,13 @@ function Game:keypressed(key)
         self.currentScene:keypressed(key)
     end
 end
+function Game:resize(w, h)
+    if self.currentScene then
+        if self.currentScene.resize then
+            self.currentScene:resize(w, h)
+        end
+    end
+end
 
 
 -----------------------------

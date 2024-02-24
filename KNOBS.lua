@@ -25,8 +25,8 @@ return {
     -- How much each one is worth.
     enemyCoinReward = {
         tower = 2,
-        meleeEnemy = 1.95,
-        rangedEnemy = 2.0
+        meleeEnemy = 1.5,
+        rangedEnemy = 2.05
     },
 
     -- ──────────────────────────────────────────────────────────────────────

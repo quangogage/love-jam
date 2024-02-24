@@ -6,6 +6,8 @@
 -- Also what powerups the enemies have then therefore been given.
 --
 
+local POWERUPS_PER_LOOP = 3
+
 local util     = require('util')({ 'table'})
 local powerups = require('lists.powerups')
 local Powerup  = require("Classes.Types.Powerup")
@@ -47,10 +49,12 @@ end
 -- For every loop, add one random powerup.
 function LoopStateManager:_addPowerups()
     for _=1,self.loop do
-        local powerupNameList = util.table.getKeysAsArray(self.powerupList)
-        local randomPowerupName = powerupNameList[love.math.random(1, #powerupNameList)]
-        local randomPowerup = self.powerupList[randomPowerupName]
-        randomPowerup.count = randomPowerup.count + 1
+        for _=1,POWERUPS_PER_LOOP do
+            local powerupNameList = util.table.getKeysAsArray(self.powerupList)
+            local randomPowerupName = powerupNameList[love.math.random(1, #powerupNameList)]
+            local randomPowerup = self.powerupList[randomPowerupName]
+            randomPowerup.count = randomPowerup.count + 1
+        end
     end
 end
 

@@ -8,6 +8,8 @@
 -- `interface_attemptSpawnPawn` event.
 --
 
+local FALLBACK_ICON = love.graphics.newImage('assets/images/pawn_ui/knight.png')
+
 local palette           = require('lists.interfaceColorPalette')
 local pawnTypes         = require('lists.pawnTypes')
 local PawnSelectionCard = require('Classes.Scenes.CombatScene.Interface.PawnSelectionCard')
@@ -26,11 +28,11 @@ local PawnSelectionMenu = Goop.Class({
     arguments = { 'eventManager', 'powerupStateManager', 'coinManager' },
     static = {
         cards             = {},
-        height            = 100,
+        height            = 165,
         cardScreenPadding = 15,
         cardSpacing       = 7,
-        cardWidth         = 245,
-        cardHeight        = 90
+        cardWidth         = 300,
+        cardHeight        = 115
     }
 })
 
@@ -53,7 +55,6 @@ function PawnSelectionMenu:update()
     return hovered
 end
 function PawnSelectionMenu:draw()
-    self:_drawBackground()
     self:_drawCards()
     self:_printCoinCount()
 end
@@ -96,6 +97,7 @@ function PawnSelectionMenu:_initCards()
                 width          = self.cardWidth,
                 height         = self.cardHeight,
                 name           = pawnType.name,
+                icon           = pawnType.icon or FALLBACK_ICON,
                 description    = pawnType.description,
                 price          = pawnType.price,
                 powerups       = self.powerupStateManager:getPowerupsForPawnType(pawnType.name),

@@ -1,13 +1,12 @@
 ---@author Gage Henderson 2024-02-17 09:23
 
+local util              = require('util')({ 'graphics' })
 local Element           = require('Classes.Elements.Element')
 
-local TEXT_PADDING      = 10
-local BOTTOM_PADDING    = 10
-local NAME_FONT         = love.graphics.newFont(fonts.title, 24)
-local POWERUP_FONT         = love.graphics.newFont(fonts.sub, 16)
--- local DESC_FONT         = love.graphics.newFont(fonts.sub, 16)
--- local PRICE_FONT     = love.graphics.newFont(fonts.title, 24)
+local NAME_FONT         = love.graphics.newFont(fonts.title, 18)
+local COIN_FONT      = love.graphics.newFont(fonts.speechBubble, 16)
+local BACKGROUND_IMAGE  = love.graphics.newImage('assets/images/pawn_ui/pawn_rounded.png')
+local COIN_ICON = love.graphics.newImage('assets/images/pawn_ui/coins.png')
 
 ---@class PawnSelectionCard : Element
 ---@field anchor table
@@ -20,6 +19,8 @@ local POWERUP_FONT         = love.graphics.newFont(fonts.sub, 16)
 ---@field width number
 ---@field height number
 ---@field hovered boolean
+---@field icon love.Image
+---@field iconSize table
 local PawnSelectionCard = Goop.Class({
     extends = Element,
     parameters = {
@@ -29,12 +30,14 @@ local PawnSelectionCard = Goop.Class({
         { 'description',    'string' },
         { 'assemblageName', 'string' },
         { 'price',          'number' },
-        { 'powerups',       'table' }
+        { 'powerups',       'table' },
+        'icon'
     },
     dynamic = {
         width = 300,
         height = 100,
-        hovered = false
+        hovered = false,
+        iconSize = {width = 45, height = 45}
     }
 })
 
@@ -47,10 +50,12 @@ function PawnSelectionCard:update(dt)
     self:_checkHover()
 end
 function PawnSelectionCard:draw()
-    local y = TEXT_PADDING / 2
+    local x = self.position.x
+    local y = self.position.y + 20
     self:_drawBackground()
-    y = self:_printName(y)
-    self:_printPowerups(y)
+    x,y = self:_drawIcon(x,y)
+    x,y = self:_printName(x,y)
+    x,y = self:_drawCost(x,y)
 end
 
 
@@ -58,37 +63,56 @@ end
 -- [[ Private Functions ]] --
 -----------------------------
 function PawnSelectionCard:_drawBackground()
-    love.graphics.setColor(0.2, 0.2, 0.2, 1)
-    love.graphics.rectangle(
-        'fill',
+    local scale = util.graphics.getScaleForDimensions(BACKGROUND_IMAGE, self.width, self.height)
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.draw(
+        BACKGROUND_IMAGE,
         self.position.x,
         self.position.y,
-        self.width,
-        self.height
+        0,
+        scale.x, scale.y
     )
 end
-function PawnSelectionCard:_printName(y)
+---@param x number
+---@param y number
+---@return number, number
+function PawnSelectionCard:_drawIcon(x,y)
+    local scale = util.graphics.getScaleForDimensions(self.icon, self.iconSize.width, self.iconSize.height)
+    x = x + 20
+    y = self.position.y + 15
+    love.graphics.setColor(1,1,1)
+    love.graphics.draw(
+        self.icon,
+        x,
+        y,
+        0,
+        scale.x, scale.y
+    )
+    return x+self.icon:getWidth()*scale.x/2, y + self.icon:getHeight() * scale.y
+end
+---@param x number
+---@param y number
+---@return number, number
+function PawnSelectionCard:_printName(x,y)
     love.graphics.setFont(NAME_FONT)
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.print(
-        self.name,
-        self.position.x + TEXT_PADDING,
-        self.position.y + y
-    )
-    return y + NAME_FONT:getHeight()
+    love.graphics.setColor(1,1,1)
+    love.graphics.print(self.name, x - NAME_FONT:getWidth(self.name)/2, y)
+    return x - NAME_FONT:getWidth(self.name)/2, y + NAME_FONT:getHeight()
 end
-function PawnSelectionCard:_printPowerups(y)
-    love.graphics.setFont(POWERUP_FONT)
-    love.graphics.setColor(1, 1, 1, 1)
-    for _, powerup in pairs(self.powerups) do
-        love.graphics.print(
-            powerup.name .. " x" .. powerup.count,
-            self.position.x + TEXT_PADDING,
-            self.position.y + y
-        )
-        y = y + POWERUP_FONT:getHeight()
-    end
+
+---@param x number
+---@param y number
+---@return number, number
+function PawnSelectionCard:_drawCost(x,y)
+    love.graphics.setFont(COIN_FONT)
+    love.graphics.setColor(1,1,1)
+    love.graphics.print(self.price, x, y)
+    love.graphics.draw(COIN_ICON, x + COIN_FONT:getWidth(self.price), y, 0, 0.5, 0.5)
+    return x, y + COIN_FONT:getHeight()
 end
+
+
+
 function PawnSelectionCard:_checkHover()
     local x, y = love.mouse.getPosition()
     if x > self.position.x and x < self.position.x + self.width and y > self.position.y and y < self.position.y + self.height then

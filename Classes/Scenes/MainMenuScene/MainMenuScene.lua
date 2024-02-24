@@ -49,6 +49,7 @@ function MainMenuScene:draw()
     for _, el in ipairs(self.elements) do
         el:draw()
     end
+    self:_printCredits()
 end
 function MainMenuScene:mousepressed(_, _, button)
     local x, y = love.mouse.getPosition()
@@ -108,6 +109,46 @@ function MainMenuScene:_setMenu(name)
             )
         }
     end
+end
+
+
+local subFont = love.graphics.newFont(fonts.sub, 15)
+local titleFont = love.graphics.newFont(fonts.sub, 20)
+local xPadding = 100
+local lineSpacing = 0
+function MainMenuScene:_printCredits()
+    local y = love.graphics.getHeight() * 0.5 - 150
+    local print = function(text, bold)
+        local font = bold and titleFont or subFont
+        if  bold and #text > 0 then
+            text = text .. " -"
+        end
+        local x = love.graphics.getWidth() - font:getWidth(text) - xPadding
+        love.graphics.setFont(font)
+        love.graphics.print(text, x, y)
+        y = y + font:getHeight() + lineSpacing
+    end
+    love.graphics.setColor(1,1,1)
+    print("Gage Henderson",true)
+    print("Twitter @gage_69_420",true)
+    print("Programming")
+    print("Music")
+    print("Sound Effects")
+    print("Design")
+
+    print("")
+    print("")
+    print("Keaton",true)
+    print("Twitter @keatonf",true)
+    print("Artwork")
+    print("Design")
+
+    print("")
+    print("")
+    print("Derek Riggs",true)
+    print("Design")
+    print("Writing")
+    print("Testing")
 end
 
 return MainMenuScene

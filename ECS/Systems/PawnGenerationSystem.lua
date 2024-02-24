@@ -48,6 +48,9 @@ return function (concord, loopStateManager)
             end
         end
     end
+    function PawnGenerationSystem:drawOnTop()
+        self:_drawProgressBar()
+    end
 
     -----------------------------
     -- [[ Private Functions ]] --
@@ -90,6 +93,23 @@ return function (concord, loopStateManager)
                 e.pawnGeneration.spawnRate = KNOBS.enemyTower.minimumSpawnRate
             end
             e.pawnGeneration.idleTimer = 0
+        end
+    end
+
+    function PawnGenerationSystem:_drawProgressBar()
+        local world = self:getWorld()
+        if world then
+            for _, e in ipairs(self.entities) do
+                local gen = e.pawnGeneration
+                local x, y = e.position.x, e.position.y - 20
+                local width = 50
+                local height = 5
+                local progress = gen.spawnTimer / gen.spawnRate
+                love.graphics.setColor(0, 0, 0, 1)
+                love.graphics.rectangle('fill', x - width / 2, y - height / 2, width, height)
+                love.graphics.setColor(1, 1, 1, 1)
+                love.graphics.rectangle('fill', x - width / 2, y - height / 2, width * progress, height)
+            end
         end
     end
 

@@ -110,7 +110,7 @@ return {
         ---@param self Powerup
         ---@param value number
         ---@return number
-        getValue = function (self, value)
+        getValue = function (self)
             return self.count * 0.01
         end
     })

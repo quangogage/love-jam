@@ -133,7 +133,7 @@ return function (concord, camera, onLevelComplete, coinManager)
                 util.entityAssembler.assemble(
                     self:getWorld(),
                     'BasicTower',
-                    x, y
+                    x, y, 'ranged'
                 )
             end
         end

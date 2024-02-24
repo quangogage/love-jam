@@ -24,6 +24,7 @@ return function (e, x, y, dir, damageAmount, attacker)
         :give('unselectable')
         :give('color', 1, 0, 0)
         :give('renderRectangle', dimensions.width, dimensions.height)
+        :give('deleteOOB')
 
     if attacker:get('friendly') then
         e:give('friendly')

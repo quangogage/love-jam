@@ -26,6 +26,7 @@ return function (e, x, y, dir, damageAmount, attacker)
         :give('image', image)
         :give('scale', scale.x, scale.y)
         :give('rotation', dir+math.pi/2)
+        :give('deleteOOB')
         :give('unselectable')
 
     if attacker:get('friendly') then

@@ -261,6 +261,7 @@ function CombatScene:_loadSystems()
     loadSystem('Pawn.FriendlyPawnTargetSystem')
     loadSystem('Pawn.LoopStatSystem', self.loopStateManager)
     loadSystem('CollisionSystem')
+    loadSystem('DeleteOOBSystem')
     loadSystem('DebugSystem', self.camera, function () self:completeLevel() end, self.coinManager)
     self.world:addSystems(unpack(systems))
 end

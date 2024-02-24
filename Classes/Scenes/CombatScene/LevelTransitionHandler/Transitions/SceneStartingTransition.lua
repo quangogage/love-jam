@@ -55,7 +55,7 @@ function SceneStartingTransition:update(dt)
 end
 function SceneStartingTransition:draw()
     self:_drawOverlay()
-    self:_printText()
+    -- self:_printText()
 end
 function SceneStartingTransition:keypressed(key)
     if self.timer >= self.skipBuffer then

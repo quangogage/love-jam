@@ -26,6 +26,7 @@ local CoinManager            = require('Classes.Scenes.CombatScene.CoinManager')
 local RenderCanvas           = require('Classes.Scenes.CombatScene.RenderCanvas')
 local LoseMenu               = require('Classes.Scenes.CombatScene.Interface.LoseMenu')
 local LoopStateManager       = require('Classes.Scenes.CombatScene.LoopStateManager')
+local LevelStartNotification = require('Classes.Scenes.CombatScene.Interface.LevelStartNotification')
 
 ---@class CombatScene
 ---@field camera Camera
@@ -89,6 +90,8 @@ function CombatScene:loadNextLevel()
     -- See PawnGenerationSystem.
     self.world:emit('event_newLevel')
 
+    self.levelStartNotification:trigger()
+
     self:_startCombatAudio()
 end
 function CombatScene:completeLevel()
@@ -103,22 +106,23 @@ end
 function CombatScene:init()
     self:_createSubscriptions()
     self:_initWorld()
-    self.renderCanvas         = RenderCanvas()
-    self.camera               = Camera()
-    self.coinManager          = CoinManager()
-    self.powerupStateManager  = PowerupStateManager(self.eventManager)
-    self.loopStateManager     = LoopStateManager()
-    self.pawnSelectionMenu    = PawnSelectionMenu(self.eventManager, self.powerupStateManager, self.coinManager)
-    self.powerupSelectionMenu = PowerupSelectionMenu(self.eventManager, self)
-    self.friendlySpawnHandler = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self,
+    self.renderCanvas           = RenderCanvas()
+    self.camera                 = Camera()
+    self.coinManager            = CoinManager()
+    self.powerupStateManager    = PowerupStateManager(self.eventManager)
+    self.loopStateManager       = LoopStateManager()
+    self.levelStartNotification = LevelStartNotification(self, self.loopStateManager)
+    self.pawnSelectionMenu      = PawnSelectionMenu(self.eventManager, self.powerupStateManager, self.coinManager)
+    self.powerupSelectionMenu   = PowerupSelectionMenu(self.eventManager, self)
+    self.friendlySpawnHandler   = FriendlySpawnHandler(self.eventManager, self.world, self.powerupStateManager, self,
         self.coinManager)
-    self.cameraControls       = CameraControls(self.camera, self.world)
-    self.loseMenu             = LoseMenu(self.eventManager)
-    self.pauseMenu            = PauseMenu(self, self.eventManager)
-    self.backgroundRenderer   = BackgroundRenderer()
+    self.cameraControls         = CameraControls(self.camera, self.world)
+    self.loseMenu               = LoseMenu(self.eventManager)
+    self.pauseMenu              = PauseMenu(self, self.eventManager)
+    self.backgroundRenderer     = BackgroundRenderer()
     self:_loadSystems()
     self:_initLevels()
-    self.currentLevelIndex = 0
+    self.currentLevelIndex = 9
     self:loadNextLevel()
     self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self, self.renderCanvas)
     self.levelTransitionHandler:setState('scene-starting')
@@ -151,6 +155,7 @@ function CombatScene:update(dt)
     end
     self.renderCanvas:update(dt)
     self.pauseMenu:update(dt)
+    self.levelStartNotification:update(dt)
     self.loseMenu:update(dt)
     if pawnHovered or powerupHovered or lostHovered then
         cursor:set('hand')
@@ -176,6 +181,7 @@ function CombatScene:draw()
     self.powerupSelectionMenu:draw()
     self.pawnSelectionMenu:draw()
     self.levelTransitionHandler:draw()
+    self.levelStartNotification:draw()
     self.pauseMenu:draw()
     self.loseMenu:draw()
 

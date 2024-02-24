@@ -27,6 +27,7 @@ local RenderCanvas           = require('Classes.Scenes.CombatScene.RenderCanvas'
 local LoseMenu               = require('Classes.Scenes.CombatScene.Interface.LoseMenu')
 local LoopStateManager       = require('Classes.Scenes.CombatScene.LoopStateManager')
 local LevelStartNotification = require('Classes.Scenes.CombatScene.Interface.LevelStartNotification')
+local generateGrass          = require('scripts.generateGrass')
 
 ---@class CombatScene
 ---@field camera Camera
@@ -333,6 +334,8 @@ function CombatScene:_generateLevel(index)
         width  = level.dimensions.width,
         height = level.dimensions.height
     }
+
+    generateGrass(self.world)
 end
 
 function CombatScene:_createSubscriptions()

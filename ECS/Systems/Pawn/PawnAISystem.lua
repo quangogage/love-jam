@@ -83,10 +83,17 @@ return function (concord)
             targetX = e.target.entity.groundPosition.x
             targetY = e.target.entity.groundPosition.y
         end
-        return math.sqrt(
-            (targetX - e.groundPosition.x) ^ 2 +
-            (targetY - e.groundPosition.y) ^ 2
-        )
+        if e.groundPosition then
+            return math.sqrt(
+                (targetX - e.groundPosition.x) ^ 2 +
+                (targetY - e.groundPosition.y) ^ 2
+            )
+        else
+            return math.sqrt(
+                (targetX - e.position.x) ^ 2 +
+                (targetY - e.position.y) ^ 2
+            )
+        end
     end
 
     function PawnAISystem:_getArrivalThreshold(e)

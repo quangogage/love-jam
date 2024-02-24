@@ -47,25 +47,25 @@ return {
     Powerup({
         -- Applied in DamageSystem.
         name = 'Bloodlust',
-        description = 'Deal 15% more damage',
+        description = 'Deal 10% more damage',
         image = love.graphics.newImage("assets/images/icon/increase_damage.png"),
         ---@param self Powerup
         ---@param value number
         getValue = function (self, value)
-            local multiplier = 1 + (self.count * 0.15)
+            local multiplier = 1 + (self.count * 0.10)
             return value * multiplier
         end
     }),
     Powerup({
         -- Applied in PowerupSetupSystem.
         name = 'Shield of Fortitude',
-        description = 'Take 15% less damage',
+        description = 'Take 10% less damage',
         image = love.graphics.newImage("assets/images/icon/shield_of_fortitude.png"),
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
             for _ = 1, self.count do
-                pawn.armor.value = math.min(1, pawn.armor.value + 0.15)
+                pawn.armor.value = math.min(1, pawn.armor.value + 0.10)
             end
         end
     }),
@@ -84,7 +84,7 @@ return {
     Powerup({
         -- Applied in DamageSystem (see DamageSystem.update).
         name = 'Soul Renewal',
-        description = 'Chance to immediately respawn at your base upon death.',
+        description = '+10% Chance to immediately respawn at your base upon death.',
         ---@param self Powerup
         getValue = function (self)
             -- See DamageSystem.

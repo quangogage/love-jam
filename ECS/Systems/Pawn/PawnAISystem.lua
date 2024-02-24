@@ -81,7 +81,7 @@ return function (concord)
         local targetX, targetY
         if e.target.position then
             targetX, targetY = e.target.position.x, e.target.position.y
-        elseif e.target.entity then
+        elseif e.target.entity and e.target.entity.groundPosition then
             targetX = e.target.entity.groundPosition.x
             targetY = e.target.entity.groundPosition.y
         end

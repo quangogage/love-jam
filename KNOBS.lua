@@ -7,7 +7,7 @@ return {
     -- ╰─────────────────────────────────────────────────────────╯
 
     -- Passive generation rate (generate a coin every 'passiveRate' seconds):
-    coinGenerationRate = 10,
+    coinGenerationRate = 15,
 
     -- How many coins you get at the start of a new level:
     newLevelCoinReward = 2,

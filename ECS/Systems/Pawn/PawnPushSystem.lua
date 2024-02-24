@@ -12,7 +12,9 @@ local PUSH_FORCE = 240
 return function (concord)
     local PawnPushSystem = concord.system({
         friendly = { 'position', 'dimensions', 'physics', 'friendly' },
-        hostile = { 'position', 'dimensions', 'physics', 'hostile' }
+        hostile = { 'position', 'dimensions', 'physics', 'hostile' },
+        allEntities = { 'position', 'dimensions', 'physics' },
+        base = { 'position', 'dimensions', 'isBase' }
     })
 
     function PawnPushSystem:update()

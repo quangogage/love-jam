@@ -1,5 +1,4 @@
-
-local SPEED_MULTIPLIER = 1.15
+local SPEED_MULTIPLIER = 1.75
 
 return {
     -- ──────────────────────────────────────────────────────────────────────
@@ -8,16 +7,16 @@ return {
     -- ╰─────────────────────────────────────────────────────────╯
 
     -- Passive generation rate (generate a coin every 'passiveRate' seconds):
-    coinGenerationRate = 8,
+    coinGenerationRate = 15,
 
     -- How many coins you get at the start of a new level:
-    newLevelCoinReward = 3,
+    newLevelCoinReward = 2,
 
     -- How much each one is worth.
     enemyCoinReward = {
-        tower = 2,
-        meleeEnemy = 0.5,
-        rangedEnemy = 0.5,
+        tower = 1,
+        meleeEnemy = 0.75,
+        rangedEnemy = 0.75,
     },
 
     -- ──────────────────────────────────────────────────────────────────────
@@ -27,8 +26,8 @@ return {
     -- Lower spawn rate = faster (spawn every 'spawnRate' seconds).
 
     enemyTower = {
-        health = 26,
-        spawnRate = 10 * SPEED_MULTIPLIER,
+        health = 35,
+        spawnRate = 5 * SPEED_MULTIPLIER,
     },
 
     -- ──────────────────────────────────────────────────────────────────────
@@ -39,7 +38,7 @@ return {
     -- `toggleRanges` console command to view the ranges of each pawn.
 
     meleeEnemy = {
-        health = 7,
+        health = 6,
         walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 1,
         attackSpeed = 1 / SPEED_MULTIPLIER,
@@ -47,7 +46,7 @@ return {
         price = 1
     },
     rangedEnemy = {
-        health = 5,
+        health = 4,
         walkSpeed = 1000 * SPEED_MULTIPLIER,
         damageAmount = 1,
         attackSpeed = 1.2 / SPEED_MULTIPLIER,
@@ -63,7 +62,7 @@ return {
     -- `toggleRanges` console command to view the ranges of each pawn.
 
     knight = {
-        health = 10,
+        health = 6,
         walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 1,
         attackSpeed = 1 / SPEED_MULTIPLIER,
@@ -71,7 +70,7 @@ return {
         price = 1
     },
     archer = {
-        health = 7,
+        health = 5,
         walkSpeed = 1000 * SPEED_MULTIPLIER,
         damageAmount = 1,
         attackSpeed = 1.2 / SPEED_MULTIPLIER,
@@ -84,7 +83,7 @@ return {
         damageAmount = 2.8,
         attackSpeed = 1 / SPEED_MULTIPLIER,
         range = 370,
-        price = 3
+        price = 5
     },
     heavy = {
         health = 40,
@@ -92,7 +91,6 @@ return {
         damageAmount = 2.5,
         attackSpeed = 1.87 / SPEED_MULTIPLIER,
         range = 160,
-        price = 6
+        price = 10
     },
 }
-

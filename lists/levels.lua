@@ -228,14 +228,14 @@ return {
   ['4180533478-2092975115-499588124-292010508'] = {
     name = '3',
     dimensions = {
-      width = 1658.8782051282053,
+      width = 1929.7115384615383,
       height = 376.88034188034186,
     },
     entities = {
       {
         position = {
-          x = 1641.3782051282053,
-          y = 180.32051282051293,
+          x = 1912.2115384615383,
+          y = 171.98717948717967,
         },
         className = 'FriendlyBase',
         color = 'white',
@@ -243,10 +243,10 @@ return {
           width = 35,
           height = 70,
         },
-        selected = true,
+        selected = false,
         origin = {
-          x = 1801.7948717948723,
-          y = 188.6538461538463,
+          x = 1641.3782051282053,
+          y = 180.32051282051293,
         },
       },
       {
@@ -278,7 +278,7 @@ return {
           height = 70,
         },
         selected = false,
-        spawnAmount = '1',
+        spawnAmount = '2',
         enemyType = 'melee',
       },
       {
@@ -338,7 +338,7 @@ return {
         selected = false,
       },
     },
-    saveTime = 1708748771611,
+    saveTime = 1708758382004,
     uuid = '4180533478-2092975115-499588124-292010508',
   },
   ['1556824806-1997708972-2522764233-2324696402'] = {
@@ -381,7 +381,7 @@ return {
           x = 404.7727272727275,
           y = 1304.7727272727284,
         },
-        spawnAmount = '1',
+        spawnAmount = '2',
         enemyType = 'melee',
       },
       {
@@ -400,7 +400,7 @@ return {
           x = 404.7727272727275,
           y = 167.5000000000001,
         },
-        spawnAmount = '1',
+        spawnAmount = '2',
         enemyType = 'melee',
       },
       {
@@ -456,20 +456,20 @@ return {
         selected = false,
       },
     },
-    saveTime = 1708747811434,
+    saveTime = 1708758329193,
     uuid = '1556824806-1997708972-2522764233-2324696402',
   },
   ['213779351-715171190-1512536245-1322381693'] = {
     name = '5',
     dimensions = {
-      width = 1423.068181818183,
-      height = 575.3409090909096,
+      width = 1745.2651515151547,
+      height = 987.007575757577,
     },
     entities = {
       {
         position = {
-          x = 719.8674242424247,
-          y = 287.38636363636397,
+          x = 880.9659090909106,
+          y = 493.2196969696977,
         },
         className = 'FriendlyBase',
         color = 'white',
@@ -485,8 +485,8 @@ return {
       },
       {
         position = {
-          x = 412.38636363636374,
-          y = 287.9545454545456,
+          x = 573.4848484848496,
+          y = 493.7878787878793,
         },
         className = 'EnemyBase',
         color = 'red',
@@ -498,8 +498,8 @@ return {
       },
       {
         position = {
-          x = 1010.6818181818192,
-          y = 287.9545454545456,
+          x = 1171.780303030305,
+          y = 493.7878787878793,
         },
         className = 'EnemyBase',
         color = 'red',
@@ -511,94 +511,8 @@ return {
       },
       {
         position = {
-          x = 103.29545454545473,
-          y = 115.22727272727286,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        type = 'BasicTower',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-        enemyType = 'ranged',
-      },
-      {
-        position = {
-          x = 1319.7727272727282,
-          y = 460.1136363636367,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-        spawnAmount = '1',
-        enemyType = 'ranged',
-      },
-      {
-        position = {
-          x = 103.29545454545473,
-          y = 460.1136363636367,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        type = 'BasicTower',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-        enemyType = 'ranged',
-      },
-      {
-        position = {
-          x = 1319.7727272727282,
-          y = 115.22727272727286,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-        spawnAmount = '1',
-        enemyType = 'ranged',
-      },
-      {
-        position = {
-          x = 726.5909090909097,
-          y = 557.8409090909096,
-        },
-        className = 'MapPadding',
-        color = 'Gray',
-        dimensions = {
-          width = 35,
-          height = 35,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 726.5909090909097,
-          y = 17.5,
-        },
-        className = 'MapPadding',
-        color = 'Gray',
-        dimensions = {
-          width = 35,
-          height = 35,
-        },
-        selected = false,
-      },
-      {
-        position = {
-          x = 1405.568181818183,
-          y = 287.9545454545456,
+          x = 887.6893939393956,
+          y = 763.6742424242433,
         },
         className = 'MapPadding',
         color = 'Gray',
@@ -611,18 +525,69 @@ return {
       {
         position = {
           x = 17.5,
-          y = 287.9545454545456,
+          y = 35,
         },
-        className = 'MapPadding',
-        color = 'Gray',
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
         dimensions = {
           width = 35,
-          height = 35,
+          height = 70,
         },
         selected = false,
+        enemyType = 'ranged',
+        spawnCount = '2',
+      },
+      {
+        position = {
+          x = 1727.7651515151547,
+          y = 952.007575757577,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        enemyType = 'ranged',
+        spawnCount = '2',
+      },
+      {
+        position = {
+          x = 17.5,
+          y = 952.007575757577,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        enemyType = 'ranged',
+        spawnCount = '2',
+      },
+      {
+        position = {
+          x = 1727.7651515151547,
+          y = 35,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        enemyType = 'ranged',
+        spawnCount = '2',
       },
     },
-    saveTime = 1708755476992,
+    saveTime = 1708758369807,
     uuid = '213779351-715171190-1512536245-1322381693',
   },
   ['1052286703-1847633775-585987656-784304916'] = {
@@ -710,16 +675,16 @@ return {
   ['2247642133-98454047-954471313-3686730053'] = {
     name = '7',
     dimensions = {
-      width = 1998.9285714285743,
-      height = 1181.688311688313,
+      width = 2016.4285714285743,
+      height = 1181.6883116883132,
     },
     entities = {
       {
         position = {
           x = 35,
-          y = 590.8441558441565,
+          y = 590.8441558441567,
         },
-        className = 'FriendlyBase',
+        className = 'EnemyBase',
         color = 'REd',
         dimensions = {
           width = 70,
@@ -730,20 +695,36 @@ return {
       {
         position = {
           x = 1981.4285714285743,
-          y = 590.8441558441565,
+          y = 590.8441558441567,
         },
         className = 'FriendlyBase',
         color = 'White',
         dimensions = {
-          width = 35,
-          height = 70,
+          width = 70,
+          height = 35,
         },
         selected = false,
       },
       {
         position = {
           x = 350.2597402597412,
-          y = 1146.688311688313,
+          y = 1146.6883116883132,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = true,
+        spawnAmount = '2',
+        enemyType = 'ranged',
+      },
+      {
+        position = {
+          x = 350.2597402597412,
+          y = 35.00000000000023,
         },
         className = 'EnemyTower',
         color = 'red',
@@ -753,12 +734,64 @@ return {
           height = 70,
         },
         selected = false,
-        spawnAmount = '1',
+        spawnAmount = '2',
         enemyType = 'ranged',
       },
       {
         position = {
-          x = 350.2597402597412,
+          x = 777.5324675324689,
+          y = 1144.415584415586,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = true,
+        spawnAmount = '2',
+        enemyType = 'melee',
+      },
+      {
+        position = {
+          x = 777.5324675324689,
+          y = 37.27272727272748,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        spawnAmount = '2',
+        enemyType = 'melee',
+      },
+      {
+        position = {
+          x = 121.09307359307422,
+          y = 1146.688311688313,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = true,
+        spawnAmount = '2',
+        enemyType = 'ranged',
+        origin = {
+          x = 525.2597402597412,
+          y = 1321.688311688313,
+        },
+      },
+      {
+        position = {
+          x = 121.09307359307422,
           y = 35,
         },
         className = 'EnemyTower',
@@ -769,43 +802,15 @@ return {
           height = 70,
         },
         selected = false,
-        spawnAmount = '1',
+        spawnAmount = '2',
         enemyType = 'ranged',
-      },
-      {
-        position = {
-          x = 777.5324675324689,
-          y = 1144.4155844155857,
+        origin = {
+          x = 525.2597402597412,
+          y = 210,
         },
-        className = 'EnemyTower',
-        color = 'red',
-        type = 'BasicTower',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-        spawnAmount = '1',
-        enemyType = 'melee',
-      },
-      {
-        position = {
-          x = 777.5324675324689,
-          y = 37.27272727272725,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        type = 'BasicTower',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-        spawnAmount = '1',
-        enemyType = 'melee',
       },
     },
-    saveTime = 1708756287222,
+    saveTime = 1708759902342,
     uuid = '2247642133-98454047-954471313-3686730053',
   },
   ['3576952849-87285554-418534424-1840545038'] = {
@@ -859,6 +864,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
+        spawnCount = '2',
       },
       {
         position = {
@@ -874,6 +880,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
+        spawnCount = '2',
       },
       {
         position = {
@@ -889,6 +896,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
+        spawnCount = '2',
       },
       {
         position = {
@@ -904,6 +912,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
+        spawnCount = '2',
       },
       {
         position = {
@@ -919,6 +928,7 @@ return {
         },
         selected = false,
         enemyType = 'melee',
+        spawnCount = '2',
       },
       {
         position = {
@@ -934,6 +944,7 @@ return {
         },
         selected = false,
         enemyType = 'melee',
+        spawnCount = '2',
       },
       {
         position = {
@@ -949,6 +960,7 @@ return {
         },
         selected = false,
         enemyType = 'melee',
+        spawnCount = '2',
       },
       {
         position = {
@@ -964,6 +976,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
+        spawnCount = '2',
       },
       {
         position = {
@@ -979,6 +992,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
+        spawnCount = '2',
       },
       {
         position = {
@@ -994,9 +1008,10 @@ return {
         },
         selected = false,
         enemyType = 'melee',
+        spawnCount = '2',
       },
     },
-    saveTime = 1708756383324,
+    saveTime = 1708759983153,
     uuid = '3576952849-87285554-418534424-1840545038',
   },
   ['1213693025-98917500-1254611942-2949332076'] = {
@@ -1017,7 +1032,7 @@ return {
           width = 70,
           height = 35,
         },
-        selected = true,
+        selected = false,
         origin = {
           x = 498.1249999999998,
           y = 1522.5000000000005,
@@ -1082,6 +1097,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
+        spawnCount = '3',
       },
       {
         position = {
@@ -1097,6 +1113,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
+        spawnCount = '3',
       },
       {
         position = {
@@ -1125,20 +1142,20 @@ return {
         selected = false,
       },
     },
-    saveTime = 1708756523603,
+    saveTime = 1708760003551,
     uuid = '1213693025-98917500-1254611942-2949332076',
   },
   ['580451810-312093758-199620458-1479931080'] = {
     name = '10',
     dimensions = {
-      width = 2212.8571428571468,
-      height = 413.9285714285721,
+      width = 7767.857142857156,
+      height = 924.553571428572,
     },
     entities = {
       {
         position = {
           x = 35,
-          y = 231.4285714285719,
+          y = 311.4285714285721,
         },
         className = 'EnemyBase',
         color = 'red',
@@ -1147,11 +1164,15 @@ return {
           height = 35,
         },
         selected = false,
+        origin = {
+          x = 35,
+          y = 231.42857142857235,
+        },
       },
       {
         position = {
-          x = 2177.8571428571468,
-          y = 231.4285714285719,
+          x = 7732.857142857156,
+          y = 483.92857142857235,
         },
         className = 'FriendlyBase',
         color = 'white',
@@ -1160,62 +1181,14 @@ return {
           height = 35,
         },
         selected = false,
-      },
-      {
-        position = {
-          x = 1696.4285714285747,
-          y = 87.50000000000023,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        type = 'BasicTower',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-        enemyType = 'melee',
-        spawnCount = '2',
         origin = {
-          x = 882.5000000000009,
-          y = 415.00000000000034,
+          x = 4537.857142857151,
+          y = 468.9285714285726,
         },
       },
       {
         position = {
-          x = 561.4285714285734,
-          y = 373.9285714285721,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        type = 'BasicTower',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-        enemyType = 'melee',
-        spawnCount = '4',
-      },
-      {
-        position = {
-          x = 561.4285714285734,
-          y = 40,
-        },
-        className = 'EnemyTower',
-        color = 'red',
-        type = 'BasicTower',
-        dimensions = {
-          width = 35,
-          height = 70,
-        },
-        selected = false,
-        enemyType = 'melee',
-        spawnCount = '4',
-      },
-      {
-        position = {
-          x = 323.9285714285734,
+          x = 693.9285714285743,
           y = 378.9285714285721,
         },
         className = 'EnemyTower',
@@ -1226,12 +1199,16 @@ return {
           height = 70,
         },
         selected = false,
-        enemyType = 'ranged',
-        spawnCount = '2',
+        enemyType = 'melee',
+        spawnCount = '5',
+        origin = {
+          x = 323.9285714285734,
+          y = 378.9285714285726,
+        },
       },
       {
         position = {
-          x = 323.9285714285734,
+          x = 693.9285714285743,
           y = 35,
         },
         className = 'EnemyTower',
@@ -1242,13 +1219,134 @@ return {
           height = 70,
         },
         selected = false,
-        enemyType = 'ranged',
-        spawnCount = '2',
+        enemyType = 'melee',
+        spawnCount = '5',
+        origin = {
+          x = 323.9285714285734,
+          y = 35.000000000000455,
+        },
       },
       {
         position = {
-          x = 1696.4285714285747,
-          y = 332.50000000000045,
+          x = 693.9285714285743,
+          y = 881.4285714285726,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        enemyType = 'melee',
+        spawnCount = '5',
+        origin = {
+          x = 323.9285714285734,
+          y = 881.428571428573,
+        },
+      },
+      {
+        position = {
+          x = 693.9285714285743,
+          y = 537.5000000000005,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        enemyType = 'melee',
+        spawnCount = '5',
+        origin = {
+          x = 323.9285714285734,
+          y = 537.5000000000009,
+        },
+      },
+      {
+        position = {
+          x = 40,
+          y = 768.9285714285724,
+        },
+        className = 'EnemyBase',
+        color = 'red',
+        dimensions = {
+          width = 70,
+          height = 35,
+        },
+        selected = false,
+        origin = {
+          x = 40,
+          y = 688.9285714285726,
+        },
+      },
+      {
+        position = {
+          x = 3337.678571428578,
+          y = 387.0535714285717,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        enemyType = 'melee',
+        spawnCount = '3',
+        origin = {
+          x = 1701.4285714285757,
+          y = 329.5535714285719,
+        },
+      },
+      {
+        position = {
+          x = 3337.678571428578,
+          y = 43.124999999999545,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        enemyType = 'melee',
+        spawnCount = '3',
+        origin = {
+          x = 1701.4285714285757,
+          y = -14.375000000000227,
+        },
+      },
+      {
+        position = {
+          x = 3337.678571428578,
+          y = 889.553571428572,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        enemyType = 'melee',
+        spawnCount = '3',
+        origin = {
+          x = 1701.4285714285757,
+          y = 832.0535714285722,
+        },
+      },
+      {
+        position = {
+          x = 6035.000000000009,
+          y = 732.0535714285722,
         },
         className = 'EnemyTower',
         color = 'red',
@@ -1261,12 +1359,92 @@ return {
         enemyType = 'melee',
         spawnCount = '2',
         origin = {
-          x = 1265.0000000000014,
-          y = 477.50000000000034,
+          x = 3330.0000000000045,
+          y = 682.0535714285725,
+        },
+      },
+      {
+        position = {
+          x = 6035.000000000009,
+          y = 165.6249999999999,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        enemyType = 'melee',
+        spawnCount = '2',
+        origin = {
+          x = 3330.0000000000045,
+          y = 115.62500000000011,
+        },
+      },
+      {
+        position = {
+          x = 4691.666666666672,
+          y = 467.2916666666671,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 35,
+        },
+        selected = false,
+        enemyType = 'melee',
+        spawnCount = '5',
+        origin = {
+          x = 4700.000000000006,
+          y = 425.62500000000034,
+        },
+      },
+      {
+        position = {
+          x = 1910.416666666666,
+          y = 498.5416666666671,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 35,
+        },
+        selected = false,
+        enemyType = 'melee',
+        spawnCount = '5',
+        origin = {
+          x = 1910.416666666666,
+          y = 442.29166666666663,
+        },
+      },
+      {
+        position = {
+          x = 3331.4285714285797,
+          y = 550,
+        },
+        className = 'EnemyTower',
+        color = 'red',
+        type = 'BasicTower',
+        dimensions = {
+          width = 35,
+          height = 70,
+        },
+        selected = false,
+        enemyType = 'melee',
+        spawnCount = '4',
+        origin = {
+          x = 868.9285714285743,
+          y = 712.5000000000005,
         },
       },
     },
-    saveTime = 1708756841078,
+    saveTime = 1708761083042,
     uuid = '580451810-312093758-199620458-1479931080',
   },
 }

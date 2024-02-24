@@ -1,5 +1,7 @@
 local SPEED_MULTIPLIER = 1.25
 
+SPEED_MULTIPLIER = 2.5
+
 return {
     -- ──────────────────────────────────────────────────────────────────────
     -- ╭─────────────────────────────────────────────────────────╮
@@ -15,8 +17,8 @@ return {
     -- How much each one is worth.
     enemyCoinReward = {
         tower = 2,
-        meleeEnemy = 1.25,
-        rangedEnemy = 1.25,
+        meleeEnemy = 1.95,
+        rangedEnemy = 2.0
     },
 
     -- ──────────────────────────────────────────────────────────────────────
@@ -27,7 +29,7 @@ return {
 
     enemyTower = {
         health = 35,
-        spawnRate = 15 / SPEED_MULTIPLIER,
+        spawnRate = 20 / SPEED_MULTIPLIER,
 
         -- Every second the spawn rate will be multiplied by this.
         -- For example,

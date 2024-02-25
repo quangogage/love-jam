@@ -18,14 +18,14 @@ return {
         icon           = love.graphics.newImage("assets/images/pawn_ui/mage.png"),
         assemblageName = "Mage",
         description    = "Here to save the day!",
-        price          = 3,
+        price          = KNOBS.mage.price,
     },
     {
         name           = "Heavy",
         icon           = love.graphics.newImage("assets/images/pawn_ui/heavy.png"),
         assemblageName = "Heavy",
         description    = "Here to save the day!",
-        price          = 6,
+        price          = KNOBS.heavy.price,
     },
 
     -- ──────────────────────────────────────────────────────────────────────

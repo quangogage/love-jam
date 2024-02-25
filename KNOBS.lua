@@ -1,32 +1,22 @@
-local SPEED_MULTIPLIER = 1.25
+local SPEED_MULTIPLIER = 1.75
 
 return {
-    -- ──────────────────────────────────────────────────────────────────────
-    -- ╭─────────────────────────────────────────────────────────╮
-    -- │ Looping values:                                         │
-    -- ╰─────────────────────────────────────────────────────────╯
-    loop = {
-        -- Multiplied by pawn base stats.
-        -- Ie, 1.5 = 1.5x health / damage (50% increase) every loop.
-        healthMultiplier = 1.5,
-        damageMultiplier = 1.5,
-    },
     -- ──────────────────────────────────────────────────────────────────────
     -- ╭─────────────────────────────────────────────────────────╮
     -- │ Coin values:                                            │
     -- ╰─────────────────────────────────────────────────────────╯
 
     -- Passive generation rate (generate a coin every 'passiveRate' seconds):
-    coinGenerationRate = 15,
+    coinGenerationRate = 21,
 
     -- How many coins you get at the start of a new level:
-    newLevelCoinReward = 2,
+    newLevelCoinReward = 5,
 
     -- How much each one is worth.
     enemyCoinReward = {
-        tower = 2,
-        meleeEnemy = 1.5,
-        rangedEnemy = 2.05
+        tower = 2.20,
+        meleeEnemy = 1.85,
+        rangedEnemy = 2.15,
     },
 
     -- ──────────────────────────────────────────────────────────────────────
@@ -37,7 +27,7 @@ return {
 
     enemyTower = {
         health = 35,
-        spawnRate = 20 / SPEED_MULTIPLIER,
+        spawnRate = 25 / SPEED_MULTIPLIER,
 
         -- Every second the spawn rate will be multiplied by this.
         -- For example,
@@ -49,13 +39,13 @@ return {
         -- If it was 0.8, it would increase by 20% every second.
         --
         -- Higher number = slower increase over time.
-        spawnRateIncreaseIncrement = 0.87 / SPEED_MULTIPLIER,
+        spawnRateIncreaseIncrement = 0.95 / SPEED_MULTIPLIER,
 
         -- The minimum spawn rate.
         -- If this is 1, the minimum rate is 1 per second.
         -- if it's 2, the minimum rate is 1 per 2 seconds.
         -- Lower number = faster, higher number = slower.
-        minimumSpawnRate = 5,
+        minimumSpawnRate = 1,
     },
 
     -- ──────────────────────────────────────────────────────────────────────
@@ -70,7 +60,7 @@ return {
         walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 1,
         attackSpeed = 1 / SPEED_MULTIPLIER,
-        range = 105,
+        range = 120,
         price = 1
     },
     rangedEnemy = {
@@ -94,7 +84,7 @@ return {
         walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 1,
         attackSpeed = 1 / SPEED_MULTIPLIER,
-        range = 105,
+        range = 120,
         price = 1
     },
     archer = {
@@ -106,9 +96,9 @@ return {
         price = 2
     },
     mage = {
-        health = 22,
+        health = 10,
         walkSpeed = 1200 * SPEED_MULTIPLIER,
-        damageAmount = 2.8,
+        damageAmount = 5.8,
         attackSpeed = 1 / SPEED_MULTIPLIER,
         range = 370,
         price = 5
@@ -116,7 +106,7 @@ return {
     heavy = {
         health = 40,
         walkSpeed = 900 * SPEED_MULTIPLIER,
-        damageAmount = 2.5,
+        damageAmount = 5.5,
         attackSpeed = 1.87 / SPEED_MULTIPLIER,
         range = 160,
         price = 10

@@ -1256,7 +1256,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
-        spawnCount = '1',
+        spawnCount = '2',
         origin = {
           x = 206.42857142857292,
           y = 1213.5714285714298,
@@ -1276,7 +1276,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
-        spawnCount = '1',
+        spawnCount = '2',
         origin = {
           x = 199.28571428571558,
           y = -361.4285714285718,
@@ -1336,7 +1336,7 @@ return {
         },
         selected = false,
         enemyType = 'melee',
-        spawnCount = '1',
+        spawnCount = '3',
         origin = {
           x = 395.71428571428714,
           y = 438.5714285714291,
@@ -1455,7 +1455,7 @@ return {
         selected = false,
       },
     },
-    saveTime = 1708838040857,
+    saveTime = 1708839482152,
     uuid = '3576952849-87285554-418534424-1840545038',
   },
   ['1213693025-98917500-1254611942-2949332076'] = {
@@ -1707,7 +1707,7 @@ return {
           height = 70,
         },
         selected = false,
-        enemyType = 'melee',
+        enemyType = 'ranged',
         spawnCount = '5',
         origin = {
           x = 693.9285714285743,
@@ -1727,7 +1727,7 @@ return {
           height = 35,
         },
         selected = false,
-        enemyType = 'melee',
+        enemyType = 'ranged',
         spawnCount = '5',
         origin = {
           x = 675.1785714285743,
@@ -1804,7 +1804,7 @@ return {
           height = 70,
         },
         selected = false,
-        enemyType = 'melee',
+        enemyType = 'ranged',
         spawnCount = '3',
         origin = {
           x = 3337.678571428578,
@@ -1824,7 +1824,7 @@ return {
           height = 35,
         },
         selected = false,
-        enemyType = 'melee',
+        enemyType = 'ranged',
         spawnCount = '3',
         origin = {
           x = 3318.928571428578,
@@ -1841,7 +1841,7 @@ return {
         type = 'BasicTower',
         dimensions = {
           width = 35,
-          height = 70,
+          height = 35,
         },
         selected = false,
         enemyType = 'melee',
@@ -1861,7 +1861,7 @@ return {
         type = 'BasicTower',
         dimensions = {
           width = 35,
-          height = 70,
+          height = 35,
         },
         selected = false,
         enemyType = 'melee',
@@ -1885,7 +1885,7 @@ return {
         },
         selected = false,
         enemyType = 'melee',
-        spawnCount = '5',
+        spawnCount = '7',
         origin = {
           x = 4700.000000000006,
           y = 425.62500000000034,
@@ -1905,7 +1905,7 @@ return {
         },
         selected = false,
         enemyType = 'melee',
-        spawnCount = '5',
+        spawnCount = '7',
         origin = {
           x = 1910.416666666666,
           y = 442.29166666666663,
@@ -1932,7 +1932,7 @@ return {
         },
       },
     },
-    saveTime = 1708810308214,
+    saveTime = 1708839612337,
     uuid = '580451810-312093758-199620458-1479931080',
   },
 }

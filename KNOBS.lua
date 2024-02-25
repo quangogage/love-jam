@@ -94,7 +94,7 @@ return {
     knight = {
         health = 6,
         walkSpeed = 1200 * SPEED_MULTIPLIER,
-        damageAmount = 1,
+        damageAmount = 0.95,
         attackSpeed = 1 / SPEED_MULTIPLIER,
         range = 120,
         price = 1

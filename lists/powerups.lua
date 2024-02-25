@@ -77,7 +77,7 @@ return {
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
-            local chance = 0.05 * self.count
+            local chance = 0.10 * self.count
             if math.random() < chance then
                 local color = pawn:get("friendly") and {0, 1, 0} or {1, 0, 0}
                 pawn.health.value = pawn.health.value * 2
@@ -93,7 +93,7 @@ return {
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
-            local chance = 0.05 * self.count
+            local chance = 0.1 * self.count
             if math.random() < chance then
                 local color = pawn:get("friendly") and {0, 1, 0} or {1, 0, 0}
                 pawn.combatProperties.damageAmount = pawn.combatProperties.damageAmount * 2

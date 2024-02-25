@@ -130,7 +130,7 @@ local titleFont = love.graphics.newFont(fonts.sub, 20)
 local xPadding = 100
 local lineSpacing = 0
 function MainMenuScene:_printCredits()
-    local y = love.graphics.getHeight() * 0.5 - 150
+    local y = love.graphics.getHeight() * 0.5 - 200
     local print = function(text, bold)
         local font = bold and titleFont or subFont
         if  bold and #text > 0 then
@@ -162,6 +162,7 @@ function MainMenuScene:_printCredits()
     print("Design")
     print("Writing")
     print("Testing")
+    print("Knob Tweaking")
 end
 
 return MainMenuScene

@@ -46,8 +46,7 @@ end
 function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, pawnName, x, y)
     if not self.combatScene.disableWorldUpdate then
         local powerups = self.powerupStateManager:getPowerupsForPawnType(pawnName)
-        x = self.combatScene.friendlyBase.position.x or self.spawnZone.x or 0
-        y = self.combatScene.friendlyBase.position.y or self.spawnZone.y or 0
+        x, y = self:_getSpawnPosition()
 
         local price = self:_getPawnPrice(pawnTypeAssemblage)
 
@@ -64,7 +63,7 @@ function FriendlySpawnHandler:attemptSpawnPawn(pawnTypeAssemblage, pawnName, x, 
 
             self.coinManager:removeCoins(price)
 
-            self.world:emit("event_spawnedFriendlyPawn", newPawn)
+            self.world:emit('event_spawnedFriendlyPawn', newPawn)
         end
     end
 end
@@ -117,6 +116,18 @@ function FriendlySpawnHandler:_getPawnPrice(pawnTypeAssemblage)
     end
     console:log('WARN: didnt find pawn price for ' .. pawnTypeAssemblage)
     return 0
+end
+
+function FriendlySpawnHandler:_getSpawnPosition()
+    local x, y = 0, 0
+    local base = self.world.friendlyBase
+    if base then
+        local dir = love.math.random(0, math.pi * 2)
+        local distance = 80
+        x = base.position.x + math.cos(dir) * distance
+        y = base.position.y + math.sin(dir) * distance
+    end
+    return x, y
 end
 
 return FriendlySpawnHandler

@@ -163,7 +163,7 @@ return function (concord, onLevelComplete, playerLost)
     -- Right now this just means destroying the enemy base.
     function DamageSystem:_checkLevelComplete()
         if not self.__debug_testRoom then
-            if #self.enemyBases == 0 then
+            if #self.enemyBases == 0 or #self.enemies == 0 and #self.enemyTowers == 0 then
                 onLevelComplete()
             end
         end

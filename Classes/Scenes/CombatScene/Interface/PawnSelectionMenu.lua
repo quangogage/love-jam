@@ -44,10 +44,10 @@ function PawnSelectionMenu:init()
     self:_initCards()
 end
 ---@return boolean If you are hovering over a card
-function PawnSelectionMenu:update()
+function PawnSelectionMenu:update(dt)
     local hovered = false
     for _, card in ipairs(self.cards) do
-        card:update()
+        card:update(dt)
         if card.hovered then
             hovered = true
         end

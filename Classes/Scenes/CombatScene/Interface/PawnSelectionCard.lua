@@ -38,7 +38,10 @@ local PawnSelectionCard = Goop.Class({
         width = 300,
         height = 100,
         hovered = false,
-        iconSize = {width = 45, height = 45}
+        iconSize = {width = 45, height = 45},
+        lift = 0,
+        targetLift = 0,
+        liftSpeed = 10
     }
 })
 
@@ -52,6 +55,7 @@ end
 function PawnSelectionCard:update(dt)
     Element.update(self)
     self:_checkHover()
+    self:_updateLift(dt)
 end
 function PawnSelectionCard:draw()
     local x = self.position.x
@@ -73,7 +77,7 @@ function PawnSelectionCard:_drawBackground()
     love.graphics.draw(
         BACKGROUND_IMAGE,
         self.position.x,
-        self.position.y,
+        self.position.y + self.lift,
         0,
         scale.x, scale.y
     )
@@ -89,7 +93,7 @@ function PawnSelectionCard:_drawIcon(x,y)
     love.graphics.draw(
         self.icon,
         x,
-        y,
+        y + self.lift,
         0,
         scale.x, scale.y
     )
@@ -101,7 +105,7 @@ end
 function PawnSelectionCard:_printName(x,y)
     love.graphics.setFont(NAME_FONT)
     love.graphics.setColor(1,1,1)
-    love.graphics.print(self.name, math.floor(x - NAME_FONT:getWidth(self.name)/2), y)
+    love.graphics.print(self.name, math.floor(x - NAME_FONT:getWidth(self.name)/2), y + self.lift)
     return x - NAME_FONT:getWidth(self.name)/2, y + NAME_FONT:getHeight()
 end
 
@@ -111,8 +115,8 @@ end
 function PawnSelectionCard:_drawCost(x,y)
     love.graphics.setFont(COIN_FONT)
     love.graphics.setColor(1,1,1)
-    love.graphics.print(self.price, math.floor(x), math.floor(y))
-    love.graphics.draw(COIN_ICON, x + COIN_FONT:getWidth(self.price), y, 0, 0.5, 0.5)
+    love.graphics.print(self.price, math.floor(x), math.floor(y+self.lift))
+    love.graphics.draw(COIN_ICON, x + COIN_FONT:getWidth(self.price), y + self.lift, 0, 0.5, 0.5)
     return x, y + COIN_FONT:getHeight()
 end
 
@@ -136,7 +140,7 @@ function PawnSelectionCard:_drawPowerupIcons(x,y)
             x = self.position.x + 75
             y = y + icon.dimensions.height + 5
         end
-        icon:draw(x,y)
+        icon:draw(x,y + self.lift)
         x = x + icon.dimensions.width + 5
     end
 end
@@ -151,6 +155,19 @@ function PawnSelectionCard:_initPowerupIcons()
             position = {x = 0, y = 0},
         }))
     end
+end
+
+function PawnSelectionCard:_updateLift(dt)
+    if self.hovered then
+        if love.mouse.isDown(1) then
+            self.targetLift = 5
+        else
+            self.targetLift = -15
+        end
+    else
+        self.targetLift = 0
+    end
+    self.lift = self.lift + (self.targetLift - self.lift) * self.liftSpeed * dt
 end
 
 return PawnSelectionCard

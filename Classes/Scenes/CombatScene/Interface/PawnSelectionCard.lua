@@ -8,6 +8,8 @@ local NAME_FONT         = love.graphics.newFont(fonts.title, 18)
 local COIN_FONT      = love.graphics.newFont(fonts.speechBubble, 16)
 local BACKGROUND_IMAGE  = love.graphics.newImage('assets/images/pawn_ui/pawn_rounded.png')
 local COIN_ICON = love.graphics.newImage('assets/images/pawn_ui/coins.png')
+local HOVER_SOUND = love.audio.newSource('assets/audio/sfx/pawn-card-hover.mp3', 'static')
+HOVER_SOUND:setVolume(settings:getVolume('interface'))
 
 ---@class PawnSelectionCard : Element
 ---@field anchor table
@@ -35,13 +37,13 @@ local PawnSelectionCard = Goop.Class({
         'icon'
     },
     dynamic = {
-        width = 300,
-        height = 100,
-        hovered = false,
-        iconSize = {width = 45, height = 45},
-        lift = 0,
+        width      = 300,
+        height     = 100,
+        hovered    = false,
+        iconSize   = {width = 45, height = 45},
+        lift       = 0,
         targetLift = 0,
-        liftSpeed = 10
+        liftSpeed  = 10
     }
 })
 
@@ -56,6 +58,7 @@ function PawnSelectionCard:update(dt)
     Element.update(self)
     self:_checkHover()
     self:_updateLift(dt)
+    self:_playHoverSound()
 end
 function PawnSelectionCard:draw()
     local x = self.position.x
@@ -168,6 +171,19 @@ function PawnSelectionCard:_updateLift(dt)
         self.targetLift = 0
     end
     self.lift = self.lift + (self.targetLift - self.lift) * self.liftSpeed * dt
+end
+
+function PawnSelectionCard:_playHoverSound()
+    if self.hovered and not self.hoverSoundPlayed then
+        local sound = HOVER_SOUND
+        if sound:isPlaying() then
+            sound = sound:clone()
+        end
+        sound:play()
+        self.hoverSoundPlayed = true
+    elseif not self.hovered then
+        self.hoverSoundPlayed = false
+    end
 end
 
 return PawnSelectionCard

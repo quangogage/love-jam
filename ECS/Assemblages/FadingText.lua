@@ -5,7 +5,7 @@
 
 
 return function(e, text, x, y, color)
-    local color = color or {1, 1, 1, 1}
+    color = color or {1, 1, 1, 1}
     e
         :give('position', x, y)
         :give("text", text)

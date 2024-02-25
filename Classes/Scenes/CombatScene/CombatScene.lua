@@ -81,6 +81,7 @@ function CombatScene:loadNextLevel()
     -- TODO: Loop properly if no more levels. (new game+ stuff...)
     if self.currentLevelIndex > #self.levels then
         self.loopStateManager:addLoop()
+        self.coinManager:resetCoins()
         self.currentLevelIndex = 1
     end
 
@@ -127,7 +128,7 @@ function CombatScene:init()
     self.loopInfoPanel          = LoopInfoPanel(self.loopStateManager)
     self:_loadSystems()
     self:_initLevels()
-    self.currentLevelIndex = 0
+    self.currentLevelIndex = 9
     self:loadNextLevel()
     self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self, self.renderCanvas)
     self.levelTransitionHandler:setState('scene-starting')

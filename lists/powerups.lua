@@ -117,6 +117,7 @@ return {
         -- Applied in DamageSystem (see DamageSystem.update).
         name = 'Soul Renewal',
         description = '+10% Chance to immediately respawn at your base upon death.',
+        image = love.graphics.newImage("assets/images/icon/soul_renewal.png"),
         ---@param self Powerup
         getValue = function (self)
             -- See DamageSystem.

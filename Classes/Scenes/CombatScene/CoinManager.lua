@@ -10,6 +10,7 @@
 --
 -- See CoinGenerationSystem for where those coins actually get added.
 
+
 ---@class CoinManager
 ---@field coins integer
 ---@field genTimer number

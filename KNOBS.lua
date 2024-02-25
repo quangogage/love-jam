@@ -1,6 +1,16 @@
-local SPEED_MULTIPLIER = 1.75
+local SPEED_MULTIPLIER = 1.25
 
 return {
+    -- ──────────────────────────────────────────────────────────────────────
+    -- ╭─────────────────────────────────────────────────────────╮
+    -- │ Looping values:                                         │
+    -- ╰─────────────────────────────────────────────────────────╯
+    loop = {
+        -- Multiplied by pawn base stats.
+        -- Ie, 1.5 = 1.5x health / damage (50% increase) every loop.
+        healthMultiplier = 1.5,
+        damageMultiplier = 1.5,
+    },
     -- ──────────────────────────────────────────────────────────────────────
     -- ╭─────────────────────────────────────────────────────────╮
     -- │ Coin values:                                            │
@@ -14,7 +24,7 @@ return {
 
     -- How much each one is worth.
     enemyCoinReward = {
-        tower = 2.20,
+        tower = 5,
         meleeEnemy = 1.85,
         rangedEnemy = 2.15,
     },
@@ -27,7 +37,7 @@ return {
 
     enemyTower = {
         health = 35,
-        spawnRate = 25 / SPEED_MULTIPLIER,
+        spawnRate = 35 / SPEED_MULTIPLIER,
 
         -- Every second the spawn rate will be multiplied by this.
         -- For example,
@@ -98,7 +108,7 @@ return {
     mage = {
         health = 10,
         walkSpeed = 1200 * SPEED_MULTIPLIER,
-        damageAmount = 5.8,
+        damageAmount = 2,
         attackSpeed = 1 / SPEED_MULTIPLIER,
         range = 370,
         price = 5
@@ -106,7 +116,7 @@ return {
     heavy = {
         health = 40,
         walkSpeed = 900 * SPEED_MULTIPLIER,
-        damageAmount = 5.5,
+        damageAmount = 2,
         attackSpeed = 1.87 / SPEED_MULTIPLIER,
         range = 160,
         price = 10

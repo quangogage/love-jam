@@ -194,10 +194,10 @@ function CombatScene:draw()
     self.loseMenu:draw()
     self.loopInfoPanel:draw()
 
-    love.graphics.setFont(self.devLevelPrintFont)
-    love.graphics.setColor(1,1,1)
-    love.graphics.print("level: " .. self.currentLevelIndex, 10, 10)
-    love.graphics.print("loop: " .. self.loopStateManager.loop, 10, 30)
+    -- love.graphics.setFont(self.devLevelPrintFont)
+    -- love.graphics.setColor(1,1,1)
+    -- love.graphics.print("level: " .. self.currentLevelIndex, 10, 10)
+    -- love.graphics.print("loop: " .. self.loopStateManager.loop, 10, 30)
 end
 function CombatScene:keypressed(key)
     if not self.paused and not self.lost then

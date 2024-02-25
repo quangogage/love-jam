@@ -17,12 +17,12 @@ function love.draw()
     game:draw()
 
     -- Dev:
-    console:draw()
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.print(love.timer.getFPS(), 150, 10)
+    -- console:draw()
+--     love.graphics.setColor(1, 1, 1)
+--     love.graphics.print(love.timer.getFPS(), 150, 10)
 end
 function love.keypressed(key)
-    console:keypressed(key)
+    -- console:keypressed(key)
     if not console.input.active then
         game:keypressed(key)
     end

@@ -139,8 +139,8 @@ function PowerupSelectionCard:_printName()
     love.graphics.setFont(NAME_FONT)
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
     love.graphics.printf(self.name,
-        self.position.x + TEXT_PADDING / 2,
-        self.position.y + 30 - self.lift, self.width - TEXT_PADDING,
+        math.floor(self.position.x + TEXT_PADDING / 2),
+        math.floor(self.position.y + 30 - self.lift), self.width - TEXT_PADDING,
         'center'
     )
 end
@@ -148,8 +148,8 @@ function PowerupSelectionCard:_printDescription()
     love.graphics.setFont(DESC_FONT)
     love.graphics.setColor(1, 1, 1, self.animation.alpha)
     love.graphics.printf(self.description,
-        self.position.x + TEXT_PADDING / 2,
-        self.position.y + self.height - 105 - self.lift,
+        math.floor(self.position.x + TEXT_PADDING / 2),
+        math.floor(self.position.y + self.height - 105 - self.lift),
         self.width - TEXT_PADDING, 'center'
     )
 end

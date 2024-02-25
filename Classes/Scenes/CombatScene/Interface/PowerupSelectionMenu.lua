@@ -237,10 +237,10 @@ function PowerupSelectionMenu:_drawSpeechBubble()
     love.graphics.setFont(self.speechBubble.font)
     love.graphics.setColor(1, 0, 1, self.speechBubble.alpha)
     love.graphics.printf(self.speechBubble.text,
-        love.graphics.getWidth() * self.speechBubble.anchor.x + self.speechBubble.offset.x +
-        self.speechBubble.padding / 2,
-        love.graphics.getHeight() * self.speechBubble.anchor.y + self.speechBubble.offset.y + 10 +
-        self.speechBubble.animY,
+        math.floor(love.graphics.getWidth() * self.speechBubble.anchor.x + self.speechBubble.offset.x +
+        self.speechBubble.padding / 2),
+        math.floor(love.graphics.getHeight() * self.speechBubble.anchor.y + self.speechBubble.offset.y + 10 +
+        self.speechBubble.animY),
         self.speechBubble.image:getWidth() - self.speechBubble.padding,
         'left'
     )
@@ -265,8 +265,8 @@ function PowerupSelectionMenu:_drawDescription()
     love.graphics.setColor(0, 0, 0, self.speechBubble.alpha)
     love.graphics.setFont(self.description.font)
     love.graphics.printf(self.description.text,
-        love.graphics.getWidth() * self.description.anchor.x + self.description.offset.x + self.description.padding / 2,
-        love.graphics.getHeight() * self.description.anchor.y + self.description.offset.y + 40,
+        math.floor(love.graphics.getWidth() * self.description.anchor.x + self.description.offset.x + self.description.padding / 2),
+        math.floor(love.graphics.getHeight() * self.description.anchor.y + self.description.offset.y + 40),
         self.description.image:getWidth() * 0.5 - self.description.padding,
         'left'
     )

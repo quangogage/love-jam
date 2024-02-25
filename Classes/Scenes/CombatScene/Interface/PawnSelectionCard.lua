@@ -2,6 +2,7 @@
 
 local util              = require('util')({ 'graphics' })
 local Element           = require('Classes.Elements.Element')
+local MiniPowerupIcon   = require('Classes.Elements.MiniPowerupIcon')
 
 local NAME_FONT         = love.graphics.newFont(fonts.title, 18)
 local COIN_FONT      = love.graphics.newFont(fonts.speechBubble, 16)
@@ -45,6 +46,9 @@ local PawnSelectionCard = Goop.Class({
 --------------------------
 -- [[ Core Functions ]] --
 --------------------------
+function PawnSelectionCard:init()
+    self:_initPowerupIcons()
+end
 function PawnSelectionCard:update(dt)
     Element.update(self)
     self:_checkHover()
@@ -56,6 +60,7 @@ function PawnSelectionCard:draw()
     x,y = self:_drawIcon(x,y)
     x,y = self:_printName(x,y)
     x,y = self:_drawCost(x,y)
+    x,y = self:_drawPowerupIcons(x,y)
 end
 
 
@@ -96,7 +101,7 @@ end
 function PawnSelectionCard:_printName(x,y)
     love.graphics.setFont(NAME_FONT)
     love.graphics.setColor(1,1,1)
-    love.graphics.print(self.name, x - NAME_FONT:getWidth(self.name)/2, y)
+    love.graphics.print(self.name, math.floor(x - NAME_FONT:getWidth(self.name)/2), y)
     return x - NAME_FONT:getWidth(self.name)/2, y + NAME_FONT:getHeight()
 end
 
@@ -106,12 +111,10 @@ end
 function PawnSelectionCard:_drawCost(x,y)
     love.graphics.setFont(COIN_FONT)
     love.graphics.setColor(1,1,1)
-    love.graphics.print(self.price, x, y)
+    love.graphics.print(self.price, math.floor(x), math.floor(y))
     love.graphics.draw(COIN_ICON, x + COIN_FONT:getWidth(self.price), y, 0, 0.5, 0.5)
     return x, y + COIN_FONT:getHeight()
 end
-
-
 
 function PawnSelectionCard:_checkHover()
     local x, y = love.mouse.getPosition()
@@ -119,6 +122,34 @@ function PawnSelectionCard:_checkHover()
         self.hovered = true
     else
         self.hovered = false
+    end
+end
+
+---@param x number
+---@param y number
+---@return number, number
+function PawnSelectionCard:_drawPowerupIcons(x,y)
+    x = self.position.x + 70
+    y = self.position.y + 20
+    for _,icon in pairs(self.powerupIcons) do
+        if x + icon.dimensions.width > self.position.x + self.width then
+            x = self.position.x + 75
+            y = y + icon.dimensions.height + 5
+        end
+        icon:draw(x,y)
+        x = x + icon.dimensions.width + 5
+    end
+end
+
+function PawnSelectionCard:_initPowerupIcons()
+    self.powerupIcons = {}
+    for _,powerup in pairs(self.powerups) do
+        table.insert(self.powerupIcons, MiniPowerupIcon({
+            image = powerup.image,
+            powerupRef = powerup,
+            dimensions = {width = 32, height = 32},
+            position = {x = 0, y = 0},
+        }))
     end
 end
 

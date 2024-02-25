@@ -6,6 +6,7 @@ local EventManager = require('Classes.EventManager')
 local sceneClasses = {
     CombatScene = require('Classes.Scenes.CombatScene.CombatScene'),
     MainMenuScene = require('Classes.Scenes.MainMenuScene.MainMenuScene'),
+    HowToScene = require('Classes.Scenes.HowToScene.HowToScene')
 }
 
 ---@class Game
@@ -85,6 +86,9 @@ function Game:_createSubscriptions()
     end)
     self.eventManager:subscribe('restart', function ()
         self:setScene('CombatScene', self.eventManager)
+    end)
+    self.eventManager:subscribe('openHowTo', function ()
+        self:setScene('HowToScene', self.eventManager)
     end)
 end
 function Game:_loadComponents()

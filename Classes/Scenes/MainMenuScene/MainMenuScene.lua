@@ -88,6 +88,14 @@ function MainMenuScene:_setMenu(name)
                 end
             }),
             Button({
+                text = "How To Play",
+                anchor = { x = 0, y = 0.5 },
+                offset = { x = 100, y = 50 },
+                onClick = function()
+                    self.eventManager:broadcast('openHowTo')
+                end
+            }),
+            Button({
                 text = 'Options',
                 anchor = { x = 0, y = 0.5 },
                 offset = { x = 100, y = 100 },
@@ -98,7 +106,7 @@ function MainMenuScene:_setMenu(name)
             Button({
                 text = 'Quit',
                 anchor = { x = 0, y = 0.5 },
-                offset = { x = 100, y = 200 },
+                offset = { x = 100, y = 150 },
                 onClick = function ()
                     love.event.quit()
                 end

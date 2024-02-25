@@ -106,19 +106,19 @@ return {
         price = 2
     },
     mage = {
-        health = 10,
+        health = 5,
         walkSpeed = 1200 * SPEED_MULTIPLIER,
         damageAmount = 2,
         attackSpeed = 1 / SPEED_MULTIPLIER,
         range = 370,
-        price = 5
+        price = 12
     },
     heavy = {
-        health = 40,
+        health = 15,
         walkSpeed = 900 * SPEED_MULTIPLIER,
         damageAmount = 2,
         attackSpeed = 1.87 / SPEED_MULTIPLIER,
         range = 160,
-        price = 10
+        price = 20
     },
 }

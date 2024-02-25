@@ -15,7 +15,7 @@ return {
     },
     {
         name           = "Mage",
-        icon           = love.graphics.newImage("assets/images/pawn_ui/monk.png"),
+        icon           = love.graphics.newImage("assets/images/pawn_ui/mage.png"),
         assemblageName = "Mage",
         description    = "Here to save the day!",
         price          = 3,

@@ -25,6 +25,14 @@ return function (concord)
         e.animations.onComplete = e.animations.playOnceAnimation.onComplete
     end
 
+    ---@param e table
+    ---@param animationName string
+    function AnimationSystem:entity_playLooping(e, animationName)
+        e.animations.loopingAnimation = e.animations.list[animationName]
+        e.animations.frame = 1
+        e.animations.timer = 0
+    end
+
     --------------------------
     -- [[ Core Functions ]] --
     --------------------------
@@ -48,6 +56,7 @@ return function (concord)
                 if e.animations.defaultAnimation.playOnce then
                     self:entity_playOnce(e, e.animations.defaultAnimation.name)
                 else
+                    self:entity_playLooping(e, e.animations.defaultAnimation.name)
                     -- Loop
                 end
             end

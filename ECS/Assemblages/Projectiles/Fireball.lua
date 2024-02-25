@@ -11,6 +11,25 @@ local Vec2 = require('Classes.Types.Vec2')
 
 local dimensions = Vec2(30, 30)
 
+local animations = {
+    defaultAnimation = {
+        name = '1',
+        playOnce = false
+    },
+    list = {
+        ['1'] = {
+            framerate = 0.1,
+            frames = {
+                love.graphics.newImage('assets/images/fireball/fireball_1.png'),
+                love.graphics.newImage('assets/images/fireball/fireball_2.png'),
+                love.graphics.newImage('assets/images/fireball/fireball_3.png'),
+                love.graphics.newImage('assets/images/fireball/fireball_4.png')
+            }
+        }
+    }
+}
+
+
 return function (e, x, y, dir, damageAmount, attacker)
     e
         :give('position', x, y)
@@ -23,7 +42,8 @@ return function (e, x, y, dir, damageAmount, attacker)
         :give('rotation', dir + math.pi / 2)
         :give('unselectable')
         :give('color', 1, 0, 0)
-        :give('renderRectangle', dimensions.width, dimensions.height)
+        -- :give('renderRectangle', dimensions.width, dimensions.height)
+        :give("animations", animations)
         :give('deleteOOB')
 
     if attacker:get('friendly') then

@@ -143,12 +143,12 @@ return {
     Powerup({
         -- Applied in DamageSystem
         name = "Shadow's Touch",
-        description = "+1% chance to instantly kill a target when you attack them.",
+        description = "+0.35% chance to instantly kill a target when you attack them.",
         image = love.graphics.newImage("assets/images/icon/shadows_touch.png"),
         ---@param self Powerup
         ---@return number
         getValue = function (self)
-            return math.min(0.9,self.count * 0.01)
+            return math.min(0.9,self.count * 0.0035)
         end
     }),
 }

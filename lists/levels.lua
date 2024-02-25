@@ -145,8 +145,8 @@ return {
     entities = {
       {
         position = {
-          x = 185,
-          y = 531.8750000000002,
+          x = 394.21052631578937,
+          y = 498.9802631578951,
         },
         className = 'EnemyBase',
         color = 'red',
@@ -155,6 +155,10 @@ return {
           height = 70,
         },
         selected = false,
+        origin = {
+          x = 450.7894736842104,
+          y = 498.9802631578951,
+        },
       },
       {
         position = {
@@ -277,6 +281,7 @@ return {
           width = 35,
           height = 35,
         },
+        selected = false,
       },
       {
         position = {
@@ -290,6 +295,7 @@ return {
           width = 35,
           height = 35,
         },
+        selected = false,
       },
       {
         position = {
@@ -303,6 +309,7 @@ return {
           width = 35,
           height = 35,
         },
+        selected = false,
       },
       {
         position = {
@@ -316,9 +323,10 @@ return {
           width = 35,
           height = 35,
         },
+        selected = false,
       },
     },
-    saveTime = 1708810100696,
+    saveTime = 1708837766906,
     uuid = '178538968-2056711469-2672008019-1930789345',
   },
   ['4180533478-2092975115-499588124-292010508'] = {
@@ -1208,7 +1216,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
-        spawnCount = '2',
+        spawnCount = '1',
         origin = {
           x = 217.14285714285825,
           y = 595.7142857142862,
@@ -1228,7 +1236,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
-        spawnCount = '2',
+        spawnCount = '1',
         origin = {
           x = 217.14285714285825,
           y = 288.5714285714289,
@@ -1248,7 +1256,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
-        spawnCount = '2',
+        spawnCount = '1',
         origin = {
           x = 206.42857142857292,
           y = 1213.5714285714298,
@@ -1268,7 +1276,7 @@ return {
         },
         selected = false,
         enemyType = 'ranged',
-        spawnCount = '2',
+        spawnCount = '1',
         origin = {
           x = 199.28571428571558,
           y = -361.4285714285718,
@@ -1288,7 +1296,7 @@ return {
         },
         selected = false,
         enemyType = 'melee',
-        spawnCount = '2',
+        spawnCount = '1',
         origin = {
           x = 713.5714285714307,
           y = 731.4285714285721,
@@ -1308,7 +1316,7 @@ return {
         },
         selected = false,
         enemyType = 'melee',
-        spawnCount = '2',
+        spawnCount = '1',
         origin = {
           x = 713.5714285714307,
           y = 145.7142857142859,
@@ -1328,7 +1336,7 @@ return {
         },
         selected = false,
         enemyType = 'melee',
-        spawnCount = '2',
+        spawnCount = '1',
         origin = {
           x = 395.71428571428714,
           y = 438.5714285714291,
@@ -1405,6 +1413,7 @@ return {
           width = 35,
           height = 35,
         },
+        selected = false,
       },
       {
         position = {
@@ -1417,6 +1426,7 @@ return {
           width = 35,
           height = 35,
         },
+        selected = false,
       },
       {
         position = {
@@ -1429,6 +1439,7 @@ return {
           width = 35,
           height = 35,
         },
+        selected = false,
       },
       {
         position = {
@@ -1441,9 +1452,10 @@ return {
           width = 35,
           height = 35,
         },
+        selected = false,
       },
     },
-    saveTime = 1708810240293,
+    saveTime = 1708838040857,
     uuid = '3576952849-87285554-418534424-1840545038',
   },
   ['1213693025-98917500-1254611942-2949332076'] = {

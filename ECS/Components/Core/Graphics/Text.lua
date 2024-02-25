@@ -6,7 +6,7 @@
 --
 
 
-local fallbackFont = love.graphics.newFont(fonts.speechBubble, 36)
+local fallbackFont = love.graphics.newFont(fonts.speechBubble, 32)
 
 return function(concord)
     concord.component("text", function(c, value, font)

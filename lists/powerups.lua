@@ -27,6 +27,7 @@
 -- when attacking - But immediately before subtracting that damage amount
 -- from the target's health.
 
+local util = require("util")({ 'entityAssembler' })
 local Powerup = require('Classes.Types.Powerup')
 
 return {
@@ -66,6 +67,23 @@ return {
         onPawnCreation = function (self, pawn)
             for _ = 1, self.count do
                 pawn.armor.value = math.min(0.9, pawn.armor.value + 0.10)
+            end
+        end
+    }),
+    Powerup({
+        name = "Fortified Fate",
+        description = "+10% Chance when spawned to have double health",
+        image = love.graphics.newImage("assets/images/icon/foritified_fate.png"),
+        count = 90,
+        ---@param self Powerup
+        ---@param pawn BasicPawn | Pawn | table
+        onPawnCreation = function (self, pawn)
+            local chance = 0.05 * self.count
+            if math.random() < chance then
+                local color = pawn:get("friendly") and {0, 1, 0} or {1, 0, 0}
+                pawn.health.value = pawn.health.value * 2
+                pawn.health.max = pawn.health.max * 2
+                util.entityAssembler.assemble(pawn:getWorld(), 'FadingText', 'Fortified Fate: \n Double Health!', pawn.position.x, pawn.position.y, color)
             end
         end
     }),
@@ -117,5 +135,5 @@ return {
         getValue = function (self)
             return math.min(0.9,self.count * 0.01)
         end
-    })
+    }),
 }

@@ -128,7 +128,7 @@ function CombatScene:init()
     self.loopInfoPanel          = LoopInfoPanel(self.loopStateManager)
     self:_loadSystems()
     self:_initLevels()
-    self.currentLevelIndex = 9
+    self.currentLevelIndex = 0
     self:loadNextLevel()
     self.levelTransitionHandler = LevelTransitionHandler(self.eventManager, self, self.renderCanvas)
     self.levelTransitionHandler:setState('scene-starting')

@@ -85,7 +85,7 @@ return function (concord, onLevelComplete, playerLost)
 
                 -- Shadow's touch powerup
                 -- Chance to insta-kill.
-                if attacker:get('powerups') then
+                if attacker:get('powerups') and not target.isBase then
                     if love.math.random() <= attacker.powerups.list["Shadow's Touch"]:getValue() then
                         local color = attacker.hostile and { 1, 0, 0, 1 } or { 0, 1, 0, 1 }
                         target.health.value = 0

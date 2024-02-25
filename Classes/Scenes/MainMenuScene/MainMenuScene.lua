@@ -44,6 +44,11 @@ function MainMenuScene:update(dt)
             isHovered = true
         end
     end
+    if isHovered then
+        cursor:set("hand")
+    else
+        cursor:set("arrow")
+    end
 end
 function MainMenuScene:draw()
     for _, el in ipairs(self.elements) do

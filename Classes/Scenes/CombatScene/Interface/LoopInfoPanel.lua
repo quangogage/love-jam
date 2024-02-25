@@ -11,7 +11,7 @@ local PowerupIcon = require("Classes.Elements.MiniPowerupIcon")
 local LoopInfoPanel = Goop.Class({
     arguments = {'loopStateManager'},
     dynamic = {
-        anchor = { x = 0, y = 0.7 },
+        anchor = { x = 0, y = 0.6 },
         offset = { x = 25, y = 0 },
         maxWidth = 305
     }

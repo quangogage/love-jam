@@ -13,7 +13,8 @@ return function (concord)
     ---@field entities table[]
     local RenderSystem = concord.system({
         entities = { 'position' },
-        text = { 'position', 'text' }
+        text = { 'position', 'text' },
+        topOnly = { 'position', 'drawOnTop' }
     })
 
 
@@ -34,10 +35,15 @@ return function (concord)
         table.move(self.entities, 1, #self.entities, 1, sortedEntities)
         table.sort(sortedEntities, self._zIndexSort)
         for _, entity in ipairs(sortedEntities) do
-            self:_renderEntity(entity)
+            if not entity:get('drawOnTop') then
+                self:_renderEntity(entity)
+            end
         end
     end
     function RenderSystem:drawOnTop()
+        for _, entity in ipairs(self.topOnly) do
+            self:_renderEntity(entity)
+        end
         for _, entity in ipairs(self.text) do
             if entity:get('text') then
                 self:_renderText(entity)
@@ -109,7 +115,7 @@ return function (concord)
     ---@return boolean
     function RenderSystem._zIndexSort(a, b)
         if a.dimensions and b.dimensions then
-            return a.position.y - a.dimensions.offsetY + a.dimensions.height / 2 < 
+            return a.position.y - a.dimensions.offsetY + a.dimensions.height / 2 <
                 b.position.y - b.dimensions.offsetY + b.dimensions.height / 2
         end
         return a.position.y < b.position.y

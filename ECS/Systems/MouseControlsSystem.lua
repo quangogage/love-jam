@@ -15,6 +15,8 @@ local DRAG_THRESHOLD = 35
 local COMMAND_SOUND = love.audio.newSource('assets/audio/sfx/command.wav', 'static')
 COMMAND_SOUND:setVolume(settings:getVolume('interface') * 0.5)
 
+local util = require("util")({ "entityAssembler"})
+
 ---@param concord table
 ---@param camera Camera
 return function (concord, camera)
@@ -54,7 +56,9 @@ return function (concord, camera)
                     sound:play()
                     if #allEntities == 0 then
                         self:_setTarget({position = { x = x, y = y }})
+                        util.entityAssembler.assemble(world,'CommandIcon', x, y, "position")
                     else
+                        util.entityAssembler.assemble(world,'CommandIcon', x, y, "entity")
                         -- If there is a hostile entity anywhere in the list,
                         -- target it.
                         local clickedEnemy

@@ -13,13 +13,12 @@ return function(concord)
 
     function FadeOutSystem:update(dt)
         for _, entity in ipairs(self.entities) do
-            if entity.alpha then
-                entity.alpha.value = entity.alpha.value - FADE_SPEED * dt
-                if entity.alpha.value < 0 then
-                    entity:destroy()
-                end
-                entity.position.y = entity.position.y + FALL_SPEED * dt
+            entity:ensure('alpha')
+            entity.alpha.value = entity.alpha.value - FADE_SPEED * dt
+            if entity.alpha.value < 0 then
+                entity:destroy()
             end
+            entity.position.y = entity.position.y + FALL_SPEED * dt
         end
     end
 

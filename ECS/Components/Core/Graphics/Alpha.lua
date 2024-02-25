@@ -7,6 +7,6 @@
 
 return function(concord)
     concord.component('alpha', function(c, value)
-        c.value = value
+        c.value = value or 1
     end)
 end

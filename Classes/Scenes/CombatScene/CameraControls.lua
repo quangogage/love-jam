@@ -26,7 +26,7 @@ local CameraControls        = Goop.Class({
 --------------------------
 function CameraControls:update(dt)
     self:_keyboardMovement(dt)
-    self:_mousePushMovement(dt)
+    -- self:_mousePushMovement(dt)
     self:_updateDrag(dt)
     self:_cameraZoom()
     self:_enforceWorldBounds()

@@ -22,9 +22,21 @@
 
 return function (concord, camera)
     local ClickHandlerSystem = concord.system({
-        entities = { 'position', 'dimensions' }
+        entities = { 'position', 'dimensions' },
+        hoverEntities = { 'position', 'dimensions', 'health'}
     })
 
+    function ClickHandlerSystem:update()
+        local x,y = camera:getTranslatedMousePosition()
+        for _,e in ipairs(self.entities) do
+            if x > e.position.x - e.dimensions.width / 2 and
+            x < e.position.x + e.dimensions.width / 2 and
+            y > e.position.y - e.dimensions.height / 2 and
+            y < e.position.y + e.dimensions.height / 2 then
+                self:getWorld().hovered = true
+            end
+        end
+    end
     function ClickHandlerSystem:mousepressed(_, _, button)
         self:_handle(button, 'pressed')
     end

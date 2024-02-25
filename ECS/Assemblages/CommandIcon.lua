@@ -5,8 +5,8 @@
 --
 
 local images = {
-    position = love.graphics.newImage('assets/images/icons/flag.png'),
-    entity = love.graphics.newImage('assets/images/icons/flag.png'),
+    position = love.graphics.newImage('assets/images/icons/crosshair_1.png'),
+    entity = love.graphics.newImage('assets/images/icons/crosshair_2.png'),
 }
 
 return function(e, x, y, image)

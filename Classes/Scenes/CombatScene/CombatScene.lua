@@ -144,6 +144,7 @@ function CombatScene:update(dt)
     local pawnHovered = false
     local powerupHovered = false
     local lostHovered = false
+    self.world.hovered = false
     if not self.disableWorldUpdate and not self.paused and not self.lost then
         self.world:emit('update', dt)
         if not self.disableCameraControls then
@@ -160,7 +161,7 @@ function CombatScene:update(dt)
     self.pauseMenu:update(dt)
     self.levelStartNotification:update(dt)
     self.loseMenu:update(dt)
-    if pawnHovered or powerupHovered or lostHovered then
+    if pawnHovered or powerupHovered or lostHovered or self.world.hovered then
         cursor:set('hand')
     else
         cursor:set('arrow')

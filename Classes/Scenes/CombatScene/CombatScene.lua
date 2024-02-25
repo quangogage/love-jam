@@ -28,6 +28,7 @@ local LoseMenu               = require('Classes.Scenes.CombatScene.Interface.Los
 local LoopStateManager       = require('Classes.Scenes.CombatScene.LoopStateManager')
 local LevelStartNotification = require('Classes.Scenes.CombatScene.Interface.LevelStartNotification')
 local CoinCounter            = require('Classes.Scenes.CombatScene.Interface.CoinCounter')
+local LoopInfoPanel          = require('Classes.Scenes.CombatScene.Interface.LoopInfoPanel')
 local generateGrass          = require('scripts.generateGrass')
 
 ---@class CombatScene
@@ -123,6 +124,7 @@ function CombatScene:init()
     self.pauseMenu              = PauseMenu(self, self.eventManager)
     self.backgroundRenderer     = BackgroundRenderer(self)
     self.coinCounter            = CoinCounter(self.coinManager)
+    self.loopInfoPanel          = LoopInfoPanel(self.loopStateManager)
     self:_loadSystems()
     self:_initLevels()
     self.currentLevelIndex = 0
@@ -189,6 +191,7 @@ function CombatScene:draw()
     self.levelStartNotification:draw()
     self.pauseMenu:draw()
     self.loseMenu:draw()
+    self.loopInfoPanel:draw()
 
     love.graphics.setFont(self.devLevelPrintFont)
     love.graphics.setColor(1,1,1)

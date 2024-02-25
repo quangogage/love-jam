@@ -27,6 +27,7 @@ return function (e, x, y, friendly)
         :give("isBase")
         :give("groundPosition", 0, 100)
         :give('scale', 0.5, 0.5)
+        :give('coinValue', KNOBS.enemyCoinReward.base)
 
     if friendly then
         e:give('friendly')

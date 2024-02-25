@@ -24,7 +24,8 @@ return {
 
     -- How much each one is worth.
     enemyCoinReward = {
-        tower = 5,
+        tower = 2.2,
+        base = 10,
         meleeEnemy = 1.85,
         rangedEnemy = 2.15,
     },
@@ -37,7 +38,7 @@ return {
 
     enemyTower = {
         health = 35,
-        spawnRate = 35 / SPEED_MULTIPLIER,
+        spawnRate = 25 / SPEED_MULTIPLIER,
 
         -- Every second the spawn rate will be multiplied by this.
         -- For example,
@@ -106,19 +107,19 @@ return {
         price = 2
     },
     mage = {
-        health = 5,
+        health = 10,
         walkSpeed = 1200 * SPEED_MULTIPLIER,
-        damageAmount = 2,
+        damageAmount = 5.8,
         attackSpeed = 1 / SPEED_MULTIPLIER,
         range = 370,
-        price = 12
+        price = 5
     },
     heavy = {
-        health = 15,
+        health = 40,
         walkSpeed = 900 * SPEED_MULTIPLIER,
-        damageAmount = 2,
+        damageAmount = 5.5,
         attackSpeed = 1.87 / SPEED_MULTIPLIER,
         range = 160,
-        price = 20
+        price = 10
     },
 }

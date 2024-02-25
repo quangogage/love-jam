@@ -63,7 +63,7 @@ return function (concord, camera, onLevelComplete, coinManager)
         self:_drawFriendlyTargets()
     end
     function DebugSystem:keypressed(key)
-        self:_spawnPawnsInTestRoom(key)
+        -- self:_spawnPawnsInTestRoom(key)
     end
 
 

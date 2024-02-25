@@ -208,7 +208,7 @@ return {
           height = 70,
         },
         selected = false,
-        spawnAmount = '2',
+        spawnAmount = '1',
         enemyType = 'melee',
         origin = {
           x = 358.40909090909213,
@@ -326,7 +326,7 @@ return {
         selected = false,
       },
     },
-    saveTime = 1708847613132,
+    saveTime = 1708884635681,
     uuid = '178538968-2056711469-2672008019-1930789345',
   },
   ['4180533478-2092975115-499588124-292010508'] = {

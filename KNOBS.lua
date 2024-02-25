@@ -49,7 +49,7 @@ return {
         -- If it was 0.8, it would increase by 20% every second.
         --
         -- Higher number = slower increase over time.
-        spawnRateIncreaseIncrement = 0.95 / SPEED_MULTIPLIER,
+        spawnRateIncreaseIncrement = 0.87 / SPEED_MULTIPLIER,
 
         -- The minimum spawn rate.
         -- If this is 1, the minimum rate is 1 per second.

@@ -139,12 +139,14 @@ function PawnSelectionCard:_drawPowerupIcons(x,y)
     x = self.position.x + 70
     y = self.position.y + 20
     for _,icon in pairs(self.powerupIcons) do
-        if x + icon.dimensions.width > self.position.x + self.width then
-            x = self.position.x + 75
-            y = y + icon.dimensions.height + 5
+        if icon.powerupRef.count > 0 then
+            if x + icon.dimensions.width > self.position.x + self.width then
+                x = self.position.x + 75
+                y = y + icon.dimensions.height + 5
+            end
+            icon:draw(x,y + self.lift)
+            x = x + icon.dimensions.width + 5
         end
-        icon:draw(x,y + self.lift)
-        x = x + icon.dimensions.width + 5
     end
 end
 

@@ -11,7 +11,7 @@ local LevelStartNotification = Goop.Class({
     dynamic = {
         alpha       = 0,
         targetAlpha = 1,
-        holdTime    = 2,
+        holdTime    = 4,
         fadeSpeed   = 5,
         timer       = 0
     }

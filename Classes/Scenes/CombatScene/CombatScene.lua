@@ -27,6 +27,7 @@ local RenderCanvas           = require('Classes.Scenes.CombatScene.RenderCanvas'
 local LoseMenu               = require('Classes.Scenes.CombatScene.Interface.LoseMenu')
 local LoopStateManager       = require('Classes.Scenes.CombatScene.LoopStateManager')
 local LevelStartNotification = require('Classes.Scenes.CombatScene.Interface.LevelStartNotification')
+local CoinCounter            = require('Classes.Scenes.CombatScene.Interface.CoinCounter')
 local generateGrass          = require('scripts.generateGrass')
 
 ---@class CombatScene
@@ -121,6 +122,7 @@ function CombatScene:init()
     self.loseMenu               = LoseMenu(self.eventManager)
     self.pauseMenu              = PauseMenu(self, self.eventManager)
     self.backgroundRenderer     = BackgroundRenderer(self)
+    self.coinCounter            = CoinCounter(self.coinManager)
     self:_loadSystems()
     self:_initLevels()
     self.currentLevelIndex = 0
@@ -181,16 +183,11 @@ function CombatScene:draw()
 
     self.powerupSelectionMenu:draw()
     self.pawnSelectionMenu:draw()
+    self.coinCounter:draw()
     self.levelTransitionHandler:draw()
     self.levelStartNotification:draw()
     self.pauseMenu:draw()
     self.loseMenu:draw()
-
-    -- DEV:
-    love.graphics.setColor(1,1,1)
-    love.graphics.setFont(self.devLevelPrintFont)
-    love.graphics.print("Level " .. self.currentLevelIndex, 10, 10)
-    love.graphics.print("Loop " .. self.loopStateManager.loop, 10, 30)
 end
 function CombatScene:keypressed(key)
     if not self.paused and not self.lost then

@@ -4,6 +4,8 @@
 -- The symptom of bad ui code design.
 --
 
+local font = love.graphics.newFont(fonts.title, 40)
+
 local HowToScene = Goop.Class({
     arguments = {"eventManager"},
     dynamic = {
@@ -30,7 +32,18 @@ end
 function HowToScene:update()
 end
 function HowToScene:draw()
-    love.graphics.draw(self.frames[self.index], 0, 0)
+    local str = 'Press any key to continue'
+    local img = self.frames[self.index]
+    love.graphics.draw(self.frames[self.index], 
+        love.graphics.getWidth() / 2 - img:getWidth() / 2,
+        love.graphics.getHeight() / 2 - img:getHeight() / 2
+    )
+    love.graphics.setColor(1,1,1)
+    love.graphics.setFont(font)
+    love.graphics.print(str, 
+        love.graphics.getWidth() / 2 - font:getWidth(str) / 2,
+        20
+    )
 end
 function HowToScene:keypressed(key)
     self:next()

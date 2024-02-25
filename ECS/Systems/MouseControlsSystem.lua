@@ -143,7 +143,7 @@ return function (concord, camera)
     function MouseControlsSystem:_drawSelectionRectangle()
         if self.selectionRectangle then
             love.graphics.setColor(1, 1, 1)
-            love.graphics.setLineWidth(2)
+            love.graphics.setLineWidth(3)
             love.graphics.rectangle(
                 'line',
                 self.selectionRectangle.x, self.selectionRectangle.y,

@@ -12,6 +12,9 @@
 local DRAG_THRESHOLD = 35
 -- ──────────────────────────────────────────────────────────────────────
 
+local COMMAND_SOUND = love.audio.newSource('assets/audio/sfx/command.wav', 'static')
+COMMAND_SOUND:setVolume(settings:getVolume('interface') * 0.5)
+
 ---@param concord table
 ---@param camera Camera
 return function (concord, camera)
@@ -44,6 +47,11 @@ return function (concord, camera)
                 -- Register a target instead.
                 if not self.selectionRectangle and x > world.bounds.x and x < world.bounds.x + world.bounds.width and
                 y > world.bounds.y and y < world.bounds.y + world.bounds.height then
+                    local sound = COMMAND_SOUND
+                    if sound:isPlaying() then
+                        sound = sound:clone()
+                    end
+                    sound:play()
                     if #allEntities == 0 then
                         self:_setTarget({position = { x = x, y = y }})
                     else

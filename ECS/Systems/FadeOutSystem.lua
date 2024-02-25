@@ -4,7 +4,7 @@
 --
 
 local FADE_SPEED = 0.75
-local FALL_SPEED = 13
+local FALL_SPEED = 0
 
 return function(concord)
     local FadeOutSystem = concord.system({

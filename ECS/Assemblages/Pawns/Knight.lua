@@ -18,7 +18,7 @@ local onSpawnSounds       = {
 }
 local pitch               = 1.5
 for _, sound in ipairs(onSpawnSounds) do
-    sound:setVolume(settings:getVolume('interface'))
+    sound:setVolume(settings:getVolume('interface') * 0.6)
     sound:setPitch(pitch)
 end
 

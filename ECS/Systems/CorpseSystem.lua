@@ -7,6 +7,7 @@
 --
 
 
+local COLOR = {0.6,0.6,0.6}
 local util = require('util')({ 'entityAssembler' })
 
 return function (concord)
@@ -55,6 +56,7 @@ return function (concord)
                     -- Remove and draw to corpse layer.
                     local storedCanvas = love.graphics.getCanvas()
                     love.graphics.setCanvas(self.canvas)
+                    animatedEffect:give('color', COLOR[1], COLOR[2], COLOR[3])
                     world:emit("entity_render", animatedEffect)
                     love.graphics.setCanvas(storedCanvas)
                     animatedEffect:destroy()
@@ -69,6 +71,7 @@ return function (concord)
             local storedCanvas = love.graphics.getCanvas()
             love.graphics.setCanvas(self.canvas)
             e.image.value = e.images.dead
+            e:give('color', COLOR[1], COLOR[2], COLOR[3])
             self:getWorld():emit("entity_render", e)
             love.graphics.setCanvas(storedCanvas)
         end

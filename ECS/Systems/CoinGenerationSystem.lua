@@ -29,11 +29,13 @@ return function (concord, coinManager)
     function CoinGenerationSystem:event_entityDied(e)
         if e:get("hostile") and e:get("coinValue") then
             coinManager:addCoins(e:get("coinValue").value)
-            local text = util.entityAssembler.assemble(self:getWorld(), 'FadingText', '+5', e.position.x + 2, e.position.y-17, {0,0,0})
+            local flooredValue = math.floor(e:get("coinValue").value*10)/10
+            local str = "+" .. flooredValue
+            local text = util.entityAssembler.assemble(self:getWorld(), 'FadingText', str, e.position.x + 2, e.position.y-17, {0,0,0})
             text.text.font = coinFont
-            text = util.entityAssembler.assemble(self:getWorld(), 'FadingText', '+5', math.floor(e.position.x-2), math.floor(e.position.y-13), {0,0,0})
+            text = util.entityAssembler.assemble(self:getWorld(), 'FadingText', str, math.floor(e.position.x-2), math.floor(e.position.y-13), {0,0,0})
             text.text.font = coinFont
-            text = util.entityAssembler.assemble(self:getWorld(), 'FadingText', '+5', math.floor(e.position.x), math.floor(e.position.y-15), {0,1,0})
+            text = util.entityAssembler.assemble(self:getWorld(), 'FadingText', str, math.floor(e.position.x), math.floor(e.position.y-15), {0,1,0})
             text.text.font = coinFont
             local coin = util.entityAssembler.assemble(self:getWorld(), 'CommandIcon', e.position.x+2, e.position.y+2)
             coin:give('image', coinImage)

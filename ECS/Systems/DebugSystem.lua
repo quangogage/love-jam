@@ -44,6 +44,9 @@ return function (concord, camera, onLevelComplete, coinManager)
     function DebugSystem:toggleFriendlyTargets()
         self.showFriendlyTargets = not self.showFriendlyTargets
     end
+    function DebugSystem:addCoins(amount)
+        coinManager:addCoins(amount)
+    end
 
 
     --------------------------

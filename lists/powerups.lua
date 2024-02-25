@@ -88,7 +88,7 @@ return {
     }),
     Powerup({
         name = "Fateful Fury",
-        description = "+10% Chance when spawned to have double health",
+        description = "+10% Chance when spawned to deal double damage",
         image = love.graphics.newImage("assets/images/icon/fateful_fury.png"),
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table

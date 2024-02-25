@@ -74,7 +74,6 @@ return {
         name = "Fortified Fate",
         description = "+10% Chance when spawned to have double health",
         image = love.graphics.newImage("assets/images/icon/foritified_fate.png"),
-        count = 90,
         ---@param self Powerup
         ---@param pawn BasicPawn | Pawn | table
         onPawnCreation = function (self, pawn)
@@ -83,7 +82,22 @@ return {
                 local color = pawn:get("friendly") and {0, 1, 0} or {1, 0, 0}
                 pawn.health.value = pawn.health.value * 2
                 pawn.health.max = pawn.health.max * 2
-                util.entityAssembler.assemble(pawn:getWorld(), 'FadingText', 'Fortified Fate: \n Double Health!', pawn.position.x, pawn.position.y, color)
+                util.entityAssembler.assemble(pawn:getWorld(), 'FadingText', 'Fortified Fate:\nDouble Health!', pawn.position.x, pawn.position.y, color)
+            end
+        end
+    }),
+    Powerup({
+        name = "Fateful Fury",
+        description = "+10% Chance when spawned to have double health",
+        image = love.graphics.newImage("assets/images/icon/fateful_fury.png"),
+        ---@param self Powerup
+        ---@param pawn BasicPawn | Pawn | table
+        onPawnCreation = function (self, pawn)
+            local chance = 0.05 * self.count
+            if math.random() < chance then
+                local color = pawn:get("friendly") and {0, 1, 0} or {1, 0, 0}
+                pawn.combatProperties.damageAmount = pawn.combatProperties.damageAmount * 2
+                util.entityAssembler.assemble(pawn:getWorld(), 'FadingText', 'Fateful Fury:\nDouble damage!', pawn.position.x, pawn.position.y, color)
             end
         end
     }),

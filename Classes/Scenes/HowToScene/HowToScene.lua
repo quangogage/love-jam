@@ -10,10 +10,10 @@ local HowToScene = Goop.Class({
     arguments = {"eventManager"},
     dynamic = {
         frames = {
-            love.graphics.newImage("assets/images/how-to-slides/1.png"),
-            love.graphics.newImage("assets/images/how-to-slides/2.png"),
-            love.graphics.newImage("assets/images/how-to-slides/3.png"),
-            love.graphics.newImage("assets/images/how-to-slides/4.png")
+            love.graphics.newImage("assets/images/tutorial-slides/1.png"),
+            love.graphics.newImage("assets/images/tutorial-slides/2.png"),
+            love.graphics.newImage("assets/images/tutorial-slides/3.png"),
+            love.graphics.newImage("assets/images/tutorial-slides/4.png")
         },
         index = 1
     }

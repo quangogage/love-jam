@@ -1,5 +1,9 @@
-# love-jam
-Love2d game jam 2024
+# Fortune's Favor
+Made over the course of ~a week for [LOVEJAM 2024](https://itch.io/jam/love2d-jam-2024)
+
+
+
+![Gameplay preview](https://github.com/quangogage/love-jam/blob/main/assets/screenshots/preview-gif-large.gif?raw=true)
 
 ## Getting started
 Install [love](https://love2d.org/)  
@@ -28,8 +32,25 @@ game-world behavior utlizes the Concord ECS library.
 
 ## Notes on GUI stuff:
 Not using any GUI libraries or anything for this project. Everything will just
-pretty much be hardcoded bespoke to each menu (save for some simple abstractions
+pretty much be hardcoded bespoke to each menu (save for some simple abstractions.) Not a great solution, but, for me it's the most straightforward and fastest
+short-term.
+
+## Credits:
+#### Gage Henderson - [Twitter](https://twitter.com/gage_69_420)
+- Programming
+- Music
+- Sound Effects
+- Design
+
+#### Keaton - [Twitter](https://twitter.com/keatonf)
+- Artwork
+- Design
+
+#### Derek Riggs
+- Design
+- Writing
+- Testing
+- Knob Tweaking
 like a button class, dropdown, etc).
 
-Not a great solution, but, for me it's the most straightforward and fastest
-short-term.
+
